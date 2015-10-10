@@ -1,11 +1,13 @@
 #include "CallbackManager.h"
 
-
-CallbackManager::CallbackManager()
+namespace guiSystem
 {
-}
+	CallbackManager::CallbackManager()
+	{
+	}
 
 
-CallbackManager::~CallbackManager()
-{
+	CallbackManager::~CallbackManager()
+	{
+	}
 }

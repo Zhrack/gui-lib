@@ -3,57 +3,76 @@
 
 #include <vector>
 #include <string>
+#include "GuiEvent.h"
 
 #include "CallbackManager.h"
 
-class Widget : public CallbackManager, public sf::Drawable, public sf::Transformable
+class Gui;
+
+namespace guiSystem
 {
-public:
-	Widget();
-	~Widget();
-
-	void show()
+	class Widget : public CallbackManager, public sf::Drawable
 	{
-		mEnabled = true;
-		mVisible = true;
-	}
-	void hide()
-	{
-		mEnabled = false;
-		mVisible = false;
-	}
+	public:
+		Widget();
+		~Widget();
 
-	void enable(){ mEnabled = true; }
-	void disable(){ mEnabled = false; }
-	
-	void focus() { mFocused = true; }
-	void unfocus(){ mFocused = false; }
+		void show()
+		{
+			enable();
+			mVisible = true;
+		}
+		void hide()
+		{
+			disable();
+			mVisible = false;
+		}
 
-	//getters
-	bool isEnabled() const { return mEnabled; }
-	bool isVisible() const { return mVisible; }
-	bool isFocused() const { return mFocused; }
+		void enable(){ mEnabled = true; }
+		void disable(){ mEnabled = false; }
 
-	Widget* getParent() const { return mParent; }
+		void focus();
+		void unfocus();
 
-	void handleEvent(sf::Event& event);
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) = 0;
+		void setDraggable(bool draggable) { mDraggable = draggable; }
 
+		//getters
+		bool isEnabled() const { return mEnabled; }
+		bool isVisible() const { return mVisible; }
+		bool isFocused() const { return mFocused; }
+		bool isDraggable() const { return mDraggable; }
 
-protected:
-	std::vector<std::string> mWidgetNames;
-	std::vector<Widget*> mChildWidgets;
+		//check to see if mouse pointer is on this widget
+		bool mouseOnWidget(float x, float y);
 
-	Widget* mParent;
+		Widget* getParent() const { return mParent; }
 
-	//accepts events?
-	bool mEnabled;
-	//is rendered?
-	bool mVisible;
-	//is focused?
-	bool mFocused;
+		bool handleEvent(GuiEvent& event);
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) = 0;
 
-};
+	protected:
+		void checkEventType(GuiEvent& event);
 
+	protected:
+		std::vector<std::string> mWidgetNames;
+		std::vector<Widget*> mChildWidgets;
+
+		Widget* mParent;
+
+		Gui* mMainGui;
+
+		//basic shape of the widget
+		sf::RectangleShape mRect;
+
+		//accepts events?
+		bool mEnabled;
+		//is rendered?
+		bool mVisible;
+		//is focused?
+		bool mFocused;
+		//is draggable?
+		bool mDraggable;
+	};
+}
 
 #endif

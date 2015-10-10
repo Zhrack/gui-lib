@@ -1,6 +1,8 @@
 #ifndef CALLBACKMANAGER_H
 #define CALLBACKMANAGER_H
 
+#include "GuiEvent.h"
+
 #include <functional>
 #include <unordered_map>
 #include <list>
@@ -8,16 +10,18 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 
-class CallbackManager
+namespace guiSystem
 {
-public:
-	using FunctionList = std::list<std::function<void(sf::Event&)>>;
+	class CallbackManager
+	{
+	public:
+		using FunctionList = std::list<std::function<void(GuiEvent&)>>;
 
-	CallbackManager();
-	~CallbackManager();
+		CallbackManager();
+		~CallbackManager();
 
-protected:
-	std::unordered_map<sf::Event::EventType, FunctionList> mCallbacks;
-};
-
+	protected:
+		std::unordered_map<GuiEvent::EventType, FunctionList> mCallbacks;
+	};
+}
 #endif
