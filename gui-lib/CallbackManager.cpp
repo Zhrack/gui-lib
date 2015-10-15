@@ -2,7 +2,8 @@
 
 namespace guiSystem
 {
-	CallbackManager::CallbackManager()
+	CallbackManager::CallbackManager() :
+		mCallbacks()
 	{
 	}
 

@@ -11,10 +11,23 @@ namespace guiSystem
 	//this->bindCallback(GuiEvent::Closed, function, a, f);
 
 	////////////////////TEST
-	
 
-	Widget::Widget()
+	Widget::Widget(Widget* const parent, Gui* const gui,
+		const sf::Vector2f& pos, const sf::Vector2f& size,
+		bool enabled, bool visible, bool focused, bool draggable) 
+		:
+		mParent(parent),
+		mMainGui(gui),
+		mChildWidgets(),
+		mWidgetNames(),
+		mRect(size),
+
+		mEnabled(enabled),
+		mVisible(visible),
+		mFocused(focused),
+		mDraggable(draggable)
 	{
+		setPosition(pos);
 	}
 
 
@@ -111,11 +124,9 @@ namespace guiSystem
 						mRect.move(sf::Vector2f(deltaPos));
 					}
 				}
-				else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-				{
-
-				}
 			}
+
+			mMainGui->updateMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseEntered:

@@ -6,10 +6,22 @@
 
 namespace guiSystem
 {
-	Gui::Gui()
+	Gui::Gui() :
+		mFocusedWidget(nullptr),
+		mOldMousePos(sf::Mouse::getPosition()),
+		mRoot(nullptr)
 	{
+
 	}
 
+	Gui::Gui(std::shared_ptr<sf::Window> win) :
+		mWindow(win),
+		mFocusedWidget(nullptr),
+		mOldMousePos(sf::Mouse::getPosition())
+	{
+		std::unique_ptr<Widget> temp(new Widget);
+		mRoot = std::move(temp);
+	}
 
 	Gui::~Gui()
 	{
@@ -29,10 +41,7 @@ namespace guiSystem
 			guiEvent.size = event.size;
 
 			// Run through widgets and resize them
-			for (auto widget : mWidgets)
-			{
-				widget->resize(guiEvent);
-			}
+			mRoot->resize(guiEvent);
 			return true;
 			break;
 			//////////////////////////////////////////////////////////////////////
@@ -79,7 +88,7 @@ namespace guiSystem
 			guiEvent.mouseButton = event.mouseButton;
 
 			//check to see if the click was on UI
-			for (auto widget : mWidgets)
+			for (auto& widget : mRoot->mChildWidgets)
 			{
 				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
 				{
@@ -105,7 +114,7 @@ namespace guiSystem
 			guiEvent.mouseButton = event.mouseButton;
 
 			//check to see if the click was on UI
-			for (auto widget : mWidgets)
+			for (auto& widget : mRoot->mChildWidgets)
 			{
 				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
 				{
@@ -171,7 +180,7 @@ namespace guiSystem
 		}
 
 		//send guiEvent to widgets
-		for (auto widget : mWidgets)
+		for (auto& widget : mRoot->mChildWidgets)
 		{
 			if (widget->handleEvent(guiEvent)) return true;
 		}
@@ -179,7 +188,7 @@ namespace guiSystem
 		return false;
 	}
 
-	void Gui::changeFocus(Widget* w)
+	void Gui::changeFocus(Widget* const w)
 	{
 		assert(w != nullptr);
 

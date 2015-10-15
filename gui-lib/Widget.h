@@ -14,7 +14,13 @@ namespace guiSystem
 	class Widget : public CallbackManager, public sf::Drawable
 	{
 	public:
-		Widget();
+		// Constructors
+		Widget(Widget* const parent, Gui* const gui, 
+			const sf::Vector2f& pos, const sf::Vector2f& size,
+			bool enabled, bool visible, bool focused, bool draggable);
+
+		//////////////////////////////////////////////////
+		// Destructor
 		~Widget();
 
 		void show()
@@ -37,6 +43,7 @@ namespace guiSystem
 		void setDraggable(bool draggable) { mDraggable = draggable; }
 
 		// Set position. Local position to parent.
+		//TODO limitare spostamento solo all'interno del padre
 		void setPosition(const sf::Vector2f& p){ mRect.setPosition(p); }
 		// Set position with global coords
 		void setGlobalPosition(const sf::Vector2f& p){ setPosition(p - mParent->getGlobalPosition()); }
@@ -64,15 +71,14 @@ namespace guiSystem
 		Widget* getParent() const { return mParent; }
 
 		bool handleEvent(GuiEvent& event);
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) {}
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {}
 
 	protected:
 		void checkEventType(GuiEvent& event);
 
 	protected:
 		std::vector<std::string> mWidgetNames;
-		std::vector<Widget*> mChildWidgets;
-
+		std::vector<std::unique_ptr<Widget>> mChildWidgets;
 		Widget* mParent;
 
 		Gui* mMainGui;
@@ -88,6 +94,8 @@ namespace guiSystem
 		bool mFocused;
 		// Is draggable?
 		bool mDraggable;
+
+		friend class Gui;
 	};
 }
 
