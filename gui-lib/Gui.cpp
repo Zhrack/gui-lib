@@ -1,5 +1,8 @@
 #include "Gui.h"
 #include "GuiEvent.h"
+#include "Widget.h"
+#include <assert.h>
+
 
 namespace guiSystem
 {
@@ -16,16 +19,21 @@ namespace guiSystem
 	bool Gui::handleEvent(sf::Event& event)
 	{
 		GuiEvent guiEvent;
+		bool onGUI = false;
 
 		switch (event.type)
 		{
-		case sf::Event::Closed:
-			guiEvent.type = GuiEvent::Closed;
-			break;
-			//////////////////////////////////////////////////////////////////////
 		case sf::Event::Resized:
+			//window resized, every widget should
 			guiEvent.type = GuiEvent::Resized;
 			guiEvent.size = event.size;
+
+			// Run through widgets and resize them
+			for (auto widget : mWidgets)
+			{
+				widget->resize(guiEvent);
+			}
+			return true;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case sf::Event::TextEntered:
@@ -34,8 +42,7 @@ namespace guiSystem
 			guiEvent.text = event.text;
 			if (mFocusedWidget)
 			{
-				mFocusedWidget->handleEvent(guiEvent);
-				return true;
+				return mFocusedWidget->handleEvent(guiEvent);
 			}
 			else return false;
 			break;
@@ -46,8 +53,7 @@ namespace guiSystem
 			guiEvent.key = event.key;
 			if (mFocusedWidget)
 			{
-				mFocusedWidget->handleEvent(guiEvent);
-				return true;
+				return mFocusedWidget->handleEvent(guiEvent);
 			}
 			else return false;
 			break;
@@ -58,8 +64,7 @@ namespace guiSystem
 			guiEvent.key = event.key;
 			if (mFocusedWidget)
 			{
-				mFocusedWidget->handleEvent(guiEvent);
-				return true;
+				return mFocusedWidget->handleEvent(guiEvent);
 			}
 			else return false;
 			break;
@@ -74,7 +79,6 @@ namespace guiSystem
 			guiEvent.mouseButton = event.mouseButton;
 
 			//check to see if the click was on UI
-			bool onGUI = false;
 			for (auto widget : mWidgets)
 			{
 				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
@@ -86,8 +90,11 @@ namespace guiSystem
 			//click not on UI, unfocus and let event go
 			if (onGUI == false)
 			{
-				mFocusedWidget->unfocus();
-				mFocusedWidget = nullptr;
+				if (mFocusedWidget)
+				{
+					mFocusedWidget->unfocus();
+					mFocusedWidget = nullptr;
+				}
 				return false;
 			}
 
@@ -98,7 +105,6 @@ namespace guiSystem
 			guiEvent.mouseButton = event.mouseButton;
 
 			//check to see if the click was on UI
-			bool onGUI = false;
 			for (auto widget : mWidgets)
 			{
 				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
@@ -110,8 +116,11 @@ namespace guiSystem
 			//click not on UI, unfocus and let event go
 			if (onGUI == false)
 			{
-				mFocusedWidget->unfocus();
-				mFocusedWidget = nullptr;
+				if (mFocusedWidget)
+				{
+					mFocusedWidget->unfocus();
+					mFocusedWidget = nullptr;
+				}
 				return false;
 			}
 
@@ -168,5 +177,24 @@ namespace guiSystem
 		}
 
 		return false;
+	}
+
+	void Gui::changeFocus(Widget* w)
+	{
+		assert(w != nullptr);
+
+		noFocus();
+
+		mFocusedWidget = w;
+
+		mFocusedWidget->focus();
+	}
+
+	void Gui::noFocus()
+	{
+		if (mFocusedWidget)
+			mFocusedWidget->unfocus();
+
+		mFocusedWidget = nullptr;
 	}
 }

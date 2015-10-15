@@ -3,6 +3,16 @@
 
 namespace guiSystem
 {
+	//void testFunc(GuiEvent& e, int i, float k){}
+	////////////////////TEST
+	//int a = 1;
+	//float f = 2.3f;
+	//std::function<void(GuiEvent&, int, float)> function = testFunc;
+	//this->bindCallback(GuiEvent::Closed, function, a, f);
+
+	////////////////////TEST
+	
+
 	Widget::Widget()
 	{
 	}
@@ -14,9 +24,7 @@ namespace guiSystem
 
 	bool Widget::handleEvent(GuiEvent& event)
 	{
-		//TODO gestire focus, gestire drag del widget, keypress solo su focused
-		
-		//check children first
+		// Check children first
 		for (auto& child : mChildWidgets)
 		{
 			if (child->handleEvent(event))
@@ -25,16 +33,15 @@ namespace guiSystem
 			}
 		}
 
-		//children didn't process event, try this widget
+		// Children didn't process event, try this widget
 		checkEventType(event);
-		//if there are 
+		// If there are callbacks available
 		if (mCallbacks[event.type].empty() == false)
 		{
 			auto list = mCallbacks[event.type];
 			for (auto& func : list)
 			{
 				func(event);
-				//func = [&](GuiEvent& event){this->function(event); };
 			}
 			return true;
 		}
@@ -56,43 +63,53 @@ namespace guiSystem
 	{
 		switch (event.type)
 		{
-		case guiSystem::GuiEvent::Closed:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::Resized:
+			resize(event);
 			break;
-		case guiSystem::GuiEvent::Resized:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::LostFocus:
 			break;
-		case guiSystem::GuiEvent::LostFocus:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::GainedFocus:
 			break;
-		case guiSystem::GuiEvent::GainedFocus:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::TextEntered:
 			break;
-		case guiSystem::GuiEvent::TextEntered:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::KeyPressed:
 			break;
-		case guiSystem::GuiEvent::KeyPressed:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::KeyReleased:
 			break;
-		case guiSystem::GuiEvent::KeyReleased:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::MouseWheelScrolled:
 			break;
-		case guiSystem::GuiEvent::MouseWheelMoved:
-			break;
-		case guiSystem::GuiEvent::MouseWheelScrolled:
-			break;
-		case guiSystem::GuiEvent::MouseButtonPressed:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::MouseButtonPressed:
 			if (mouseOnWidget(event.mouseButton.x, event.mouseButton.y))
 			{
-				if (mMainGui->mFocusedWidget)
-					mMainGui->mFocusedWidget->unfocus();
-				//focus this
-				mMainGui->mFocusedWidget = this;
-				focus();
+				// Focus this
+				mMainGui->changeFocus(this);
 			}
 			break;
-		case guiSystem::GuiEvent::MouseButtonReleased:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::MouseButtonReleased:
 			break;
-		case guiSystem::GuiEvent::MouseMoved:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::MouseMoved:
 			if (isFocused())
 			{
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
-					//drag detected
-					sf::Vector2i newMousePos(event.mouseMove.x, event.mouseMove.y);
+					if (isDraggable())
+					{
+						// Drag detected
+						sf::Vector2i newMousePos(event.mouseMove.x, event.mouseMove.y);
+						sf::Vector2i deltaPos = newMousePos - mMainGui->getOldMousePosition();
+
+						mRect.move(sf::Vector2f(deltaPos));
+					}
 				}
 				else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 				{
@@ -100,24 +117,31 @@ namespace guiSystem
 				}
 			}
 			break;
-		case guiSystem::GuiEvent::MouseEntered:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::MouseEntered:
 			break;
-		case guiSystem::GuiEvent::MouseLeft:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::MouseLeft:
 			break;
-		case guiSystem::GuiEvent::JoystickButtonPressed:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::JoystickButtonPressed:
 			break;
-		case guiSystem::GuiEvent::JoystickButtonReleased:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::JoystickButtonReleased:
 			break;
-		case guiSystem::GuiEvent::JoystickMoved:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::JoystickMoved:
 			break;
-		case guiSystem::GuiEvent::JoystickConnected:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::JoystickConnected:
 			break;
-		case guiSystem::GuiEvent::JoystickDisconnected:
+			//////////////////////////////////////////////////////////////////////
+		case GuiEvent::JoystickDisconnected:
 			break;
-		case guiSystem::GuiEvent::Count:
-			break;
+			//////////////////////////////////////////////////////////////////////
 		default:
 			break;
+			//////////////////////////////////////////////////////////////////////
 		}
 	}
 
@@ -136,29 +160,4 @@ namespace guiSystem
 		e.type = GuiEvent::LostFocus;
 		this->handleEvent(e);
 	}
-}//namespace
-
-//enum EventType
-//{
-//	Closed,                 ///< The window requested to be closed (no data)
-//	Resized,                ///< The window was resized (data in event.size)
-//	LostFocus,              ///< The window lost the focus (no data)
-//	GainedFocus,            ///< The window gained the focus (no data)
-//	TextEntered,            ///< A character was entered (data in event.text)
-//	KeyPressed,             ///< A key was pressed (data in event.key)
-//	KeyReleased,            ///< A key was released (data in event.key)
-//	MouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
-//	MouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
-//	MouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
-//	MouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
-//	MouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
-//	MouseEntered,           ///< The mouse cursor entered the area of the window (no data)
-//	MouseLeft,              ///< The mouse cursor left the area of the window (no data)
-//	JoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
-//	JoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
-//	JoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
-//	JoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
-//	JoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
-//
-//	Count                   ///< Keep last -- the total number of event types
-//};
+}// namespace

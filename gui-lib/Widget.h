@@ -4,13 +4,13 @@
 #include <vector>
 #include <string>
 #include "GuiEvent.h"
-
 #include "CallbackManager.h"
-
-class Gui;
 
 namespace guiSystem
 {
+	class Gui;
+
+
 	class Widget : public CallbackManager, public sf::Drawable
 	{
 	public:
@@ -36,19 +36,35 @@ namespace guiSystem
 
 		void setDraggable(bool draggable) { mDraggable = draggable; }
 
-		//getters
+		// Set position. Local position to parent.
+		void setPosition(const sf::Vector2f& p){ mRect.setPosition(p); }
+		// Set position with global coords
+		void setGlobalPosition(const sf::Vector2f& p){ setPosition(p - mParent->getGlobalPosition()); }
+
+		void setOrigin(const sf::Vector2f& o){ mRect.setOrigin(o); }
+
+		const sf::Vector2f& getPosition() const { return mRect.getPosition(); }
+		const sf::Vector2f& getGlobalPosition() const { return mParent->getGlobalPosition() + getPosition(); }
+
+		// Upon a window resize event, rescale this widget accordingly
+		//TODO implement this
+		//tutte le posizioni vengono mantenute anche in percentuale, in questo modo sono indipendente oppure guardare tgui
+		void resize(GuiEvent& event){}
+
+		// Getters
 		bool isEnabled() const { return mEnabled; }
 		bool isVisible() const { return mVisible; }
 		bool isFocused() const { return mFocused; }
 		bool isDraggable() const { return mDraggable; }
 
-		//check to see if mouse pointer is on this widget
+		// Check to see if mouse pointer is on this widget
 		bool mouseOnWidget(float x, float y);
+		
 
 		Widget* getParent() const { return mParent; }
 
 		bool handleEvent(GuiEvent& event);
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) = 0;
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) {}
 
 	protected:
 		void checkEventType(GuiEvent& event);
@@ -61,16 +77,16 @@ namespace guiSystem
 
 		Gui* mMainGui;
 
-		//basic shape of the widget
+		// Basic shape of the widget
 		sf::RectangleShape mRect;
 
-		//accepts events?
+		// Accepts events?
 		bool mEnabled;
-		//is rendered?
+		// Is rendered?
 		bool mVisible;
-		//is focused?
+		// Is focused?
 		bool mFocused;
-		//is draggable?
+		// Is draggable?
 		bool mDraggable;
 	};
 }
