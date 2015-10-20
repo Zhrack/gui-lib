@@ -1,6 +1,7 @@
 #include "Gui.h"
 #include "GuiEvent.h"
-#include "Widget.h"
+//#include "Widget.h"
+//#include "Panel.h"
 #include <assert.h>
 
 
@@ -14,17 +15,30 @@ namespace guiSystem
 
 	}
 
-	Gui::Gui(std::shared_ptr<sf::Window> win) :
-		mWindow(win),
+	Gui::Gui(sf::RenderWindow* target) :
+		mWindow(target),
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition())
 	{
-		std::unique_ptr<Widget> temp(new Widget);
+		std::unique_ptr<Widget> temp(new Widget(nullptr, this, "root", sf::Vector2f(), mWindow->getSize(),
+												true, true, false, false));
 		mRoot = std::move(temp);
 	}
 
 	Gui::~Gui()
 	{
+	}
+
+	void Gui::removeWidget(const Widget::Ptr& widget, bool recursive)
+	{
+		mRoot->removeChild(widget, recursive);
+	}
+
+	Panel::Ptr Gui::createPanel(const Widget::Ptr& parent, const std::string& name)
+	{
+		Panel::Ptr panel(new Panel(parent, this, name));
+		parent->addChild(panel, name);
+		return panel;
 	}
 
 	//convert from sf::Event to GuiEvent
@@ -36,7 +50,7 @@ namespace guiSystem
 		switch (event.type)
 		{
 		case sf::Event::Resized:
-			//window resized, every widget should
+			//window resized, every widget should resize
 			guiEvent.type = GuiEvent::Resized;
 			guiEvent.size = event.size;
 
@@ -92,6 +106,7 @@ namespace guiSystem
 			{
 				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
 				{
+					this->changeFocus(widget);
 					onGUI = true;
 					break;
 				}
@@ -99,11 +114,7 @@ namespace guiSystem
 			//click not on UI, unfocus and let event go
 			if (onGUI == false)
 			{
-				if (mFocusedWidget)
-				{
-					mFocusedWidget->unfocus();
-					mFocusedWidget = nullptr;
-				}
+				this->noFocus();
 				return false;
 			}
 
@@ -125,11 +136,7 @@ namespace guiSystem
 			//click not on UI, unfocus and let event go
 			if (onGUI == false)
 			{
-				if (mFocusedWidget)
-				{
-					mFocusedWidget->unfocus();
-					mFocusedWidget = nullptr;
-				}
+				this->noFocus();
 				return false;
 			}
 
@@ -188,7 +195,18 @@ namespace guiSystem
 		return false;
 	}
 
-	void Gui::changeFocus(Widget* const w)
+	void Gui::draw() const
+	{
+		mRoot->draw(*mWindow, sf::RenderStates::Default);
+	}
+
+	//void Gui::changeFocus(Widget* const w)
+	//{
+	//	Widget::Ptr ptr = std::make_shared<Widget>(w);
+	//	changeFocus(ptr);
+	//}
+
+	void Gui::changeFocus(const Widget::Ptr& w)
 	{
 		assert(w != nullptr);
 

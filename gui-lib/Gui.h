@@ -2,6 +2,7 @@
 #define GUI_H
 
 //#include "Widget.h"
+#include "Panel.h"
 
 #include <vector>
 #include <SFML\Window\Event.hpp>
@@ -10,7 +11,9 @@
 
 namespace guiSystem
 {
-	class Widget;
+	//class Widget;
+	//class Widget::Ptr;
+	//class Panel;
 
 	class Gui
 	{
@@ -18,7 +21,7 @@ namespace guiSystem
 		// Constructors
 		Gui();
 
-		Gui(std::shared_ptr<sf::Window> win);
+		Gui(sf::RenderWindow* target);
 
 		//////////////////////////////////////////////////
 		// Destructor
@@ -28,31 +31,41 @@ namespace guiSystem
 		bool handleEvent(sf::Event& event);
 
 		// Manage focus changes
-		void changeFocus(Widget* const w);
+		void changeFocus(const Widget::Ptr& w);
+		//void changeFocus(Widget* const w);
 		void noFocus();
 
 		// Getters and setters
-		Widget* getFocusedWidget() const { return mFocusedWidget; }
-		sf::Window* getWindow() const { return mWindow.lock().get(); }
+		Widget::Ptr getFocusedWidget() const { return mFocusedWidget; }
+		sf::RenderWindow* getWindow() const { return mWindow; }
+		void setWindow(sf::RenderWindow* window) { mWindow = window; }
 		const sf::Vector2i& getOldMousePosition() const { return mOldMousePos; }
 
 		void updateMousePos(const sf::Vector2i& pos){ mOldMousePos = pos; }
+
+		// Remove widget
+		void removeWidget(const Widget::Ptr& widget, bool recursive = false);
 
 		//////////////////////////////////////////////////
 		///					WIDGET CREATION
 		//////////////////////////////////////////////////
 		//TODO implementare funzioni create man mano che vengono aggiunti widget
-		void createPanel(Widget* const parent, const std::string& name){}
+
+		Panel::Ptr createPanel(const Widget::Ptr& parent, const std::string& name);
+		Panel::Ptr createPanel(const std::string& name){ return createPanel(mRoot, name); }
+
+		// Draw all widgets
+		void draw() const;
 
 	private:
 		// Currently focused widget, for keyboard events etc...
-		Widget* mFocusedWidget;
+		Widget::Ptr mFocusedWidget;
 
 		// Root of the widget tree. Every widget has this as parent if not specified
 		// Its rect shape is as big as the screen
-		std::unique_ptr<Widget> mRoot;
+		Widget::Ptr mRoot;
 
-		std::weak_ptr<sf::Window> mWindow;
+		sf::RenderWindow* mWindow;
 
 		sf::Vector2i mOldMousePos;
 	};

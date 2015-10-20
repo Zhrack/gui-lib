@@ -76,12 +76,14 @@
     <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackManager.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="GuiEvent.h" />
+    <ClInclude Include="Panel.h" />
     <ClInclude Include="Widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

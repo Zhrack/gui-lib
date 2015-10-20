@@ -11,8 +11,4 @@ namespace guiSystem
 	CallbackManager::~CallbackManager()
 	{
 	}
-
-	
-
-	//std::function<void(GuiEvent&, int)> function, int param
 }

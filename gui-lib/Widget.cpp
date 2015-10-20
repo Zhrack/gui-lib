@@ -12,15 +12,16 @@ namespace guiSystem
 
 	////////////////////TEST
 
-	Widget::Widget(Widget* const parent, Gui* const gui,
-		const sf::Vector2f& pos, const sf::Vector2f& size,
+	Widget::Widget(Widget::Ptr const parent, Gui* const gui, const std::string& name,
+		const sf::Vector2f& pos, const sf::Vector2u& size,
 		bool enabled, bool visible, bool focused, bool draggable) 
 		:
 		mParent(parent),
 		mMainGui(gui),
 		mChildWidgets(),
 		mWidgetNames(),
-		mRect(size),
+		mName(name),
+		mRect(sf::Vector2f(size)),
 
 		mEnabled(enabled),
 		mVisible(visible),
@@ -33,6 +34,10 @@ namespace guiSystem
 
 	Widget::~Widget()
 	{
+		mParent->removeChild(this);
+
+		mParent = nullptr;
+		mMainGui = nullptr;
 	}
 
 	bool Widget::handleEvent(GuiEvent& event)
@@ -103,7 +108,7 @@ namespace guiSystem
 			if (mouseOnWidget(event.mouseButton.x, event.mouseButton.y))
 			{
 				// Focus this
-				mMainGui->changeFocus(this);
+				mMainGui->changeFocus(std::make_shared<Widget>(*this));
 			}
 			break;
 			//////////////////////////////////////////////////////////////////////
@@ -156,6 +161,64 @@ namespace guiSystem
 		}
 	}
 
+	void Widget::addChild(const Widget::Ptr& widget, const std::string& name)
+	{
+		mChildWidgets.push_back(widget);
+		mWidgetNames.push_back(name);
+	}
+
+	Widget::Ptr Widget::getChild(const std::string& name, bool recursive)
+	{
+		for (auto& widget : mChildWidgets)
+		{
+			if (widget->getName() == name)
+			{
+				return widget;
+			}
+		}
+
+		if (recursive)
+		{
+			for (auto& widget : mChildWidgets)
+			{
+				auto& w = widget->getChild(name, true);
+				if (w != nullptr)
+					return w;
+			}
+		}
+
+		return nullptr;
+	}
+
+	bool Widget::removeChild(const Widget::Ptr& widget, bool recursive)
+	{
+		return removeChild(widget.get(), recursive);
+	}
+
+	bool Widget::removeChild(Widget* widget, bool recursive)
+	{
+		auto& w = mChildWidgets.begin();
+		for (int i = 0; w != mChildWidgets.end(); ++w, ++i)
+		{
+			if (w->get() == widget)
+			{
+				mWidgetNames.erase(mWidgetNames.begin() + i);
+				mChildWidgets.erase(w);
+				return true;
+			}
+		}
+
+		if (recursive)
+		{
+			for (auto& w : mChildWidgets)
+			{
+				if (w->removeChild(widget, true))
+					return true;
+			}
+		}
+
+		return false;
+	}
 
 	void Widget::focus()
 	{
