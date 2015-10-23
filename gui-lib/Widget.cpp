@@ -3,18 +3,9 @@
 
 namespace guiSystem
 {
-	//void testFunc(GuiEvent& e, int i, float k){}
-	////////////////////TEST
-	//int a = 1;
-	//float f = 2.3f;
-	//std::function<void(GuiEvent&, int, float)> function = testFunc;
-	//this->bindCallback(GuiEvent::Closed, function, a, f);
-
-	////////////////////TEST
-
-	Widget::Widget(Widget::Ptr const parent, Gui* const gui, const std::string& name,
+	Widget::Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
 		const sf::Vector2f& pos, const sf::Vector2u& size,
-		bool enabled, bool visible, bool focused, bool draggable) 
+		bool enabled, bool visible, bool focused, bool allowFocus, bool draggable)
 		:
 		mParent(parent),
 		mMainGui(gui),
@@ -26,9 +17,10 @@ namespace guiSystem
 		mEnabled(enabled),
 		mVisible(visible),
 		mFocused(focused),
+		mAllowFocus(allowFocus),
 		mDraggable(draggable)
 	{
-		setPosition(pos);
+		setGlobalPosition(pos);
 	}
 
 
@@ -45,6 +37,11 @@ namespace guiSystem
 		// Check children first
 		for (auto& child : mChildWidgets)
 		{
+			if (event.type == GuiEvent::MouseButtonPressed &&
+				child->mouseOnWidget(event.mouseButton.x, event.mouseButton.y))
+			{
+				mMainGui->changeFocus(child);
+			}
 			if (child->handleEvent(event))
 			{
 				return true;
@@ -56,6 +53,27 @@ namespace guiSystem
 		// If there are callbacks available
 		if (mCallbacks[event.type].empty() == false)
 		{
+			switch (event.type)
+			{
+			case GuiEvent::MouseButtonPressed:
+			case GuiEvent::MouseButtonReleased:
+				if (mouseOnWidget(event.mouseButton.x, event.mouseButton.y) == false)
+					return false;
+				break;
+			case GuiEvent::MouseMoved:
+				if (mouseOnWidget(event.mouseMove.x, event.mouseMove.y) == false)
+					return false;
+				break;
+			case GuiEvent::MouseEntered:
+			case GuiEvent::MouseLeft:
+				//TODO sostituire con event.mousePos una volta implementato
+				if (mouseOnWidget(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y) == false)
+					return false;
+				break;
+			default:
+				break;
+			}
+
 			auto list = mCallbacks[event.type];
 			for (auto& func : list)
 			{
@@ -105,33 +123,12 @@ namespace guiSystem
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseButtonPressed:
-			if (mouseOnWidget(event.mouseButton.x, event.mouseButton.y))
-			{
-				// Focus this
-				mMainGui->changeFocus(std::make_shared<Widget>(*this));
-			}
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseButtonReleased:
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseMoved:
-			if (isFocused())
-			{
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				{
-					if (isDraggable())
-					{
-						// Drag detected
-						sf::Vector2i newMousePos(event.mouseMove.x, event.mouseMove.y);
-						sf::Vector2i deltaPos = newMousePos - mMainGui->getOldMousePosition();
-
-						mRect.move(sf::Vector2f(deltaPos));
-					}
-				}
-			}
-
-			mMainGui->updateMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseEntered:
@@ -220,6 +217,44 @@ namespace guiSystem
 		return false;
 	}
 
+	void Widget::move(const sf::Vector2f& delta)
+	{
+		sf::Vector2f clampedDelta = delta;
+		sf::Vector2f resultPos = getGlobalPosition() + delta;
+		sf::FloatRect rect = mParent->getShape().getGlobalBounds();
+		sf::Vector2f size = mRect.getSize();
+		GuiContainer::Ptr root = mMainGui->getRoot();
+
+		if (resultPos.x < rect.left) // correct on left
+		{
+			resultPos.x = rect.left;
+			clampedDelta.x = 0;
+		}
+		else if (resultPos.x + size.x > rect.left + rect.width) // correct on right
+		{
+			resultPos.x = rect.left + rect.width - size.x;
+			clampedDelta.x = 0;
+		}
+
+		if (resultPos.y < rect.top) // correct on top
+		{
+			resultPos.y = rect.top;
+			clampedDelta.y = 0;
+		}
+		else if (resultPos.y + size.y > rect.top + rect.height) // correct on bottom
+		{
+			resultPos.y = rect.top + rect.height - size.y;
+			clampedDelta.y = 0;
+		}
+
+		setGlobalPosition(resultPos);
+
+		for (auto& child : mChildWidgets)
+		{
+			child->move(clampedDelta);
+		}
+	}
+
 	void Widget::focus()
 	{
 		mFocused = true;
@@ -233,5 +268,44 @@ namespace guiSystem
 		GuiEvent e;
 		e.type = GuiEvent::LostFocus;
 		this->handleEvent(e);
+	}
+
+	// Set position. Local position to parent.
+	//TODO limitare spostamento solo all'interno del padre
+	void Widget::setPosition(const sf::Vector2f& pos)
+	{
+		if (mParent)
+			mRect.setPosition(pos + mParent->getGlobalPosition());
+
+		//mRect.setPosition(pos);
+	}
+
+	// Set position with global coords
+	void Widget::setGlobalPosition(const sf::Vector2f& pos)
+	{ 
+		mRect.setPosition(pos);
+		//if (mParent)
+		//	mRect.setPosition(pos - mParent->getGlobalPosition());
+	}
+
+	const sf::Vector2f& Widget::getPosition() const 
+	{ 
+		if (mParent)
+			return mRect.getPosition() - mParent->getGlobalPosition();
+
+		// GuiContainer
+		return sf::Vector2f();
+
+		//return mRect.getPosition();
+	}
+
+	const sf::Vector2f& Widget::getGlobalPosition() const 
+	{ 
+		return mRect.getPosition(); 
+
+		//if (mParent)
+		//	return mRect.getPosition() + mParent->getGlobalPosition();
+
+		//return sf::Vector2f();
 	}
 }// namespace

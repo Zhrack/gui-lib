@@ -20,10 +20,16 @@ namespace guiSystem
 		CallbackManager();
 		~CallbackManager();
 
-		template<typename ...Ts>
-		void bindCallback(GuiEvent::EventType eventType, std::function<void(GuiEvent&, Ts...)> function, Ts... args)
+		//template<class ...Ts>
+		//void bindCallback(GuiEvent::EventType eventType, std::function<void(GuiEvent&, Ts...)> function, Ts... args)
+		//{
+		//	std::function<void(GuiEvent&)> func = std::bind(function, std::placeholders::_1, args...);
+		//	mCallbacks[eventType].push_back(func);
+		//}
+
+		void bindCallback(GuiEvent::EventType eventType, std::function<void(GuiEvent&, void*)> function, void* args)
 		{
-			std::function<void(GuiEvent&)> func = std::bind(function, std::placeholders::_1, args...);
+			std::function<void(GuiEvent&)> func = std::bind(function, std::placeholders::_1, args);
 			mCallbacks[eventType].push_back(func);
 		}
 

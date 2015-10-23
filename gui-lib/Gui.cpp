@@ -20,8 +20,7 @@ namespace guiSystem
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition())
 	{
-		std::unique_ptr<Widget> temp(new Widget(nullptr, this, "root", sf::Vector2f(), mWindow->getSize(),
-												true, true, false, false));
+		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
 	}
 
@@ -106,17 +105,15 @@ namespace guiSystem
 			{
 				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
 				{
+					// found it, focus and pass event
 					this->changeFocus(widget);
-					onGUI = true;
-					break;
+					widget->handleEvent(guiEvent);
+					return true;
 				}
 			}
 			//click not on UI, unfocus and let event go
-			if (onGUI == false)
-			{
-				this->noFocus();
-				return false;
-			}
+			this->noFocus();
+			return false;
 
 			break;
 			//////////////////////////////////////////////////////////////////////
@@ -124,27 +121,25 @@ namespace guiSystem
 			guiEvent.type = GuiEvent::MouseButtonReleased;
 			guiEvent.mouseButton = event.mouseButton;
 
-			//check to see if the click was on UI
-			for (auto& widget : mRoot->mChildWidgets)
-			{
-				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
-				{
-					onGUI = true;
-					break;
-				}
-			}
-			//click not on UI, unfocus and let event go
-			if (onGUI == false)
-			{
-				this->noFocus();
-				return false;
-			}
-
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case sf::Event::MouseMoved:
 			guiEvent.type = GuiEvent::MouseMoved;
 			guiEvent.mouseMove = event.mouseMove;
+
+			if (mFocusedWidget && mFocusedWidget->isDraggable())
+			{
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					// Drag detected
+					sf::Vector2i newMousePos(event.mouseMove.x, event.mouseMove.y);
+					sf::Vector2i deltaPos = newMousePos - getOldMousePosition();
+
+					mFocusedWidget->move(sf::Vector2f(deltaPos));
+				}
+			}
+
+			updateMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case sf::Event::MouseEntered:
@@ -197,14 +192,8 @@ namespace guiSystem
 
 	void Gui::draw() const
 	{
-		mRoot->draw(*mWindow, sf::RenderStates::Default);
+		mWindow->draw(*mRoot);
 	}
-
-	//void Gui::changeFocus(Widget* const w)
-	//{
-	//	Widget::Ptr ptr = std::make_shared<Widget>(w);
-	//	changeFocus(ptr);
-	//}
 
 	void Gui::changeFocus(const Widget::Ptr& w)
 	{
@@ -212,9 +201,12 @@ namespace guiSystem
 
 		noFocus();
 
-		mFocusedWidget = w;
+		if (w->allowFocus())
+		{
+			mFocusedWidget = w;
 
-		mFocusedWidget->focus();
+			mFocusedWidget->focus();
+		}
 	}
 
 	void Gui::noFocus()

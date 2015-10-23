@@ -3,6 +3,7 @@
 
 //#include "Widget.h"
 #include "Panel.h"
+#include "GuiContainer.h"
 
 #include <vector>
 #include <SFML\Window\Event.hpp>
@@ -40,6 +41,7 @@ namespace guiSystem
 		sf::RenderWindow* getWindow() const { return mWindow; }
 		void setWindow(sf::RenderWindow* window) { mWindow = window; }
 		const sf::Vector2i& getOldMousePosition() const { return mOldMousePos; }
+		const GuiContainer::Ptr& getRoot() const { return mRoot; }
 
 		void updateMousePos(const sf::Vector2i& pos){ mOldMousePos = pos; }
 
@@ -63,7 +65,7 @@ namespace guiSystem
 
 		// Root of the widget tree. Every widget has this as parent if not specified
 		// Its rect shape is as big as the screen
-		Widget::Ptr mRoot;
+		GuiContainer::Ptr mRoot;
 
 		sf::RenderWindow* mWindow;
 
