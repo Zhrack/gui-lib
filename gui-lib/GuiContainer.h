@@ -19,7 +19,10 @@ namespace guiSystem
 		{
 			for (auto& widget : mChildWidgets)
 			{
-				target.draw(*widget);
+				if (widget->isEnabled() && widget->isVisible())
+				{
+					target.draw(*widget);
+				}
 			}
 		}
 	private:

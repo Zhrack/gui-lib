@@ -110,13 +110,25 @@ namespace guiSystem
 		};
 
 		////////////////////////////////////////////////////////////
+		/// \brief Mouse buttons events parameters
+		///        (MouseButtonPressed, MouseButtonReleased)
+		///
+		////////////////////////////////////////////////////////////
+		struct MouseEnterLeftEvent
+		{
+			bool		  entered;///< True if mouse entered widget, false otherwise
+			int           x;      ///< X position of the mouse pointer, relative to the left of the owner window
+			int           y;      ///< Y position of the mouse pointer, relative to the top of the owner window
+		};
+
+		////////////////////////////////////////////////////////////
 		/// \brief Mouse wheel events parameters (MouseWheelMoved)
 		///
 		/// \deprecated This event is deprecated and potentially inaccurate.
 		///             Use MouseWheelScrollEvent instead.
 		///
 		////////////////////////////////////////////////////////////
-		struct MouseWheelEvent
+		/*struct MouseWheelEvent
 		{
 			int delta; ///< Number of ticks the wheel has moved (positive is up, negative is down)
 			int x;     ///< X position of the mouse pointer, relative to the left of the owner window
@@ -129,7 +141,7 @@ namespace guiSystem
 				y = other.y;
 				return *this;
 			}
-		};
+		};*/
 
 		////////////////////////////////////////////////////////////
 		/// \brief Mouse wheel events parameters (MouseWheelScrolled)
@@ -223,8 +235,8 @@ namespace guiSystem
 			MouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
 			MouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
 			MouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
-			MouseEntered,           ///< The mouse cursor entered the area of the window (no data)
-			MouseLeft,              ///< The mouse cursor left the area of the window (no data)
+			MouseEntered,           ///< The mouse cursor entered the widget (data in event.MouseEnterLeftEvent)
+			MouseLeft,              ///< The mouse cursor left the widget (data in event.MouseEnterLeftEvent)
 			JoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
 			JoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
 			JoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
@@ -241,16 +253,17 @@ namespace guiSystem
 
 		union
 		{
-			SizeEvent             size;              ///< Size event parameters (Event::Resized)
-			KeyEvent              key;               ///< Key event parameters (Event::KeyPressed, Event::KeyReleased)
-			TextEvent             text;              ///< Text event parameters (Event::TextEntered)
-			MouseMoveEvent        mouseMove;         ///< Mouse move event parameters (Event::MouseMoved)
-			MouseButtonEvent      mouseButton;       ///< Mouse button event parameters (Event::MouseButtonPressed, Event::MouseButtonReleased)
-			MouseWheelEvent       mouseWheel;        ///< Mouse wheel event parameters (Event::MouseWheelMoved) (deprecated)
-			MouseWheelScrollEvent mouseWheelScroll;  ///< Mouse wheel event parameters (Event::MouseWheelScrolled)
-			JoystickMoveEvent     joystickMove;      ///< Joystick move event parameters (Event::JoystickMoved)
-			JoystickButtonEvent   joystickButton;    ///< Joystick button event parameters (Event::JoystickButtonPressed, Event::JoystickButtonReleased)
-			JoystickConnectEvent  joystickConnect;   ///< Joystick (dis)connect event parameters (Event::JoystickConnected, Event::JoystickDisconnected)
+			SizeEvent             size;              ///< Size event parameters (GuiEvent::Resized)
+			KeyEvent              key;               ///< Key event parameters (GuiEvent::KeyPressed, GuiEvent::KeyReleased)
+			TextEvent             text;              ///< Text event parameters (GuiEvent::TextEntered)
+			MouseMoveEvent        mouseMove;         ///< Mouse move event parameters (GuiEvent::MouseMoved)
+			MouseEnterLeftEvent	  mouseEnterLeft;	 ///< Mouse entered or left the widget(GuiEvent::MouseEntered, GuiEvent::MouseLeft)
+			MouseButtonEvent      mouseButton;       ///< Mouse button event parameters (GuiEvent::MouseButtonPressed, GuiEvent::MouseButtonReleased)
+			//MouseWheelEvent       mouseWheel;        ///< Mouse wheel event parameters (GuiEvent::MouseWheelMoved) (deprecated)
+			MouseWheelScrollEvent mouseWheelScroll;  ///< Mouse wheel event parameters (GuiEvent::MouseWheelScrolled)
+			JoystickMoveEvent     joystickMove;      ///< Joystick move event parameters (GuiEvent::JoystickMoved)
+			JoystickButtonEvent   joystickButton;    ///< Joystick button event parameters (GuiEvent::JoystickButtonPressed, GuiEvent::JoystickButtonReleased)
+			JoystickConnectEvent  joystickConnect;   ///< Joystick (dis)connect event parameters (GuiEvent::JoystickConnected, GuiEvent::JoystickDisconnected)
 		};
 	};
 }

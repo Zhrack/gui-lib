@@ -28,17 +28,15 @@ namespace guiSystem
 
 		void show()
 		{
-			enable();
 			mVisible = true;
 		}
 		void hide()
 		{
-			disable();
 			mVisible = false;
 		}
 
-		void enable(){ mEnabled = true; }
-		void disable(){ mEnabled = false; }
+		void enable(){ mEnabled = true; show(); }
+		void disable(){ mEnabled = false; hide(); }
 
 		void focus();
 		void unfocus();
@@ -78,6 +76,9 @@ namespace guiSystem
 
 		// Check to see if mouse pointer is on this widget
 		bool mouseOnWidget(float x, float y);
+
+		// Return a pointer to the widget the mouse is currently on
+		void checkMouseEnterLeft(float x, float y);
 		
 		//TODO implement this
 		void addChild(const Widget::Ptr& widget, const std::string& name);
@@ -96,6 +97,9 @@ namespace guiSystem
 	protected:
 		void checkEventType(GuiEvent& event);
 		bool removeChild(Widget* widget, bool recursive = false);
+
+		void checkMouseEntered(float x, float y);
+		void checkMouseLeft(float x, float y);
 	protected:
 		std::vector<std::string> mWidgetNames;
 		std::vector<Widget::Ptr> mChildWidgets;
@@ -116,7 +120,8 @@ namespace guiSystem
 		bool mVisible;
 		// Is focused?
 		bool mFocused;
-
+		// Is mouse over this widget?
+		bool mMouseHover;
 		// Is focusable?
 		bool mAllowFocus;
 		// Is draggable?

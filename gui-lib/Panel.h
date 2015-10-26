@@ -17,7 +17,10 @@ namespace guiSystem
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 		{
 			// draw the vertex array
-			target.draw(mRect, states);
+			if (isEnabled() && isVisible())
+			{
+				target.draw(mRect, states);
+			}
 
 			for (auto& widget : mChildWidgets)
 			{

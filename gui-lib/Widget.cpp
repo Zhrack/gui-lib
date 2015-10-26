@@ -1,6 +1,8 @@
 #include "Widget.h"
 #include "Gui.h"
 
+#include <iostream>
+
 namespace guiSystem
 {
 	Widget::Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
@@ -18,6 +20,7 @@ namespace guiSystem
 		mVisible(visible),
 		mFocused(focused),
 		mAllowFocus(allowFocus),
+		mMouseHover(false),
 		mDraggable(draggable)
 	{
 		setGlobalPosition(pos);
@@ -34,17 +37,19 @@ namespace guiSystem
 
 	bool Widget::handleEvent(GuiEvent& event)
 	{
-		// Check children first
-		for (auto& child : mChildWidgets)
+		// These events must be processed only locally
+		if (event.type != GuiEvent::MouseEntered &&
+			event.type != GuiEvent::MouseLeft &&
+			event.type != GuiEvent::GainedFocus && 
+			event.type != GuiEvent::LostFocus)
 		{
-			if (event.type == GuiEvent::MouseButtonPressed &&
-				child->mouseOnWidget(event.mouseButton.x, event.mouseButton.y))
+			 // Check children first
+			for (auto& child : mChildWidgets)
 			{
-				mMainGui->changeFocus(child);
-			}
-			if (child->handleEvent(event))
-			{
-				return true;
+				if (child->handleEvent(event))
+				{
+					return true;
+				}
 			}
 		}
 
@@ -65,9 +70,11 @@ namespace guiSystem
 					return false;
 				break;
 			case GuiEvent::MouseEntered:
+				if (mMouseHover == true)
+					return false;
+				break;
 			case GuiEvent::MouseLeft:
-				//TODO sostituire con event.mousePos una volta implementato
-				if (mouseOnWidget(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y) == false)
+				if (mMouseHover == false)
 					return false;
 				break;
 			default:
@@ -105,9 +112,11 @@ namespace guiSystem
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::LostFocus:
+			std::cout << getName() << ": lost focus" << std::endl;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::GainedFocus:
+			std::cout << getName() << ": gained focus" << std::endl;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::TextEntered:
@@ -132,9 +141,11 @@ namespace guiSystem
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseEntered:
+			std::cout << getName() << ": mouse entered" << std::endl;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseLeft:
+			std::cout << getName() << ": mouse left" << std::endl;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::JoystickButtonPressed:
@@ -252,6 +263,57 @@ namespace guiSystem
 		for (auto& child : mChildWidgets)
 		{
 			child->move(clampedDelta);
+		}
+	}
+
+	void Widget::checkMouseEnterLeft(float x, float y)
+	{
+		// Loop through all widgets
+		for (auto& it = mChildWidgets.begin(); it != mChildWidgets.end(); ++it)
+		{
+			// Check if the widget is visible and enabled
+			if ((*it)->isEnabled())
+			{
+				// Create MouseEntered event if the mouse is on top of it and mMouseHover == false
+				if ((*it)->mouseOnWidget(x, y))
+				{
+					(*it)->checkMouseEntered(x, y);
+				}
+				else
+				{
+					(*it)->checkMouseLeft(x, y);
+				}
+
+				(*it)->checkMouseEnterLeft(x, y);
+			}
+		}
+	}
+
+	void Widget::checkMouseEntered(float x, float y)
+	{
+		if (mMouseHover == false)
+		{
+			mMouseHover = true;
+			GuiEvent event;
+			event.type = GuiEvent::MouseEntered;
+			event.mouseEnterLeft.entered = true;
+			event.mouseEnterLeft.x = x;
+			event.mouseEnterLeft.y = y;
+			this->handleEvent(event);
+		}
+	}
+
+	void Widget::checkMouseLeft(float x, float y)
+	{
+		if (mMouseHover)
+		{
+			mMouseHover = false;
+			GuiEvent event;
+			event.type = GuiEvent::MouseLeft;
+			event.mouseEnterLeft.entered = false;
+			event.mouseEnterLeft.x = x;
+			event.mouseEnterLeft.y = y;
+			this->handleEvent(event);
 		}
 	}
 

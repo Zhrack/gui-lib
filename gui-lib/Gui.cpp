@@ -44,7 +44,8 @@ namespace guiSystem
 	bool Gui::handleEvent(sf::Event& event)
 	{
 		GuiEvent guiEvent;
-		bool onGUI = false;
+		Widget::Ptr focusedWidget = nullptr;
+		std::vector<guiSystem::Widget::Ptr>* children = &mRoot->mChildWidgets;
 
 		switch (event.type)
 		{
@@ -62,7 +63,7 @@ namespace guiSystem
 			//send to focused
 			guiEvent.type = GuiEvent::TextEntered;
 			guiEvent.text = event.text;
-			if (mFocusedWidget)
+			if (mFocusedWidget && mFocusedWidget->isEnabled())
 			{
 				return mFocusedWidget->handleEvent(guiEvent);
 			}
@@ -73,7 +74,7 @@ namespace guiSystem
 			//send to focused
 			guiEvent.type = GuiEvent::KeyPressed;
 			guiEvent.key = event.key;
-			if (mFocusedWidget)
+			if (mFocusedWidget && mFocusedWidget->isEnabled())
 			{
 				return mFocusedWidget->handleEvent(guiEvent);
 			}
@@ -84,7 +85,7 @@ namespace guiSystem
 			//send to focused
 			guiEvent.type = GuiEvent::KeyReleased;
 			guiEvent.key = event.key;
-			if (mFocusedWidget)
+			if (mFocusedWidget && mFocusedWidget->isEnabled())
 			{
 				return mFocusedWidget->handleEvent(guiEvent);
 			}
@@ -100,17 +101,29 @@ namespace guiSystem
 			guiEvent.type = GuiEvent::MouseButtonPressed;
 			guiEvent.mouseButton = event.mouseButton;
 
-			//check to see if the click was on UI
-			for (auto& widget : mRoot->mChildWidgets)
+			//check to see if the click was on UI and set focused widget accordingly
+			for (auto& widget = children->begin(); widget != children->end(); )
 			{
-				if (widget->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
+				if ((*widget)->isEnabled() && (*widget)->mouseOnWidget(guiEvent.mouseButton.x, guiEvent.mouseButton.y))
 				{
-					// found it, focus and pass event
-					this->changeFocus(widget);
-					widget->handleEvent(guiEvent);
-					return true;
+					// Focus candidate found. Explore its children list now.
+					focusedWidget = *widget;
+					// Reset for loop
+					children = &( (*widget)->mChildWidgets );
+					widget = children->begin();
+					continue;
 				}
+				++widget;
 			}
+
+			if (focusedWidget)
+			{
+				// found it, focus and pass event
+				this->changeFocus(focusedWidget);
+				focusedWidget->handleEvent(guiEvent);
+				return true;
+			}
+
 			//click not on UI, unfocus and let event go
 			this->noFocus();
 			return false;
@@ -127,7 +140,7 @@ namespace guiSystem
 			guiEvent.type = GuiEvent::MouseMoved;
 			guiEvent.mouseMove = event.mouseMove;
 
-			if (mFocusedWidget && mFocusedWidget->isDraggable())
+			if (mFocusedWidget && mFocusedWidget->isEnabled() && mFocusedWidget->isDraggable())
 			{
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
@@ -139,15 +152,10 @@ namespace guiSystem
 				}
 			}
 
+			// check to create mouseEntered and mouseLeft events
+			mRoot->checkMouseEnterLeft(event.mouseMove.x, event.mouseMove.y);
+
 			updateMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
-			break;
-			//////////////////////////////////////////////////////////////////////
-		case sf::Event::MouseEntered:
-			guiEvent.type = GuiEvent::MouseEntered;
-			break;
-			//////////////////////////////////////////////////////////////////////
-		case sf::Event::MouseLeft:
-			guiEvent.type = GuiEvent::MouseLeft;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case sf::Event::JoystickButtonPressed:
@@ -184,7 +192,7 @@ namespace guiSystem
 		//send guiEvent to widgets
 		for (auto& widget : mRoot->mChildWidgets)
 		{
-			if (widget->handleEvent(guiEvent)) return true;
+			if (widget->isEnabled() && widget->handleEvent(guiEvent)) return true;
 		}
 
 		return false;
@@ -199,13 +207,16 @@ namespace guiSystem
 	{
 		assert(w != nullptr);
 
-		noFocus();
-
-		if (w->allowFocus())
+		if (w != mFocusedWidget)
 		{
-			mFocusedWidget = w;
+			noFocus();
 
-			mFocusedWidget->focus();
+			if (w->allowFocus())
+			{
+				mFocusedWidget = w;
+
+				mFocusedWidget->focus();
+			}
 		}
 	}
 
