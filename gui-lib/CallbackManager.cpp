@@ -1,6 +1,6 @@
 #include "CallbackManager.h"
 
-namespace guiSystem
+namespace gui
 {
 	CallbackManager::CallbackManager() :
 		mCallbacks()

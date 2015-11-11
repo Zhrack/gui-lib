@@ -4,7 +4,7 @@
 #include "Widget.h"
 
 
-namespace guiSystem
+namespace gui
 {
 	// A simple class, which contains all the GUI
 	class GuiContainer : public Widget

@@ -73,19 +73,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="GuiContainer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="TextWidget.cpp" />
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CallbackManager.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="GuiContainer.h" />
     <ClInclude Include="GuiEvent.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="TextWidget.h" />
     <ClInclude Include="Widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -13,12 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Widgets">
+      <UniqueIdentifier>{f62401eb-ac06-42a1-8fa0-4472eab8c2cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CallbackManager.cpp">
@@ -27,17 +27,23 @@
     <ClCompile Include="Gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GuiContainer.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
     <ClCompile Include="Panel.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="TextWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GuiContainer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Button.cpp">
+      <Filter>Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CallbackManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,10 +54,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Panel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Widget.h">
+      <Filter>Widgets</Filter>
     </ClInclude>
     <ClInclude Include="GuiContainer.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="TextWidget.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Widgets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

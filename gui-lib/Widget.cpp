@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace guiSystem
+namespace gui
 {
 	Widget::Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
 		const sf::Vector2f& pos, const sf::Vector2u& size,
@@ -138,6 +138,8 @@ namespace guiSystem
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseMoved:
+			// Some widgets need to update derived members data
+			update();
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseEntered:

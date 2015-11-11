@@ -6,7 +6,7 @@
 #include <SFML\Window\Mouse.hpp>
 #include <SFML\Window\Event.hpp>
 
-namespace guiSystem
+namespace gui
 {
 	////////////////////////////////////////////////////////////
 	/// Derived from sf::Event, data structure adapted to use in GUI.

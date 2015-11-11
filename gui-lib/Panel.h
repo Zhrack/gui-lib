@@ -4,7 +4,7 @@
 #include "Widget.h"
 
 
-namespace guiSystem
+namespace gui
 {
 	class Panel : public Widget
 	{
@@ -20,12 +20,12 @@ namespace guiSystem
 			if (isEnabled() && isVisible())
 			{
 				target.draw(mRect, states);
-			}
 
-			for (auto& widget : mChildWidgets)
-			{
-				target.draw(*widget, states);
-			}
+				for (auto& widget : mChildWidgets)
+				{
+					target.draw(*widget, states);
+				}
+			}	
 		}
 	private:
 		

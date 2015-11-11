@@ -7,7 +7,7 @@
 #include "GuiEvent.h"
 #include "CallbackManager.h"
 
-namespace guiSystem
+namespace gui
 {
 	class Gui;
 
@@ -89,17 +89,21 @@ namespace guiSystem
 		
 
 		Widget::Ptr getParent() const { return mParent; }
+		Gui* getGui() const { return mMainGui; }
 
 		bool handleEvent(GuiEvent& event);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
-		Gui* mMainGui;
+		
 	protected:
 		void checkEventType(GuiEvent& event);
 		bool removeChild(Widget* widget, bool recursive = false);
 
 		void checkMouseEntered(float x, float y);
 		void checkMouseLeft(float x, float y);
+
+		// Called when derived class must do some work, like in TextWidget
+		virtual void update(){}
 	protected:
 		std::vector<std::string> mWidgetNames;
 		std::vector<Widget::Ptr> mChildWidgets;
@@ -109,7 +113,7 @@ namespace guiSystem
 		// Parent
 		Widget::Ptr mParent;
 
-		
+		Gui* mMainGui;
 
 		// Basic shape of the widget
 		sf::RectangleShape mRect;

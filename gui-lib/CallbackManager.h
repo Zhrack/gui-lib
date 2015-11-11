@@ -10,7 +10,7 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 
-namespace guiSystem
+namespace gui
 {
 	class CallbackManager
 	{

@@ -3,25 +3,42 @@
 //#include "Widget.h"
 //#include "Panel.h"
 #include <assert.h>
+#include <iostream>
 
-
-namespace guiSystem
+namespace gui
 {
 	Gui::Gui() :
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
-		mRoot(nullptr)
+		mRoot(nullptr),
+		mDefaultFont("DejaVuSans")
 	{
+		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
+		mRoot = std::move(temp);
 
+		sf::Font font;
+		if (!font.loadFromFile("fonts/DejaVuSans.ttf"))
+		{
+			std::cout << "font load failed" << std::endl;
+		}
+		mFonts[mDefaultFont] = font;
 	}
 
 	Gui::Gui(sf::RenderWindow* target) :
 		mWindow(target),
 		mFocusedWidget(nullptr),
-		mOldMousePos(sf::Mouse::getPosition())
+		mOldMousePos(sf::Mouse::getPosition()),
+		mDefaultFont("DejaVuSans")
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
+
+		sf::Font font;
+		if (!font.loadFromFile("fonts/DejaVuSans.ttf"))
+		{
+			std::cout << "font load failed" << std::endl;
+		}
+		mFonts[mDefaultFont] = font;
 	}
 
 	Gui::~Gui()
@@ -35,9 +52,23 @@ namespace guiSystem
 
 	Panel::Ptr Gui::createPanel(const Widget::Ptr& parent, const std::string& name)
 	{
-		Panel::Ptr panel(new Panel(parent, this, name));
-		parent->addChild(panel, name);
-		return panel;
+		Panel::Ptr widget(new Panel(parent, this, name));
+		parent->addChild(widget, name);
+		return widget;
+	}
+
+	TextWidget::Ptr Gui::createText(const Widget::Ptr& parent, const std::string& name)
+	{
+		TextWidget::Ptr widget(new TextWidget(parent, this, name));
+		parent->addChild(widget, name);
+		return widget;
+	}
+
+	Button::Ptr Gui::createButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	{
+		Button::Ptr widget(new Button(parent, this, name, text));
+		parent->addChild(widget, name);
+		return widget;
 	}
 
 	//convert from sf::Event to GuiEvent
@@ -45,7 +76,7 @@ namespace guiSystem
 	{
 		GuiEvent guiEvent;
 		Widget::Ptr focusedWidget = nullptr;
-		std::vector<guiSystem::Widget::Ptr>* children = &mRoot->mChildWidgets;
+		std::vector<gui::Widget::Ptr>* children = &mRoot->mChildWidgets;
 
 		switch (event.type)
 		{
@@ -201,6 +232,41 @@ namespace guiSystem
 	void Gui::draw() const
 	{
 		mWindow->draw(*mRoot);
+	}
+
+	sf::Font* Gui::getFont(const std::string& name)
+	{ 
+		
+		auto hash = mFonts.find(name);
+		if (hash != mFonts.end())
+		{
+			return &mFonts[name];
+		}
+		else return nullptr;
+	}
+
+	sf::Font* Gui::getDefaultFont()
+	{
+		return getFont(mDefaultFont);
+	}
+
+	void Gui::addFont(const std::string& name, sf::Font& font)
+	{
+		auto hash = mFonts.find(name);
+		if (hash != mFonts.end())
+		{
+			mFonts[name] = font;
+		}
+	}
+
+	sf::Texture* Gui::getTexture(const std::string& name)
+	{
+		auto hash = mTextures.find(name);
+		if (hash != mTextures.end())
+		{
+			return &mTextures[name];
+		}
+		else return nullptr;
 	}
 
 	void Gui::changeFocus(const Widget::Ptr& w)
