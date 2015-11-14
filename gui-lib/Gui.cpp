@@ -4,6 +4,7 @@
 //#include "Panel.h"
 #include <assert.h>
 #include <iostream>
+#include <fstream>
 
 namespace gui
 {
@@ -11,7 +12,9 @@ namespace gui
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
 		mRoot(nullptr),
-		mDefaultFont("DejaVuSans")
+		mDefaultFont("DejaVuSans"),
+		mTextures(),
+		mThemes()
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
@@ -22,13 +25,32 @@ namespace gui
 			std::cout << "font load failed" << std::endl;
 		}
 		mFonts[mDefaultFont] = font;
+
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_file((Widget::themePath + Widget::defaultTheme).c_str());
+
+		if (result)
+		{
+			std::cout << "XML [" << Widget::defaultTheme << "] parsed without errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n\n";
+
+			// Add default theme to
+			mRoot->loadTheme(Widget::defaultTheme);
+		}
+		else
+		{
+			std::cout << "XML [" << Widget::defaultTheme << "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
+			std::cout << "Error description: " << result.description() << "\n";
+			std::cout << "Error offset: " << result.offset << " (error at [..." << (Widget::defaultTheme.c_str() + result.offset) << "]\n\n";
+		}
 	}
 
 	Gui::Gui(sf::RenderWindow* target) :
 		mWindow(target),
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
-		mDefaultFont("DejaVuSans")
+		mDefaultFont("DejaVuSans"),
+		mTextures(),
+		mThemes()
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
@@ -57,16 +79,30 @@ namespace gui
 		return widget;
 	}
 
-	TextWidget::Ptr Gui::createText(const Widget::Ptr& parent, const std::string& name)
+	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name)
 	{
-		TextWidget::Ptr widget(new TextWidget(parent, this, name));
+		Label::Ptr widget(new Label(parent, this, name));
 		parent->addChild(widget, name);
 		return widget;
 	}
 
-	Button::Ptr Gui::createButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
 	{
-		Button::Ptr widget(new Button(parent, this, name, text));
+		TextButton::Ptr widget(new TextButton(parent, this, name, text));
+		parent->addChild(widget, name);
+		return widget;
+	}
+
+	ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	{
+		ImageButton::Ptr widget(new ImageButton(parent, this, name, text));
+		parent->addChild(widget, name);
+		return widget;
+	}
+
+	Image::Ptr Gui::createImage(const Widget::Ptr& parent, const std::string& name)
+	{
+		Image::Ptr widget(new Image(parent, this, name));
 		parent->addChild(widget, name);
 		return widget;
 	}
@@ -252,8 +288,7 @@ namespace gui
 
 	void Gui::addFont(const std::string& name, sf::Font& font)
 	{
-		auto hash = mFonts.find(name);
-		if (hash != mFonts.end())
+		if (mFonts.find(name) != mFonts.end())
 		{
 			mFonts[name] = font;
 		}
@@ -261,10 +296,9 @@ namespace gui
 
 	sf::Texture* Gui::getTexture(const std::string& name)
 	{
-		auto hash = mTextures.find(name);
-		if (hash != mTextures.end())
+		if (mTextures.find(name) != mTextures.end())
 		{
-			return &mTextures[name];
+			return mTextures[name];
 		}
 		else return nullptr;
 	}

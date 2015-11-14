@@ -1,11 +1,15 @@
 #ifndef GUI_H
 #define GUI_H
 
-//#include "Widget.h"
+
 #include "Panel.h"
 #include "GuiContainer.h"
-#include "TextWidget.h"
-#include "Button.h"
+#include "Label.h"
+#include "Image.h"
+#include "TextButton.h"
+#include "ImageButton.h"
+
+#include "Theme.h"
 
 #include <vector>
 #include <SFML\Window\Event.hpp>
@@ -68,11 +72,17 @@ namespace gui
 		Panel::Ptr createPanel(const Widget::Ptr& parent, const std::string& name);
 		Panel::Ptr createPanel(const std::string& name){ return createPanel(mRoot, name); }
 
-		TextWidget::Ptr createText(const Widget::Ptr& parent, const std::string& name);
-		TextWidget::Ptr createText(const std::string& name){ return createText(mRoot, name); }
+		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name);
+		Label::Ptr createLabel(const std::string& name){ return createLabel(mRoot, name); }
 
-		Button::Ptr createButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
-		Button::Ptr createButton(const std::string& name, const std::string& text){ return createButton(mRoot, name, text); }
+		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
+		TextButton::Ptr createTextButton(const std::string& name, const std::string& text){ return createTextButton(mRoot, name, text); }
+
+		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
+		ImageButton::Ptr createImageButton(const std::string& name, const std::string& text){ return createImageButton(mRoot, name, text); }
+
+		Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name);
+		Image::Ptr createImage(const std::string& name){ return createImage(mRoot, name); }
 
 		// Draw all widgets
 		void draw() const;
@@ -94,7 +104,10 @@ namespace gui
 		const std::string mDefaultFont;
 
 		// Wigdet Textures
-		std::unordered_map<std::string, sf::Texture> mTextures;
+		std::unordered_map<std::string, sf::Texture*> mTextures;
+
+		// Theme manager and loader
+		ThemeCache mThemeCache;
 	};
 }
 

@@ -37,7 +37,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="UserMacros">
+    <NuGetPackageImportStamp>8285c06d</NuGetPackageImportStamp>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Users\Davide\Documents\Programmazione\Dropbox\Programmazione\Libraries\SFML 2.3.2\SFML-2.3.2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Davide\Documents\Programmazione\Dropbox\Programmazione\Libraries\SFML 2.3.2\SFML-2.3.2\build\lib\Debug;$(LibraryPath)</LibraryPath>
@@ -77,9 +79,13 @@
     <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="GuiContainer.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="ImageButton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
-    <ClCompile Include="TextWidget.cpp" />
+    <ClCompile Include="TextButton.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="Theme.cpp" />
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -88,11 +94,14 @@
     <ClInclude Include="Gui.h" />
     <ClInclude Include="GuiContainer.h" />
     <ClInclude Include="GuiEvent.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="ImageButton.h" />
     <ClInclude Include="Panel.h" />
-    <ClInclude Include="TextWidget.h" />
+    <ClInclude Include="TextButton.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="Theme.h" />
     <ClInclude Include="Widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

@@ -5,6 +5,9 @@
 
 namespace gui
 {
+	const std::string Widget::defaultTheme = "defaultTheme.xml";
+	const std::string Widget::themePath = "themes/";
+
 	Widget::Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
 		const sf::Vector2f& pos, const sf::Vector2u& size,
 		bool enabled, bool visible, bool focused, bool allowFocus, bool draggable)
@@ -335,7 +338,6 @@ namespace gui
 	}
 
 	// Set position. Local position to parent.
-	//TODO limitare spostamento solo all'interno del padre
 	void Widget::setPosition(const sf::Vector2f& pos)
 	{
 		if (mParent)

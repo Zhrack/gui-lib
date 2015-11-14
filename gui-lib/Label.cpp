@@ -1,11 +1,11 @@
-#include "TextWidget.h"
+#include "Label.h"
 
 #include "Gui.h"
 
 namespace gui
 {
 
-	TextWidget::TextWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font) :
+	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mText()
 	{
@@ -23,18 +23,18 @@ namespace gui
 	}
 
 
-	TextWidget::~TextWidget()
+	Label::~Label()
 	{
 	}
 
-	void TextWidget::setText(const std::string& str)
+	void Label::setText(const std::string& str)
 	{
 		mText.setString(str);
 
 		updateTextTransform();
 	}
 
-	void TextWidget::updateTextTransform()
+	void Label::updateTextTransform()
 	{
 		sf::FloatRect textRect = mText.getLocalBounds();
 		
@@ -44,7 +44,7 @@ namespace gui
 		mText.setRotation(mRect.getRotation());
 	}
 
-	void TextWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		// draw the vertex array
 		if (isEnabled() && isVisible())
@@ -59,7 +59,7 @@ namespace gui
 		}
 	}
 
-	void TextWidget::update()
+	void Label::update()
 	{
 		updateTextTransform();
 	}

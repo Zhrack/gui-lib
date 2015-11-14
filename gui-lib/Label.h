@@ -1,5 +1,5 @@
-#ifndef TEXTWIDGET_H
-#define TEXTWIDGET_H
+#ifndef LABEL_H
+#define LABEL_H
 
 #include "Widget.h"
 
@@ -8,13 +8,13 @@
 
 namespace gui
 {
-	class TextWidget : public Widget
+	class Label : public Widget
 	{
 	public:
-		using Ptr = std::shared_ptr<TextWidget>;
+		using Ptr = std::shared_ptr<Label>;
 
-		TextWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font = nullptr);
-		~TextWidget();
+		Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font = nullptr);
+		~Label();
 
 		void setText(const std::string& str);
 		sf::Text& getString() { return mText; }
@@ -30,7 +30,7 @@ namespace gui
 	private:
 		sf::Text mText;
 
-		friend class Button;
+		friend class TextButton;
 	};
 }
 

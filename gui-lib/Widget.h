@@ -17,6 +17,9 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<Widget>;
 
+		static const std::string defaultTheme;
+		static const std::string themePath;
+
 		// Constructors
 		Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
 			const sf::Vector2f& pos, const sf::Vector2u& size,
