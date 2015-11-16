@@ -53,7 +53,7 @@ int main()
 	str2.panel = childPanel2;
 	childPanel2->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str2);
 
-	gui::TextWidget::Ptr text = gui.createText("text");
+	gui::Label::Ptr text = gui.createLabel("text");
 	text->setText("Hello World!");
 	text->setDraggable(true);
 

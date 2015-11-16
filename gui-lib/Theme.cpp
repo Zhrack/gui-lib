@@ -6,14 +6,24 @@
 
 namespace gui
 {
-	ThemeCache::ThemeCache()
+	ThemeCache::ThemeCache() :
+		darkTheme("darkTheme"),
+		themePath("themes/")
 	{
-
+		if (!loadTheme(darkTheme))
+		{
+			std::cout << "Error loading darkTheme" << std::endl;
+		}
 	}
 
 	ThemeCache::~ThemeCache()
 	{
-
+		for (auto& it = mThemes.begin(); it != mThemes.end(); ++it)
+		{
+			delete it->second->texture;
+			delete it->second;
+			it->second = nullptr;
+		}
 	}
 
 	Theme* ThemeCache::getTheme(const std::string& theme)
@@ -26,7 +36,8 @@ namespace gui
 	}
 
 	// Load a new theme
-	bool ThemeCache::loadTheme(const std::string& filename, Theme& result)
+	// filename: the name of the file to load and of the spritesheet, without file extensions
+	bool ThemeCache::loadTheme(const std::string& filename)
 	{
 		// The file may be cached
 		if (mThemes.find(filename) != mThemes.end())
@@ -35,15 +46,22 @@ namespace gui
 		std::ifstream file;
 
 		// Open the file
-		file.open(filename.c_str(), std::ifstream::in);
+		file.open((themePath + filename + ".conf").c_str(), std::ifstream::in);
 
 		// Check if the file was opened
 		if (!file.is_open())
 			return false;
 
 		Theme* newTheme(new Theme());
-
-		
+		sf::Texture* tex(new sf::Texture());
+		if (!tex->loadFromFile(themePath + filename + ".png"))
+		{
+			std::cout << "Error: Creation of texture failed." << std::endl;
+		}
+		else
+		{
+			newTheme->texture = tex;
+		}
 
 		bool error = false;
 		unsigned int lineNumber = 0;
@@ -55,7 +73,7 @@ namespace gui
 			// Get the next line
 			std::string line;
 			std::getline(file, line);
-			auto c = line.begin();
+			std::string::const_iterator c = line.begin();
 			lineNumber++;
 
 			// If the lines contains a '\r' at the end then remove it
@@ -70,6 +88,7 @@ namespace gui
 			{
 				std::getline(file, line);
 				c = line.begin();
+				lineNumber++;
 				std::string property;
 				std::string value;
 				bool lineError = false;
@@ -132,7 +151,11 @@ namespace gui
 		{
 			mThemes[filename] = newTheme;
 		}
-		else delete newTheme;
+		else
+		{
+			delete newTheme->texture;
+			delete newTheme;
+		}
 
 		return !error;
 	}
@@ -158,9 +181,8 @@ namespace gui
 			if (line[0] == '[' && line[line.length() - 1] == ']')
 			{
 				// Remove square brackets
-				str = line.substr(1, line.length() - 1);
-
-				sectionName = toLower(readWord(str, c));
+				str = line.substr(1, line.length() - 2);
+				sectionName = readWord(str, str.begin());
 
 				return true;
 			}
@@ -180,9 +202,10 @@ namespace gui
 				++c;
 			}
 			else
+			{
 				return word;
+			}
 		}
-
 		return word;
 	}
 

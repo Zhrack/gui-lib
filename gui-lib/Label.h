@@ -13,7 +13,7 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<Label>;
 
-		Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font = nullptr);
+		Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font = nullptr, const std::string& theme = "");
 		~Label();
 
 		void setText(const std::string& str);

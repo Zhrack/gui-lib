@@ -61,8 +61,10 @@ namespace gui
 		// Add new font
 		void addFont(const std::string& name, sf::Font& font);
 
-		// Get texture by name
-		sf::Texture* getTexture(const std::string& name);
+		Theme* getTheme(const std::string& theme) { return mThemeCache.getTheme(theme); }
+		Theme* getDefaultTheme() { return mThemeCache.getTheme(mThemeCache.darkTheme); }
+
+		void addTheme(const std::string& filename);
 
 		//////////////////////////////////////////////////
 		///					WIDGET CREATION
@@ -72,17 +74,17 @@ namespace gui
 		Panel::Ptr createPanel(const Widget::Ptr& parent, const std::string& name);
 		Panel::Ptr createPanel(const std::string& name){ return createPanel(mRoot, name); }
 
-		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name);
-		Label::Ptr createLabel(const std::string& name){ return createLabel(mRoot, name); }
+		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, sf::Font* font = nullptr, const std::string& theme = "");
+		Label::Ptr createLabel(const std::string& name, sf::Font* font = nullptr, const std::string& theme = ""){ return createLabel(mRoot, name, font, theme); }
 
-		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
-		TextButton::Ptr createTextButton(const std::string& name, const std::string& text){ return createTextButton(mRoot, name, text); }
+		//TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
+		//TextButton::Ptr createTextButton(const std::string& name, const std::string& text){ return createTextButton(mRoot, name, text); }
 
-		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
-		ImageButton::Ptr createImageButton(const std::string& name, const std::string& text){ return createImageButton(mRoot, name, text); }
+		//ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
+		//ImageButton::Ptr createImageButton(const std::string& name, const std::string& text){ return createImageButton(mRoot, name, text); }
 
-		Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name);
-		Image::Ptr createImage(const std::string& name){ return createImage(mRoot, name); }
+		//Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name);
+		//Image::Ptr createImage(const std::string& name){ return createImage(mRoot, name); }
 
 		// Draw all widgets
 		void draw() const;
@@ -102,9 +104,6 @@ namespace gui
 		// GUI fonts
 		std::unordered_map<std::string, sf::Font> mFonts;
 		const std::string mDefaultFont;
-
-		// Wigdet Textures
-		std::unordered_map<std::string, sf::Texture*> mTextures;
 
 		// Theme manager and loader
 		ThemeCache mThemeCache;

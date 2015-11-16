@@ -12,9 +12,7 @@ namespace gui
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
 		mRoot(nullptr),
-		mDefaultFont("DejaVuSans"),
-		mTextures(),
-		mThemes()
+		mDefaultFont("DejaVuSans")
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
@@ -25,32 +23,13 @@ namespace gui
 			std::cout << "font load failed" << std::endl;
 		}
 		mFonts[mDefaultFont] = font;
-
-		pugi::xml_document doc;
-		pugi::xml_parse_result result = doc.load_file((Widget::themePath + Widget::defaultTheme).c_str());
-
-		if (result)
-		{
-			std::cout << "XML [" << Widget::defaultTheme << "] parsed without errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n\n";
-
-			// Add default theme to
-			mRoot->loadTheme(Widget::defaultTheme);
-		}
-		else
-		{
-			std::cout << "XML [" << Widget::defaultTheme << "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
-			std::cout << "Error description: " << result.description() << "\n";
-			std::cout << "Error offset: " << result.offset << " (error at [..." << (Widget::defaultTheme.c_str() + result.offset) << "]\n\n";
-		}
 	}
 
 	Gui::Gui(sf::RenderWindow* target) :
 		mWindow(target),
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
-		mDefaultFont("DejaVuSans"),
-		mTextures(),
-		mThemes()
+		mDefaultFont("DejaVuSans")
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
@@ -79,14 +58,14 @@ namespace gui
 		return widget;
 	}
 
-	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name)
+	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, sf::Font* font, const std::string& theme)
 	{
-		Label::Ptr widget(new Label(parent, this, name));
+		Label::Ptr widget(new Label(parent, this, name, font));
 		parent->addChild(widget, name);
 		return widget;
 	}
 
-	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	/*TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
 	{
 		TextButton::Ptr widget(new TextButton(parent, this, name, text));
 		parent->addChild(widget, name);
@@ -105,7 +84,7 @@ namespace gui
 		Image::Ptr widget(new Image(parent, this, name));
 		parent->addChild(widget, name);
 		return widget;
-	}
+	}*/
 
 	//convert from sf::Event to GuiEvent
 	bool Gui::handleEvent(sf::Event& event)
@@ -116,16 +95,6 @@ namespace gui
 
 		switch (event.type)
 		{
-		case sf::Event::Resized:
-			//window resized, every widget should resize
-			guiEvent.type = GuiEvent::Resized;
-			guiEvent.size = event.size;
-
-			// Run through widgets and resize them
-			mRoot->resize(guiEvent);
-			return true;
-			break;
-			//////////////////////////////////////////////////////////////////////
 		case sf::Event::TextEntered:
 			//send to focused
 			guiEvent.type = GuiEvent::TextEntered;
@@ -272,9 +241,7 @@ namespace gui
 
 	sf::Font* Gui::getFont(const std::string& name)
 	{ 
-		
-		auto hash = mFonts.find(name);
-		if (hash != mFonts.end())
+		if (mFonts.find(name) != mFonts.end())
 		{
 			return &mFonts[name];
 		}
@@ -294,13 +261,12 @@ namespace gui
 		}
 	}
 
-	sf::Texture* Gui::getTexture(const std::string& name)
+	void Gui::addTheme(const std::string& filename)
 	{
-		if (mTextures.find(name) != mTextures.end())
+		if (!mThemeCache.loadTheme(filename))
 		{
-			return mTextures[name];
+			std::cout << "Error loading theme " + filename << std::endl;
 		}
-		else return nullptr;
 	}
 
 	void Gui::changeFocus(const Widget::Ptr& w)

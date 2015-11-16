@@ -2,7 +2,7 @@
 #define GUITEXTBUTTON_H
 
 #include "Button.h"
-#include "TextWidget.h"
+#include "Label.h"
 
 namespace gui
 {

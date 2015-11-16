@@ -2,8 +2,9 @@
 #define GUITHEME_H
 
 #include <SFML\Graphics\Color.hpp>
+#include <SFML\Graphics\Texture.hpp>
 
-#include "Gui.h"
+#include <unordered_map>
 
 namespace gui
 {
@@ -16,18 +17,25 @@ namespace gui
 	struct Theme
 	{
 		LabelData label;
+
+		sf::Texture* texture;
 	};
 
 	class ThemeCache
 	{
 	public:
+		class Gui;
+
+		const std::string darkTheme;
+		const std::string themePath;
+
 		ThemeCache();
 		~ThemeCache();
 
 		Theme* getTheme(const std::string& theme);
 
 		// Load a new theme
-		bool loadTheme(const std::string& filename, Theme& result);
+		bool loadTheme(const std::string& filename);
 
 	private:
 		bool removeWhitespace(const std::string& line, std::string::const_iterator& c) const;
@@ -41,7 +49,7 @@ namespace gui
 		bool readIntRect(std::string value, sf::IntRect& rect) const;
 
 		// Reads a new word while advancing the iterator
-		std::string readWord(const std::string& line, std::string::const_iterator& c) const;
+		std::string readWord(const std::string& line, std::string::const_iterator& iter) const;
 
 		std::string toLower(const std::string& str);
 

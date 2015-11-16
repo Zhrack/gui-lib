@@ -5,7 +5,7 @@
 namespace gui
 {
 
-	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font) :
+	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font, const std::string& theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mText()
 	{
@@ -16,6 +16,17 @@ namespace gui
 		else
 		{
 			mText.setFont(*(mMainGui->getDefaultFont()));
+		}
+
+		if (theme == "")
+		{
+			Theme* t = mMainGui->getDefaultTheme();
+			mText.setColor(t->label.textColor);
+		}
+		else
+		{
+			Theme* t = mMainGui->getTheme(theme);
+			mText.setColor(t->label.textColor);
 		}
 
 		mRect.setFillColor(sf::Color::Green);

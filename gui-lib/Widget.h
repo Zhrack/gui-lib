@@ -17,9 +17,6 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<Widget>;
 
-		static const std::string defaultTheme;
-		static const std::string themePath;
-
 		// Constructors
 		Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
 			const sf::Vector2f& pos, const sf::Vector2u& size,
@@ -48,13 +45,10 @@ namespace gui
 
 		void setDraggable(bool draggable) { mDraggable = draggable; }
 
-		
-
 		void setOrigin(const sf::Vector2f& origin){ mRect.setOrigin(origin); }
 
 		void move(const sf::Vector2f& delta);
 		// Set position. Local position to parent.
-		//TODO limitare spostamento solo all'interno del padre
 		void setPosition(const sf::Vector2f& localPos);
 		// Set position with global coords
 		void setGlobalPosition(const sf::Vector2f& globalPos);
@@ -64,11 +58,6 @@ namespace gui
 
 		const std::string& getName() const { return mName; }
 		sf::RectangleShape& getShape() { return mRect; }
-
-		// Upon a window resize event, rescale this widget accordingly
-		//TODO implement this
-		//tutte le posizioni vengono mantenute anche in percentuale, in questo modo sono indipendente oppure guardare tgui
-		void resize(GuiEvent& event){}
 
 		// Getters
 		bool isEnabled() const { return mEnabled; }
@@ -105,7 +94,7 @@ namespace gui
 		void checkMouseEntered(float x, float y);
 		void checkMouseLeft(float x, float y);
 
-		// Called when derived class must do some work, like in TextWidget
+		// Called when derived class must do some work, like in Label
 		virtual void update(){}
 	protected:
 		std::vector<std::string> mWidgetNames;
