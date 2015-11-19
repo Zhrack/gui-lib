@@ -77,14 +77,14 @@ namespace gui
 			lineNumber++;
 
 			// If the lines contains a '\r' at the end then remove it
-			if (!line.empty() && line[line.size() - 1] == '\r')
+			if(!line.empty() && line[line.size() - 1] == '\r')
 				line.erase(line.size() - 1);
 
 			// Skip empty lines
-			if (line.empty() || !removeWhitespace(line, c))
+			if(line.empty() || !removeWhitespace(line, c))
 				continue;
 
-			if (findSection(line, c, sectionName))
+			if(!findSection(line, c, sectionName))
 			{
 				std::getline(file, line);
 				c = line.begin();
@@ -126,20 +126,74 @@ namespace gui
 					{
 						// value is a Color
 						sf::Color color;
-						if (!readColor(value, color))
+						if (readColor(value, color))
+						{
+							newTheme->label.textColor = color;
+						}
+						else
 						{
 							std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 							lineError = true;
 						}
-						else
-						{
-							newTheme->label.textColor = color;
-						}
 						
 					}
-					//else if (sectionName == "") ecc ecc
+					else if (sectionName == "TextButton")
+					{
+						if (property == "textureRect")
+						{
+							sf::FloatRect rect;
+							if (readFloatRect(value, rect))
+							{
+								// Get first and fourth points of BorderWidget(the external ones)
+								newTheme->textButton.texRect = rect;
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "centerMargin")
+						{
+							sf::FloatRect rect;
+							if (readFloatRect(value, rect))
+							{
+								// Get second and third points of BorderWidget(the internal ones)
+								newTheme->textButton.internalMargins = rect;
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "textColor")
+						{
+							// value is a Color
+							sf::Color color;
+							if (readColor(value, color))
+							{
+								newTheme->textButton.label.textColor = color;
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+					}
+					//else if (sectionName == "ImageButton")
 					//{
+					//	sf::IntRect rect;
+					//	if (readIntRect(value, rect))
+					//	{
 
+					//	}
+					//	else
+					//	{
+					//		std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+					//		lineError = true;
+					//	}
 					//}
 				}
 
@@ -250,7 +304,7 @@ namespace gui
 		return false;
 	}
 
-	bool ThemeCache::readIntRect(std::string value, sf::IntRect& rect) const
+	bool ThemeCache::readFloatRect(std::string value, sf::FloatRect& rect) const
 	{
 		std::string str;
 		// Make sure that the line isn't empty
@@ -267,7 +321,7 @@ namespace gui
 				if (commaPos != std::string::npos)
 				{
 					// Get the left value and delete this part of the string
-					rect.left = atoi(str.substr(0, commaPos).c_str());
+					rect.left = atof(str.substr(0, commaPos).c_str());
 					str.erase(0, commaPos + 1);
 
 					// Search for the second comma
@@ -275,7 +329,7 @@ namespace gui
 					if (commaPos != std::string::npos)
 					{
 						// Get the top value and delete this part of the string
-						rect.top = atoi(str.substr(0, commaPos).c_str());
+						rect.top = atof(str.substr(0, commaPos).c_str());
 						str.erase(0, commaPos + 1);
 
 						// Search for the third comma
@@ -283,11 +337,11 @@ namespace gui
 						if (commaPos != std::string::npos)
 						{
 							// Get the width value and delete this part of the string
-							rect.width = atoi(str.substr(0, commaPos).c_str());
+							rect.width = atof(str.substr(0, commaPos).c_str());
 							str.erase(0, commaPos + 1);
 
 							// Get the height value
-							rect.height = atoi(str.c_str());
+							rect.height = atof(str.c_str());
 
 							return true;
 						}

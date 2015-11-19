@@ -65,14 +65,14 @@ namespace gui
 		return widget;
 	}
 
-	/*TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text, const std::string& theme)
 	{
-		TextButton::Ptr widget(new TextButton(parent, this, name, text));
+		TextButton::Ptr widget(new TextButton(parent, this, name, text, theme));
 		parent->addChild(widget, name);
 		return widget;
 	}
 
-	ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	/*ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
 	{
 		ImageButton::Ptr widget(new ImageButton(parent, this, name, text));
 		parent->addChild(widget, name);

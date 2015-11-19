@@ -8,13 +8,13 @@
 namespace gui
 {
 	// Manages resize of button through 9-patch
-	class Button : public Widget
+	class BorderWidget : public Widget
 	{
 	public:
-		using Ptr = std::shared_ptr<Button>;
+		using Ptr = std::shared_ptr<BorderWidget>;
 
-		Button(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Vector2f* points);
-		~Button();
+		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme);
+		~BorderWidget();
 
 		void updateNinePatchPoints(sf::Vector2f* points);
 
@@ -23,6 +23,9 @@ namespace gui
 	protected:
 		// Vertices of the 9-patch
 		sf::VertexArray mVerts;
+
+		// Ptr to the theme texture
+		sf::Texture* mTexture;
 
 		// Margins to get position of some verts
 		sf::FloatRect mInternalMargins;

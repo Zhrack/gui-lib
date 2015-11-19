@@ -75,7 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="BorderWidget.cpp" />
     <ClCompile Include="CallbackManager.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="GuiContainer.cpp" />
@@ -89,7 +89,7 @@
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
+    <ClInclude Include="BorderWidget.h" />
     <ClInclude Include="CallbackManager.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="GuiContainer.h" />

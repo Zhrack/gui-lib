@@ -1,20 +1,30 @@
-#include "Button.h"
+#include "BorderWidget.h"
+#include "Theme.h"
 
 #include <assert.h>
 
 namespace gui
 {
 	// Ctor for Text Button
-	Button::Button(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Vector2f* points) :
+	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
-		mVerts(sf::PrimitiveType::Quads, 9 * 4)
+		mVerts(sf::PrimitiveType::Quads, 9 * 4),
+		mTexture(theme->texture)
 	{
+		sf::Vector2f points[4];
+		points[0] = sf::Vector2f(theme->textButton.texRect.left, theme->textButton.texRect.top);
+		points[1] = sf::Vector2f(theme->textButton.internalMargins.left, theme->textButton.internalMargins.top);
+		points[2] = sf::Vector2f(theme->textButton.internalMargins.width, theme->textButton.internalMargins.height);
+		points[3] = sf::Vector2f(theme->textButton.texRect.width, theme->textButton.texRect.height);
+
 		updateNinePatchPoints(points);
 	}
 
 
-	Button::~Button()
+	BorderWidget::~BorderWidget()
 	{
+		// Data is destroyed by ThemeCache
+		mTexture = nullptr;
 	}
 
 	//	Points must be an array of size 4, with coords of 4 points in pixel space of the texture
@@ -26,7 +36,7 @@ namespace gui
 	//	+--+--*--+
 	//	|  |  |  |
 	//	+--+--+--*
-	void Button::updateNinePatchPoints(sf::Vector2f* points)
+	void BorderWidget::updateNinePatchPoints(sf::Vector2f* points)
 	{
 		assert(points != nullptr);
 
@@ -100,7 +110,7 @@ namespace gui
 		updateVertsPosition();
 	}
 
-	void Button::updateVertsPosition()
+	void BorderWidget::updateVertsPosition()
 	{
 		sf::FloatRect rect = mRect.getGlobalBounds();
 		sf::Vector2f first = sf::Vector2f(rect.left, rect.top);

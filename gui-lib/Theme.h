@@ -14,9 +14,18 @@ namespace gui
 		sf::Color textColor;
 	};
 
+	// Holds theme data for textbuttons
+	struct TextButtonData
+	{
+		sf::FloatRect texRect;
+		sf::FloatRect internalMargins;
+		LabelData label;
+	};
+
 	struct Theme
 	{
 		LabelData label;
+		TextButtonData textButton;
 
 		sf::Texture* texture;
 	};
@@ -46,7 +55,7 @@ namespace gui
 		bool readColor(const std::string& value, sf::Color& color) const;
 
 		// Extract a sf::IntRect
-		bool readIntRect(std::string value, sf::IntRect& rect) const;
+		bool readFloatRect(std::string value, sf::FloatRect& rect) const;
 
 		// Reads a new word while advancing the iterator
 		std::string readWord(const std::string& line, std::string::const_iterator& iter) const;

@@ -1,17 +1,19 @@
 #ifndef GUITEXTBUTTON_H
 #define GUITEXTBUTTON_H
 
-#include "Button.h"
+#include "BorderWidget.h"
 #include "Label.h"
 
 namespace gui
 {
-	class TextButton : public Button
+	struct Theme;
+
+	class TextButton : public BorderWidget
 	{
 	public:
 		using Ptr = std::shared_ptr<TextButton>;
 
-		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Vector2f* points, const std::string& text);
+		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme);
 		~TextButton();
 
 		// Changes the text of the button

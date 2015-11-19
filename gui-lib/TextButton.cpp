@@ -1,9 +1,11 @@
 #include "TextButton.h"
 
+#include "Gui.h"
+
 namespace gui
 {
-	TextButton::TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Vector2f* points, const std::string& text) :
-		Button(parent, gui, name, points),
+	TextButton::TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme) :
+		BorderWidget(parent, gui, name, theme),
 		mText(new Label(static_cast<Widget::Ptr>(this), gui, ""))
 	{
 		setText(text);
@@ -40,6 +42,9 @@ namespace gui
 		if (isEnabled() && isVisible())
 		{
 			target.draw(mRect, states); // debug
+			states.texture = mTexture;
+			target.draw(mVerts, states);
+			states = sf::RenderStates::Default;
 			target.draw(*mText, states);
 
 			for (auto& widget : mChildWidgets)

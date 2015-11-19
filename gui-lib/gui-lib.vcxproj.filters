@@ -36,9 +36,6 @@
     <ClCompile Include="Widget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="Image.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
@@ -53,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="Theme.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BorderWidget.cpp">
+      <Filter>Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +74,6 @@
     <ClInclude Include="GuiContainer.h">
       <Filter>Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="Image.h">
       <Filter>Widgets</Filter>
     </ClInclude>
@@ -91,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="Theme.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BorderWidget.h">
+      <Filter>Widgets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

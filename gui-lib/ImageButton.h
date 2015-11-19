@@ -1,12 +1,12 @@
 #ifndef GUIIMAGEBUTTON_H
 #define GUIIMAGEBUTTON_H
 
-#include "Button.h"
+#include "BorderWidget.h"
 #include "Image.h"
 
 namespace gui
 {
-	class ImageButton : public Button
+	class ImageButton : public BorderWidget
 	{
 	public:
 		using Ptr = std::shared_ptr<ImageButton>;
