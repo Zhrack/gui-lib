@@ -11,13 +11,7 @@ namespace gui
 		mVerts(sf::PrimitiveType::Quads, 9 * 4),
 		mTexture(theme->texture)
 	{
-		sf::Vector2f points[4];
-		points[0] = sf::Vector2f(theme->textButton.texRect.left, theme->textButton.texRect.top);
-		points[1] = sf::Vector2f(theme->textButton.internalMargins.left, theme->textButton.internalMargins.top);
-		points[2] = sf::Vector2f(theme->textButton.internalMargins.width, theme->textButton.internalMargins.height);
-		points[3] = sf::Vector2f(theme->textButton.texRect.width, theme->textButton.texRect.height);
-
-		updateNinePatchPoints(points);
+		updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
 	}
 
 
@@ -25,6 +19,26 @@ namespace gui
 	{
 		// Data is destroyed by ThemeCache
 		mTexture = nullptr;
+	}
+
+	//	Points must be an array of size 4, with coords of 4 points in pixel space of the texture
+	//	indicated by *, the rest is calculated from them.
+	//	*--+--+--+
+	//	|  |  |  |
+	//	+--*--+--+
+	//	|  |  |  |
+	//	+--+--*--+
+	//	|  |  |  |
+	//	+--+--+--*
+	void BorderWidget::updateNinePatchPoints(sf::FloatRect& rect1, sf::FloatRect& rect2)
+	{
+		sf::Vector2f points[4];
+		points[0] = sf::Vector2f(rect1.left, rect1.top);
+		points[1] = sf::Vector2f(rect2.left, rect2.top);
+		points[2] = sf::Vector2f(rect2.width, rect2.height);
+		points[3] = sf::Vector2f(rect1.width, rect1.height);
+
+		updateNinePatchPoints(points);
 	}
 
 	//	Points must be an array of size 4, with coords of 4 points in pixel space of the texture

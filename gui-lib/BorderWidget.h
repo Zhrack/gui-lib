@@ -7,6 +7,8 @@
 
 namespace gui
 {
+	struct Theme;
+
 	// Manages resize of button through 9-patch
 	class BorderWidget : public Widget
 	{
@@ -16,6 +18,7 @@ namespace gui
 		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme);
 		~BorderWidget();
 
+		void updateNinePatchPoints(sf::FloatRect& rect1, sf::FloatRect& rect2);
 		void updateNinePatchPoints(sf::Vector2f* points);
 
 		void updateVertsPosition();

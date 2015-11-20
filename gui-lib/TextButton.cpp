@@ -9,6 +9,8 @@ namespace gui
 		mText(new Label(static_cast<Widget::Ptr>(this), gui, ""))
 	{
 		setText(text);
+		mText->getString().setColor(theme->textButton.label.textColor);
+		updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
 	}
 
 

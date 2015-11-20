@@ -67,7 +67,8 @@ namespace gui
 
 	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text, const std::string& theme)
 	{
-		TextButton::Ptr widget(new TextButton(parent, this, name, text, theme));
+		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		TextButton::Ptr widget(new TextButton(parent, this, name, text, getTheme(t)));
 		parent->addChild(widget, name);
 		return widget;
 	}

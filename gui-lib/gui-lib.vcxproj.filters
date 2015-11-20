@@ -42,9 +42,6 @@
     <ClCompile Include="TextButton.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="ImageButton.cpp">
-      <Filter>Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="Label.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
       <Filter>Widgets</Filter>
     </ClInclude>
     <ClInclude Include="TextButton.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageButton.h">
       <Filter>Widgets</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">

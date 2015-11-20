@@ -86,9 +86,6 @@ namespace gui
 
 			if(!findSection(line, c, sectionName))
 			{
-				std::getline(file, line);
-				c = line.begin();
-				lineNumber++;
 				std::string property;
 				std::string value;
 				bool lineError = false;
@@ -145,7 +142,10 @@ namespace gui
 							if (readFloatRect(value, rect))
 							{
 								// Get first and fourth points of BorderWidget(the external ones)
-								newTheme->textButton.texRect = rect;
+								newTheme->textButton.texRect.left = rect.left;
+								newTheme->textButton.texRect.top = rect.top;
+								newTheme->textButton.texRect.width = rect.left + rect.width;
+								newTheme->textButton.texRect.height = rect.top + rect.height;
 							}
 							else
 							{
@@ -159,7 +159,10 @@ namespace gui
 							if (readFloatRect(value, rect))
 							{
 								// Get second and third points of BorderWidget(the internal ones)
-								newTheme->textButton.internalMargins = rect;
+								newTheme->textButton.internalMargins.left = rect.left;
+								newTheme->textButton.internalMargins.top = rect.top;
+								newTheme->textButton.internalMargins.width = rect.left + rect.width;
+								newTheme->textButton.internalMargins.height = rect.top + rect.height;
 							}
 							else
 							{

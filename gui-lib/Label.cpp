@@ -29,7 +29,7 @@ namespace gui
 			mText.setColor(t->label.textColor);
 		}
 
-		mRect.setFillColor(sf::Color::Green);
+		mRect.setFillColor(sf::Color::Transparent);
 		updateTextTransform();
 	}
 

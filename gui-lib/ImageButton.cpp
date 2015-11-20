@@ -4,7 +4,7 @@ namespace gui
 {
 	// ImageButton stores a pointer to the texture, so lifetime of the texture must be managed.
 	ImageButton::ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Vector2f* points, sf::Texture* tex) :
-		Button(parent, gui, name, points),
+		BorderWidget(parent, gui, name, points),
 		mImage(new Image(static_cast<Widget::Ptr>(this), gui, "", tex))
 	{
 	}

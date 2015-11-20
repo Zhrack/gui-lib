@@ -57,6 +57,9 @@ int main()
 	text->setText("Hello World!");
 	text->setDraggable(true);
 
+	gui::TextButton::Ptr button = gui.createTextButton("button", "BIIIIIIIIIIIIIIIIIIIIIIIIIIIIG TEXT");
+	button->setDraggable(true);
+
 	// run the program as long as the window is open
 	while (window->isOpen())
 	{
