@@ -19,14 +19,15 @@ namespace gui
 		void setText(const std::string& str);
 		sf::Text& getString() { return mText; }
 
+		// Update mRect and mText after a change
+		// Internal use only.
+		void updateTextTransform();
+
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:
 		// To update bbox of mRect
 		virtual void update() override;
-		// Update mRect and mText after a change
-		void updateTextTransform();
-
 	private:
 		sf::Text mText;
 

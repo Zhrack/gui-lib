@@ -22,6 +22,9 @@ namespace gui
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:
+		// To update graphic pos
+		virtual void update() override;
+	private:
 		// Text of the button
 		Label::Ptr mText;
 	};

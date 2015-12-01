@@ -97,6 +97,7 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="TextureMarginCoords.h" />
     <ClInclude Include="Theme.h" />
     <ClInclude Include="Widget.h" />
   </ItemGroup>

@@ -9,9 +9,25 @@ namespace gui
 	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mVerts(sf::PrimitiveType::Quads, 9 * 4),
-		mTexture(theme->texture)
+		mTexture(theme->texture),
+
+		mMouseEnteredData(this),
+		mMouseLeftData(this),
+		mMouseButtonDownData(this),
+		mMouseButtonUpData(this),
+
+		mCurrentButtonState(ButtonState::Normal)
 	{
-		updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
+		mNormalState = theme->textButton.normalState;
+		mHoverState = theme->textButton.hoverState;
+		mDownState = theme->textButton.downState;
+		//updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
+		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
+
+		bindCallback(GuiEvent::MouseEntered, OnMouseEntered, &mMouseEnteredData);
+		bindCallback(GuiEvent::MouseLeft, OnMouseLeft, &mMouseLeftData);
+		bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, &mMouseButtonDownData);
+		bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, &mMouseButtonUpData);
 	}
 
 
@@ -185,5 +201,26 @@ namespace gui
 		mVerts[32 + 1].position = sf::Vector2f(fourth.x, third.y);
 		mVerts[32 + 2].position = sf::Vector2f(fourth);
 		mVerts[32 + 3].position = sf::Vector2f(third.x, fourth.y);
+	}
+
+	void BorderWidget::toNormalButtonState()
+	{
+		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
+
+		mCurrentButtonState = ButtonState::Normal;
+	}
+
+	void BorderWidget::toHoverButtonState()
+	{
+		updateNinePatchPoints(mHoverState.externalMargin, mHoverState.internalMargin);
+
+		mCurrentButtonState = ButtonState::Hover;
+	}
+
+	void BorderWidget::toDownButtonState()
+	{
+		updateNinePatchPoints(mDownState.externalMargin, mDownState.internalMargin);
+
+		mCurrentButtonState = ButtonState::Down;
 	}
 } // namespace

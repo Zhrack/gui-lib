@@ -10,7 +10,8 @@ namespace gui
 	{
 		setText(text);
 		mText->getString().setColor(theme->textButton.label.textColor);
-		updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
+		//updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
+		toNormalButtonState();
 	}
 
 
@@ -38,12 +39,25 @@ namespace gui
 
 	}
 
+	void TextButton::update()
+	{
+		updateVertsPosition();
+
+		// Reposition text inside button
+		mText->setGlobalPosition(sf::Vector2f(
+			getGlobalPosition().x + mInternalMargins.left,
+			getGlobalPosition().y + mInternalMargins.top)
+			);
+
+		mText->updateTextTransform();
+	}
+
 	void TextButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			target.draw(mRect, states); // debug
+			//target.draw(mRect, states); // debug
 			states.texture = mTexture;
 			target.draw(mVerts, states);
 			states = sf::RenderStates::Default;

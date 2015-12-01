@@ -86,6 +86,9 @@ namespace gui
 		//Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name);
 		//Image::Ptr createImage(const std::string& name){ return createImage(mRoot, name); }
 
+
+		void update();
+
 		// Draw all widgets
 		void draw() const;
 

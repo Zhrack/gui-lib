@@ -95,7 +95,7 @@ namespace gui
 		void checkMouseLeft(float x, float y);
 
 		// Called when derived class must do some work, like in Label
-		virtual void update(){}
+		virtual void update();
 	protected:
 		std::vector<std::string> mWidgetNames;
 		std::vector<Widget::Ptr> mChildWidgets;

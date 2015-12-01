@@ -6,6 +6,8 @@
 
 #include <unordered_map>
 
+#include "TextureMarginCoords.h"
+
 namespace gui
 {
 	// Holds theme data for labels
@@ -17,8 +19,11 @@ namespace gui
 	// Holds theme data for textbuttons
 	struct TextButtonData
 	{
-		sf::FloatRect texRect;
-		sf::FloatRect internalMargins;
+		//sf::FloatRect texRect;
+		//sf::FloatRect internalMargins;
+		TextureMarginsCoords normalState;
+		TextureMarginsCoords hoverState;
+		TextureMarginsCoords downState;
 		LabelData label;
 	};
 

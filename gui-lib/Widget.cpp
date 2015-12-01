@@ -134,8 +134,6 @@ namespace gui
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseMoved:
-			// Some widgets need to update derived members data
-			update();
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseEntered:
@@ -312,6 +310,14 @@ namespace gui
 			event.mouseEnterLeft.x = x;
 			event.mouseEnterLeft.y = y;
 			this->handleEvent(event);
+		}
+	}
+
+	void Widget::update()
+	{
+		for (auto& widget : mChildWidgets)
+		{
+			widget->update();
 		}
 	}
 

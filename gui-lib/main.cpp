@@ -65,17 +65,23 @@ int main()
 	{
 		// check all the window's events that were triggered since the last iteration of the loop
 		sf::Event event;
+		bool inputProcessed = false;
 		while (window->pollEvent(event))
 		{
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
 				window->close();
 
-			if (gui.handleEvent(event) == false)
-			{
-				// Game input here
-			}
+			inputProcessed = gui.handleEvent(event);
 		}
+
+		gui.update();
+
+		if (!inputProcessed)
+		{
+			// Game input here
+		}
+
 		window->clear();
 
 		gui.draw();

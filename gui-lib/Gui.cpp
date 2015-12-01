@@ -235,6 +235,14 @@ namespace gui
 		return false;
 	}
 
+	void Gui::update()
+	{
+		for (auto& widget : mRoot->mChildWidgets)
+		{
+			widget->update();
+		}
+	}
+
 	void Gui::draw() const
 	{
 		mWindow->draw(*mRoot);
