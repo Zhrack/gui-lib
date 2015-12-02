@@ -289,13 +289,13 @@ namespace gui
 	{
 		if (mMouseHover == false)
 		{
-			mMouseHover = true;
 			GuiEvent event;
 			event.type = GuiEvent::MouseEntered;
 			event.mouseEnterLeft.entered = true;
 			event.mouseEnterLeft.x = x;
 			event.mouseEnterLeft.y = y;
 			this->handleEvent(event);
+			mMouseHover = true;
 		}
 	}
 
@@ -303,13 +303,13 @@ namespace gui
 	{
 		if (mMouseHover)
 		{
-			mMouseHover = false;
 			GuiEvent event;
 			event.type = GuiEvent::MouseLeft;
 			event.mouseEnterLeft.entered = false;
 			event.mouseEnterLeft.x = x;
 			event.mouseEnterLeft.y = y;
 			this->handleEvent(event);
+			mMouseHover = false;
 		}
 	}
 

@@ -11,7 +11,7 @@ namespace gui
 		setText(text);
 		mText->getString().setColor(theme->textButton.label.textColor);
 		//updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
-		toNormalButtonState();
+		//toNormalButtonState();
 	}
 
 

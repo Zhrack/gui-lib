@@ -2,32 +2,55 @@
 #include "Theme.h"
 
 #include <assert.h>
+#include <iostream>
 
 namespace gui
 {
+	void OnMouseEntered(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Hover state
+		widget->toHoverButtonState();
+	}
+
+	void OnMouseLeft(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Normal state
+		widget->toNormalButtonState();
+	}
+
+	void OnMouseButtonDown(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Down state
+		widget->toDownButtonState();
+	}
+
+	void OnMouseButtonUp(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Hover state
+		widget->toHoverButtonState();
+	}
+
 	// Ctor for Text Button
 	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mVerts(sf::PrimitiveType::Quads, 9 * 4),
 		mTexture(theme->texture),
-
-		mMouseEnteredData(this),
-		mMouseLeftData(this),
-		mMouseButtonDownData(this),
-		mMouseButtonUpData(this),
+		mNormalState(theme->textButton.normalState),
+		mHoverState(theme->textButton.hoverState),
+		mDownState(theme->textButton.downState),
 
 		mCurrentButtonState(ButtonState::Normal)
-	{
-		mNormalState = theme->textButton.normalState;
-		mHoverState = theme->textButton.hoverState;
-		mDownState = theme->textButton.downState;
-		//updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
+	{		
 		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
 
-		bindCallback(GuiEvent::MouseEntered, OnMouseEntered, &mMouseEnteredData);
-		bindCallback(GuiEvent::MouseLeft, OnMouseLeft, &mMouseLeftData);
-		bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, &mMouseButtonDownData);
-		bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, &mMouseButtonUpData);
+		bindCallback(GuiEvent::MouseEntered, OnMouseEntered, this);
+		bindCallback(GuiEvent::MouseLeft, OnMouseLeft, this);
+		bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, this);
+		bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, this);
 	}
 
 
@@ -206,21 +229,18 @@ namespace gui
 	void BorderWidget::toNormalButtonState()
 	{
 		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
-
 		mCurrentButtonState = ButtonState::Normal;
 	}
 
 	void BorderWidget::toHoverButtonState()
 	{
 		updateNinePatchPoints(mHoverState.externalMargin, mHoverState.internalMargin);
-
 		mCurrentButtonState = ButtonState::Hover;
 	}
 
 	void BorderWidget::toDownButtonState()
 	{
 		updateNinePatchPoints(mDownState.externalMargin, mDownState.internalMargin);
-
 		mCurrentButtonState = ButtonState::Down;
 	}
 } // namespace
