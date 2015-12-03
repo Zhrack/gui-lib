@@ -1,16 +1,10 @@
 #include "Label.h"
 
 #include "Gui.h"
+#include <iostream>
 
 namespace gui
 {
-	void OnMouseMoved(gui::GuiEvent& event, void* args)
-	{
-		Label* widget = static_cast<Label*>(args);
-		
-		widget->updateTextTransform();
-	}
-
 	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font, const std::string& theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mText()
@@ -37,8 +31,6 @@ namespace gui
 
 		mRect.setFillColor(sf::Color::Transparent);
 		updateTextTransform();
-
-		bindCallback(GuiEvent::MouseMoved, OnMouseMoved, this);
 	}
 
 
@@ -80,6 +72,6 @@ namespace gui
 
 	void Label::update()
 	{
-		//updateTextTransform();
+		updateTextTransform();
 	}
 } // namespace

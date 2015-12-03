@@ -21,7 +21,8 @@ namespace gui
 		mFocused(focused),
 		mAllowFocus(allowFocus),
 		mMouseHover(false),
-		mDraggable(draggable)
+		mDraggable(draggable),
+		mDragging(false)
 	{
 		setGlobalPosition(pos);
 	}
@@ -38,10 +39,7 @@ namespace gui
 	bool Widget::handleEvent(GuiEvent& event)
 	{
 		// These events must be processed only locally
-		if (event.type != GuiEvent::MouseEntered &&
-			event.type != GuiEvent::MouseLeft &&
-			event.type != GuiEvent::GainedFocus && 
-			event.type != GuiEvent::LostFocus)
+		if (event.type < GuiEvent::LostFocus)
 		{
 			 // Check children first
 			for (auto& child : mChildWidgets)
@@ -67,6 +65,10 @@ namespace gui
 				break;
 			case GuiEvent::MouseMoved:
 				if (mouseOnWidget(event.mouseMove.x, event.mouseMove.y) == false)
+					return false;
+				break;
+			case GuiEvent::MouseDrag:
+				if (!isDraggable() || !isDragging())
 					return false;
 				break;
 			case GuiEvent::MouseEntered:
@@ -341,36 +343,25 @@ namespace gui
 	{
 		if (mParent)
 			mRect.setPosition(pos + mParent->getGlobalPosition());
-
-		//mRect.setPosition(pos);
 	}
 
 	// Set position with global coords
 	void Widget::setGlobalPosition(const sf::Vector2f& pos)
 	{ 
 		mRect.setPosition(pos);
-		//if (mParent)
-		//	mRect.setPosition(pos - mParent->getGlobalPosition());
 	}
 
 	const sf::Vector2f& Widget::getPosition() const 
 	{ 
 		if (mParent)
-			return mRect.getPosition() - mParent->getGlobalPosition();
+			return getGlobalPosition() - mParent->getGlobalPosition();
 
 		// GuiContainer
 		return sf::Vector2f();
-
-		//return mRect.getPosition();
 	}
 
 	const sf::Vector2f& Widget::getGlobalPosition() const 
 	{ 
 		return mRect.getPosition(); 
-
-		//if (mParent)
-		//	return mRect.getPosition() + mParent->getGlobalPosition();
-
-		//return sf::Vector2f();
 	}
 }// namespace

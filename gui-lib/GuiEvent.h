@@ -90,6 +90,23 @@ namespace gui
 		};
 
 		////////////////////////////////////////////////////////////
+		/// \brief Mouse drag event parameters (MouseDragBegin, MouseDrag, MouseDragEnd)
+		///
+		////////////////////////////////////////////////////////////
+		struct MouseDragEvent
+		{
+			int x; ///< X position of the mouse pointer, relative to the left of the owner window
+			int y; ///< Y position of the mouse pointer, relative to the top of the owner window
+
+			MouseDragEvent& operator=(const sf::Event::MouseMoveEvent& other)
+			{
+				x = other.x;
+				y = other.y;
+				return *this;
+			}
+		};
+
+		////////////////////////////////////////////////////////////
 		/// \brief Mouse buttons events parameters
 		///        (MouseButtonPressed, MouseButtonReleased)
 		///
@@ -120,28 +137,6 @@ namespace gui
 			int           x;      ///< X position of the mouse pointer, relative to the left of the owner window
 			int           y;      ///< Y position of the mouse pointer, relative to the top of the owner window
 		};
-
-		////////////////////////////////////////////////////////////
-		/// \brief Mouse wheel events parameters (MouseWheelMoved)
-		///
-		/// \deprecated This event is deprecated and potentially inaccurate.
-		///             Use MouseWheelScrollEvent instead.
-		///
-		////////////////////////////////////////////////////////////
-		/*struct MouseWheelEvent
-		{
-			int delta; ///< Number of ticks the wheel has moved (positive is up, negative is down)
-			int x;     ///< X position of the mouse pointer, relative to the left of the owner window
-			int y;     ///< Y position of the mouse pointer, relative to the top of the owner window
-
-			MouseWheelEvent& operator=(const sf::Event::MouseWheelEvent& other)
-			{
-				delta = other.delta;
-				x = other.x;
-				y = other.y;
-				return *this;
-			}
-		};*/
 
 		////////////////////////////////////////////////////////////
 		/// \brief Mouse wheel events parameters (MouseWheelScrolled)
@@ -225,8 +220,6 @@ namespace gui
 		{
 			Closed,                 ///< The window requested to be closed (no data)
 			Resized,                ///< The window was resized (data in event.size)
-			LostFocus,              ///< The window lost the focus (no data)
-			GainedFocus,            ///< The window gained the focus (no data)
 			TextEntered,            ///< A character was entered (data in event.text)
 			KeyPressed,             ///< A key was pressed (data in event.key)
 			KeyReleased,            ///< A key was released (data in event.key)
@@ -235,13 +228,20 @@ namespace gui
 			MouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
 			MouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
 			MouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
-			MouseEntered,           ///< The mouse cursor entered the widget (data in event.MouseEnterLeftEvent)
-			MouseLeft,              ///< The mouse cursor left the widget (data in event.MouseEnterLeftEvent)
 			JoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
 			JoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
 			JoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
 			JoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
 			JoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
+
+			// Non recursive events
+			LostFocus,              ///< The focused widget lost the focus (no data)
+			GainedFocus,            ///< The widget gained the focus (no data)
+			MouseEntered,           ///< The mouse cursor entered the widget (data in event.MouseEnterLeftEvent)
+			MouseLeft,              ///< The mouse cursor left the widget (data in event.MouseEnterLeftEvent)
+			MouseDragBegin,			///< The widget is starting to being dragged
+			MouseDrag,				///< The widget is being dragged
+			MouseDragEnd,			///< The widget stopped being dragged
 
 			Count                   ///< The total number of event types
 		};
@@ -257,6 +257,7 @@ namespace gui
 			KeyEvent              key;               ///< Key event parameters (GuiEvent::KeyPressed, GuiEvent::KeyReleased)
 			TextEvent             text;              ///< Text event parameters (GuiEvent::TextEntered)
 			MouseMoveEvent        mouseMove;         ///< Mouse move event parameters (GuiEvent::MouseMoved)
+			MouseDragEvent		  mouseDrag;		 ///< Mouse drag event parameters (GuiEvent::MouseDragBegin, GuiEvent::MouseDrag, GuiEvent::MouseDragEnd)
 			MouseEnterLeftEvent	  mouseEnterLeft;	 ///< Mouse entered or left the widget(GuiEvent::MouseEntered, GuiEvent::MouseLeft)
 			MouseButtonEvent      mouseButton;       ///< Mouse button event parameters (GuiEvent::MouseButtonPressed, GuiEvent::MouseButtonReleased)
 			//MouseWheelEvent       mouseWheel;        ///< Mouse wheel event parameters (GuiEvent::MouseWheelMoved) (deprecated)

@@ -23,7 +23,7 @@ int main()
 
 	gui::Gui gui(window);
 	gui::Panel::Ptr panel = gui.createPanel("panel");
-	panel->getShape().setSize(sf::Vector2f(120, 120));
+	panel->getShape().setSize(sf::Vector2f(300, 300));
 	//panel->setPosition(sf::Vector2f(50, 50));
 	
 	panel->setDraggable(true);
@@ -55,7 +55,7 @@ int main()
 
 	gui::Label::Ptr text = gui.createLabel(panel, "text");
 	text->setText("Hello World!");
-	//text->setDraggable(true);
+	text->setDraggable(true);
 
 	gui::TextButton::Ptr button = gui.createTextButton("button", "BIIIIIIIIIIIIIIIIIIIIIIIIIIIIG TEXT");
 	button->setDraggable(true);

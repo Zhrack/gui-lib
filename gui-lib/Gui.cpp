@@ -171,6 +171,19 @@ namespace gui
 			guiEvent.type = GuiEvent::MouseButtonReleased;
 			guiEvent.mouseButton = event.mouseButton;
 
+			// check if a mouse drag has just ended
+			if (mFocusedWidget && mFocusedWidget->isEnabled() && mFocusedWidget->isDragging())
+			{
+				if (guiEvent.mouseButton.button == sf::Mouse::Button::Left)
+				{
+					GuiEvent dragEnd;
+					dragEnd.type = GuiEvent::MouseDragEnd;
+					dragEnd.mouseDrag.x = event.mouseButton.x;
+					dragEnd.mouseDrag.y = event.mouseButton.y;
+					mFocusedWidget->handleEvent(dragEnd);
+					mFocusedWidget->setDragging(false);
+				}
+			}
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case sf::Event::MouseMoved:
@@ -186,6 +199,24 @@ namespace gui
 					sf::Vector2i deltaPos = newMousePos - getOldMousePosition();
 
 					mFocusedWidget->move(sf::Vector2f(deltaPos));
+
+					if (mFocusedWidget->isDragging())
+					{
+						// DragBegin already been called, continue generating drag events
+						GuiEvent drag;
+						drag.type = GuiEvent::MouseDrag;
+						drag.mouseDrag = event.mouseMove;
+						mFocusedWidget->handleEvent(drag);
+					}
+					else
+					{
+						// Generate DragBegin
+						GuiEvent dragBegin;
+						dragBegin.type = GuiEvent::MouseDragBegin;
+						dragBegin.mouseDrag = event.mouseMove;
+						mFocusedWidget->handleEvent(dragBegin);
+						mFocusedWidget->setDragging(true);
+					}
 				}
 			}
 

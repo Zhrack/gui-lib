@@ -35,8 +35,18 @@ namespace gui
 			mVisible = false;
 		}
 
-		void enable(){ mEnabled = true; show(); }
-		void disable(){ mEnabled = false; hide(); }
+		void enable()
+		{ 
+			mEnabled = true; 
+			if (!isVisible())
+				show();
+		}
+		void disable()
+		{
+			mEnabled = false;
+			if (isVisible())
+				hide();
+		}
 
 		void focus();
 		void unfocus();
@@ -44,6 +54,7 @@ namespace gui
 		void setFocusable(bool focusable) { mAllowFocus = focusable; }
 
 		void setDraggable(bool draggable) { mDraggable = draggable; }
+		void setDragging(bool drag) { mDragging = drag; }
 
 		void setOrigin(const sf::Vector2f& origin){ mRect.setOrigin(origin); }
 
@@ -64,6 +75,7 @@ namespace gui
 		bool isVisible() const { return mVisible; }
 		bool isFocused() const { return mFocused; }
 		bool isDraggable() const { return mDraggable; }
+		bool isDragging() const { return mDragging; }
 		bool allowFocus() const { return mAllowFocus; }
 
 		// Check to see if mouse pointer is on this widget
@@ -122,6 +134,8 @@ namespace gui
 		bool mAllowFocus;
 		// Is draggable?
 		bool mDraggable;
+		// Is being dragged?
+		bool mDragging;
 
 		friend class Gui;
 	};
