@@ -5,7 +5,7 @@
 
 namespace gui
 {
-	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Font* font, const std::string& theme) :
+	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, sf::Font* font, const std::string& theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mText()
 	{
@@ -30,7 +30,7 @@ namespace gui
 		}
 
 		mRect.setFillColor(sf::Color::Transparent);
-		updateTextTransform();
+		setText(text);
 	}
 
 

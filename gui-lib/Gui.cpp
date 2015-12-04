@@ -58,9 +58,9 @@ namespace gui
 		return widget;
 	}
 
-	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, sf::Font* font, const std::string& theme)
+	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text, sf::Font* font, const std::string& theme)
 	{
-		Label::Ptr widget(new Label(parent, this, name, font));
+		Label::Ptr widget(new Label(parent, this, name, text, font));
 		parent->addChild(widget, name);
 		return widget;
 	}

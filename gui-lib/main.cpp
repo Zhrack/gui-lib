@@ -6,6 +6,8 @@
 struct testStruct
 {
 	gui::Panel::Ptr panel;
+	gui::Gui* gui;
+	gui::Label::Ptr newChild;
 };
 
 void test(gui::GuiEvent& event, void* args)
@@ -15,6 +17,22 @@ void test(gui::GuiEvent& event, void* args)
 	std::cout << "test " << str->panel->getName() << std::endl;
 	std::cout << "focus: " << str->panel->getGui()->getFocusedWidget()->getName() << std::endl;
 	std::cout << "Position: " << str->panel->getGlobalPosition().x << " " << str->panel->getGlobalPosition().y << std::endl << std::endl;
+}
+
+void removeChild(gui::GuiEvent& event, void* args)
+{
+	gui::Label::Ptr* labelPtr = static_cast<gui::Label::Ptr*>(args);
+	gui::Label::Ptr label = *labelPtr;
+
+	label->getParent()->removeChild(label);
+}
+
+void renameButton(gui::GuiEvent& event, void* args)
+{
+	gui::TextButton::Ptr* buttonPtr = static_cast<gui::TextButton::Ptr*>(args);
+	gui::TextButton::Ptr button = *buttonPtr;
+
+	button->setText("Renamed with a very long name");
 }
 
 int main()
@@ -30,35 +48,36 @@ int main()
 	panel->getShape().setFillColor(sf::Color(200, 50, 50));
 
 	gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
-	childPanel->getShape().setSize(sf::Vector2f(60, 30));
-	//childPanel->setDraggable(true);
+	childPanel->getShape().setSize(sf::Vector2f(250, 100));
+	childPanel->setDraggable(true);
 	childPanel->getShape().setFillColor(sf::Color::Blue);
-	//childPanel->disable();
-	//childPanel->setPosition(sf::Vector2f(60, 60));
 
 	gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
-	childPanel2->getShape().setSize(sf::Vector2f(30, 20));
+	childPanel2->getShape().setSize(sf::Vector2f(150, 70));
 	childPanel2->setDraggable(true);
 	
 	testStruct str;
 	str.panel = panel;
+	str.gui = &gui;
+	str.newChild = nullptr;
 	std::function<void(gui::GuiEvent& event, void*)> function = test;
 	panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str);
-
-	testStruct str1;
-	str1.panel = childPanel;
-	childPanel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str1);
-
-	testStruct str2;
-	str2.panel = childPanel2;
-	childPanel2->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str2);
 
 	gui::Label::Ptr text = gui.createLabel(panel, "text");
 	text->setText("Hello World!");
 	text->setDraggable(true);
+	text->setGlobalPosition(sf::Vector2f(100, 200));
 
-	gui::TextButton::Ptr button = gui.createTextButton("button", "BIIIIIIIIIIIIIIIIIIIIIIIIIIIIG TEXT");
+	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
 	button->setDraggable(true);
+	button->setGlobalPosition(sf::Vector2f(400, 400));
+	function = removeChild;
+	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text);
+
+	gui::TextButton::Ptr renameB = gui.createTextButton("renameButton", "Rename Button");
+	renameB->setGlobalPosition(sf::Vector2f(400, 200));
+	function = renameButton;
+	renameB->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &button);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

@@ -74,8 +74,8 @@ namespace gui
 		Panel::Ptr createPanel(const Widget::Ptr& parent, const std::string& name);
 		Panel::Ptr createPanel(const std::string& name){ return createPanel(mRoot, name); }
 
-		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, sf::Font* font = nullptr, const std::string& theme = "");
-		Label::Ptr createLabel(const std::string& name, sf::Font* font = nullptr, const std::string& theme = ""){ return createLabel(mRoot, name, font, theme); }
+		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", sf::Font* font = nullptr, const std::string& theme = "");
+		Label::Ptr createLabel(const std::string& name, const std::string& text = "", sf::Font* font = nullptr, const std::string& theme = ""){ return createLabel(mRoot, name, text, font, theme); }
 
 		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "");
 		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = ""){ return createTextButton(mRoot, name, text, theme); }
