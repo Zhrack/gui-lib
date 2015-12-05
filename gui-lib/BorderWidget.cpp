@@ -64,7 +64,7 @@ namespace gui
 	// newSize is the size of the internal margin
 	void BorderWidget::resizeButton(sf::Vector2f newSize)
 	{
-		mRect.setSize(newSize);
+		mRect.setSize(newSize + sf::Vector2f(mInternalMargins.left, mInternalMargins.top) + sf::Vector2f(mInternalMargins.width, mInternalMargins.height));
 		updateVertsPosition();
 	}
 
