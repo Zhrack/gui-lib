@@ -76,6 +76,7 @@ namespace gui
 		bool isFocused() const { return mFocused; }
 		bool isDraggable() const { return mDraggable; }
 		bool isDragging() const { return mDragging; }
+		bool isDirty() const { return mDirty; }
 		bool allowFocus() const { return mAllowFocus; }
 
 		// Check to see if mouse pointer is on this widget
@@ -108,6 +109,9 @@ namespace gui
 
 		// Called when derived class must do some work, like in Label
 		virtual void update();
+
+		virtual void setDirty(bool recursive = false);
+		void setClean();
 	protected:
 		std::vector<std::string> mWidgetNames;
 		std::vector<Widget::Ptr> mChildWidgets;
@@ -136,6 +140,8 @@ namespace gui
 		bool mDraggable;
 		// Is being dragged?
 		bool mDragging;
+		// Does it nedds an update?
+		bool mDirty;
 
 		friend class Gui;
 	};

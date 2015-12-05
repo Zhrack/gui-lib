@@ -1,12 +1,14 @@
 #include "Image.h"
+#include "Theme.h"
 
 namespace gui
 {
-	Image::Image(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* tex) :
-		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false)
+	Image::Image(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* tex, sf::IntRect& rect) :
+		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(100, 100), true, true, false, true, false)
 	{
 		mRect.setFillColor(sf::Color::White);
-		mRect.setTexture(tex);
+		setTexture(tex);
+		setTextureRect(rect);
 	}
 
 
@@ -19,9 +21,19 @@ namespace gui
 		mRect.setTexture(tex, resetRect);
 	}
 
-	void Image::setTextureRect(sf::IntRect& rect)
+	void Image::setTextureRect(const sf::IntRect& rect)
 	{
 		mRect.setTextureRect(rect);
+	}
+
+	void Image::resize(sf::Vector2f newSize)
+	{
+		mRect.setSize(newSize);
+	}
+
+	void Image::resize(float x, float y)
+	{
+		resize(sf::Vector2f(x, y));
 	}
 
 	void Image::draw(sf::RenderTarget& target, sf::RenderStates states) const

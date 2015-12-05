@@ -80,6 +80,7 @@
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="GuiContainer.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="ImageButton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="TextButton.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="GuiContainer.h" />
     <ClInclude Include="GuiEvent.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="ImageButton.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="Label.h" />

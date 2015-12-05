@@ -36,7 +36,7 @@ namespace gui
 
 	// Ctor for Text Button
 	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme) :
-		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
+		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(100, 100), true, true, false, true, false),
 		mVerts(sf::PrimitiveType::Quads, 9 * 4),
 		mTexture(theme->texture),
 		mNormalState(theme->textButton.normalState),
@@ -60,6 +60,14 @@ namespace gui
 		mTexture = nullptr;
 	}
 
+	// Resizes the button to a new size.
+	// newSize is the size of the internal margin
+	void BorderWidget::resizeButton(sf::Vector2f newSize)
+	{
+		mRect.setSize(newSize);
+		updateVertsPosition();
+	}
+
 	//	Points must be an array of size 4, with coords of 4 points in pixel space of the texture
 	//	indicated by *, the rest is calculated from them.
 	//	*--+--+--+
@@ -69,7 +77,7 @@ namespace gui
 	//	+--+--*--+
 	//	|  |  |  |
 	//	+--+--+--*
-	void BorderWidget::updateNinePatchPoints(sf::FloatRect& rect1, sf::FloatRect& rect2)
+	void BorderWidget::updateNinePatchPoints(const sf::FloatRect& rect1, const sf::FloatRect& rect2)
 	{
 		sf::Vector2f points[4];
 		points[0] = sf::Vector2f(rect1.left, rect1.top);

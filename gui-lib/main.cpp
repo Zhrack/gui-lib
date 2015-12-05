@@ -27,12 +27,12 @@ void removeChild(gui::GuiEvent& event, void* args)
 	label->getParent()->removeChild(label);
 }
 
-void renameButton(gui::GuiEvent& event, void* args)
+void resizeImage(gui::GuiEvent& event, void* args)
 {
-	gui::TextButton::Ptr* buttonPtr = static_cast<gui::TextButton::Ptr*>(args);
-	gui::TextButton::Ptr button = *buttonPtr;
+	gui::ImageButton::Ptr* buttonPtr = static_cast<gui::ImageButton::Ptr*>(args);
+	gui::ImageButton::Ptr button = *buttonPtr;
 
-	button->setText("Renamed with a very long name");
+	button->resize(400, 400);
 }
 
 int main()
@@ -74,10 +74,16 @@ int main()
 	function = removeChild;
 	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text);
 
-	gui::TextButton::Ptr renameB = gui.createTextButton("renameButton", "Rename Button");
+	sf::Texture* texture = new sf::Texture();
+	texture->loadFromFile("themes/darkTheme.png");
+	gui::ImageButton::Ptr imageButton = gui.createImageButton("imageButton", texture, sf::IntRect(0, 0, 400, 400));
+	//image->getShape().setSize(sf::Vector2f(200, 150));
+	imageButton->setDraggable(true);
+
+	gui::TextButton::Ptr renameB = gui.createTextButton("resize button", "Resize");
 	renameB->setGlobalPosition(sf::Vector2f(400, 200));
-	function = renameButton;
-	renameB->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &button);
+	function = resizeImage;
+	renameB->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &imageButton);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

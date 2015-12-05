@@ -27,16 +27,22 @@ namespace gui
 		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme);
 		~BorderWidget();
 
-		void updateNinePatchPoints(sf::FloatRect& rect1, sf::FloatRect& rect2);
-		void updateNinePatchPoints(sf::Vector2f* points);
-
-		void updateVertsPosition();
-
 		ButtonState getCurrentState() const { return mCurrentButtonState; }
 
 		void toNormalButtonState();
 		void toHoverButtonState();
 		void toDownButtonState();
+
+	protected:
+		// Updates button grapghics to a new size
+		void updateNinePatchPoints(const sf::FloatRect& rect1, const sf::FloatRect& rect2);
+		void updateNinePatchPoints(sf::Vector2f* points);
+
+		void updateVertsPosition();
+
+		// Resizes the button to a new size.
+		// newSize is the size of the internal margin
+		void resizeButton(sf::Vector2f newSize);
 
 	protected:
 		// Vertices of the 9-patch

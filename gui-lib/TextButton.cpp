@@ -41,15 +41,19 @@ namespace gui
 
 	void TextButton::update()
 	{
-		updateVertsPosition();
+		if (isDirty())
+		{
+			updateVertsPosition();
 
-		// Reposition text inside button
-		mText->setGlobalPosition(sf::Vector2f(
-			getGlobalPosition().x + mInternalMargins.left,
-			getGlobalPosition().y + mInternalMargins.top)
-			);
+			// Reposition text inside button
+			mText->setGlobalPosition(sf::Vector2f(
+				getGlobalPosition().x + mInternalMargins.left,
+				getGlobalPosition().y + mInternalMargins.top)
+				);
 
-		mText->updateTextTransform();
+			mText->updateTextTransform();
+			setClean();
+		}
 	}
 
 	void TextButton::draw(sf::RenderTarget& target, sf::RenderStates states) const

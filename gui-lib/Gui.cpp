@@ -73,19 +73,21 @@ namespace gui
 		return widget;
 	}
 
-	/*ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text)
+	ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, const std::string& theme)
 	{
-		ImageButton::Ptr widget(new ImageButton(parent, this, name, text));
+		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		ImageButton::Ptr widget(new ImageButton(parent, this, name, texture, imageRect, getTheme(t)));
 		parent->addChild(widget, name);
 		return widget;
 	}
 
-	Image::Ptr Gui::createImage(const Widget::Ptr& parent, const std::string& name)
+	// With standalone texture
+	Image::Ptr Gui::createImage(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& rect)
 	{
-		Image::Ptr widget(new Image(parent, this, name));
+		Image::Ptr widget(new Image(parent, this, name, texture, rect));
 		parent->addChild(widget, name);
 		return widget;
-	}*/
+	}
 
 	//convert from sf::Event to GuiEvent
 	bool Gui::handleEvent(sf::Event& event)

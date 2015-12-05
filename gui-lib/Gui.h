@@ -80,11 +80,13 @@ namespace gui
 		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "");
 		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = ""){ return createTextButton(mRoot, name, text, theme); }
 
-		//ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "");
-		//ImageButton::Ptr createImageButton(const std::string& name, const std::string& text){ return createImageButton(mRoot, name, text); }
+		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "");
+		ImageButton::Ptr createImageButton(const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "")
+		{ return createImageButton(mRoot, name, texture, imageRect, theme); }
 
-		//Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name);
-		//Image::Ptr createImage(const std::string& name){ return createImage(mRoot, name); }
+		// Using standalone texture
+		Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect());
+		Image::Ptr createImage(const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect()){ return createImage(mRoot, name, texture, rect); }
 
 
 		void update();

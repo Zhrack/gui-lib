@@ -22,7 +22,8 @@ namespace gui
 		mAllowFocus(allowFocus),
 		mMouseHover(false),
 		mDraggable(draggable),
-		mDragging(false)
+		mDragging(false),
+		mDirty(true)
 	{
 		setGlobalPosition(pos);
 	}
@@ -257,6 +258,7 @@ namespace gui
 		}
 
 		setGlobalPosition(resultPos);
+		setDirty();
 
 		for (auto& child : mChildWidgets)
 		{
@@ -321,6 +323,24 @@ namespace gui
 		{
 			widget->update();
 		}
+	}
+
+	void Widget::setDirty(bool recursive)
+	{
+		mDirty = true;
+
+		if (recursive)
+		{
+			for (auto& widget : mChildWidgets)
+			{
+				widget->setDirty(true);
+			}
+		}
+	}
+
+	void Widget::setClean()
+	{
+		mDirty = false;
 	}
 
 	void Widget::focus()

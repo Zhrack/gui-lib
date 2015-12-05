@@ -72,6 +72,10 @@ namespace gui
 
 	void Label::update()
 	{
-		updateTextTransform();
+		if (isDirty())
+		{
+			updateTextTransform();
+			setClean();
+		}
 	}
 } // namespace
