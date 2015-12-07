@@ -33,6 +33,7 @@ namespace gui
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
+		mRoot->getShape().setSize(sf::Vector2f(this->mWindow->getSize()));
 
 		sf::Font font;
 		if (!font.loadFromFile("fonts/DejaVuSans.ttf"))
@@ -49,6 +50,13 @@ namespace gui
 	void Gui::removeWidget(const Widget::Ptr& widget, bool recursive)
 	{
 		mRoot->removeChild(widget, recursive);
+	}
+
+	GuiContainer::Ptr Gui::createContainer(const Widget::Ptr& parent, const std::string& name)
+	{
+		GuiContainer::Ptr widget(new GuiContainer(parent, this, name));
+		parent->addChild(widget, name);
+		return widget;
 	}
 
 	Panel::Ptr Gui::createPanel(const Widget::Ptr& parent, const std::string& name)

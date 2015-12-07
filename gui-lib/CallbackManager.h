@@ -33,6 +33,12 @@ namespace gui
 			mCallbacks[eventType].push_back(func);
 		}
 
+		// Eliminates all callbacks associated with this event
+		void unbindCallback(GuiEvent::EventType eventType)
+		{
+			mCallbacks[eventType].clear();
+		}
+
 	protected:
 		std::unordered_map<GuiEvent::EventType, FunctionList> mCallbacks;
 	};

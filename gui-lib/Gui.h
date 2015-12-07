@@ -71,6 +71,9 @@ namespace gui
 		//////////////////////////////////////////////////
 		//TODO implementare funzioni create man mano che vengono aggiunti widget
 
+		GuiContainer::Ptr createContainer(const Widget::Ptr& parent, const std::string& name);
+		GuiContainer::Ptr createContainer(const std::string& name){ return createContainer(mRoot, name); }
+
 		Panel::Ptr createPanel(const Widget::Ptr& parent, const std::string& name);
 		Panel::Ptr createPanel(const std::string& name){ return createPanel(mRoot, name); }
 

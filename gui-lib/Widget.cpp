@@ -229,40 +229,37 @@ namespace gui
 
 	void Widget::move(const sf::Vector2f& delta)
 	{
-		sf::Vector2f clampedDelta = delta;
-		sf::Vector2f resultPos = getGlobalPosition() + delta;
+		sf::Vector2f oldPos = getGlobalPosition();
+		sf::Vector2f resultPos = oldPos + delta;
 		sf::FloatRect rect = mParent->getShape().getGlobalBounds();
 		sf::Vector2f size = mRect.getSize();
-		GuiContainer::Ptr root = mMainGui->getRoot();
 
 		if (resultPos.x < rect.left) // correct on left
 		{
 			resultPos.x = rect.left;
-			clampedDelta.x = 0;
 		}
 		else if (resultPos.x + size.x > rect.left + rect.width) // correct on right
 		{
 			resultPos.x = rect.left + rect.width - size.x;
-			clampedDelta.x = 0;
 		}
 
 		if (resultPos.y < rect.top) // correct on top
 		{
 			resultPos.y = rect.top;
-			clampedDelta.y = 0;
 		}
 		else if (resultPos.y + size.y > rect.top + rect.height) // correct on bottom
 		{
 			resultPos.y = rect.top + rect.height - size.y;
-			clampedDelta.y = 0;
 		}
 
 		setGlobalPosition(resultPos);
 		setDirty();
 
+		sf::Vector2f movement = resultPos - oldPos;
+
 		for (auto& child : mChildWidgets)
 		{
-			child->move(clampedDelta);
+			child->move(movement);
 		}
 	}
 
