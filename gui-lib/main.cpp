@@ -68,7 +68,7 @@ int main()
 	text->setDraggable(true);
 	text->setGlobalPosition(sf::Vector2f(100, 200));
 
-	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
+	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label", "", false);
 	button->setDraggable(true);
 	button->setGlobalPosition(sf::Vector2f(400, 400));
 	function = removeChild;
@@ -104,7 +104,7 @@ int main()
 
 		if (!inputProcessed)
 		{
-			// Game input here
+			// Game logic here
 		}
 
 		window->clear();

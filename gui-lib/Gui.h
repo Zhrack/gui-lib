@@ -80,12 +80,12 @@ namespace gui
 		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", sf::Font* font = nullptr, const std::string& theme = "");
 		Label::Ptr createLabel(const std::string& name, const std::string& text = "", sf::Font* font = nullptr, const std::string& theme = ""){ return createLabel(mRoot, name, text, font, theme); }
 
-		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "");
-		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = ""){ return createTextButton(mRoot, name, text, theme); }
+		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "", bool reactive = true);
+		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = "", bool reactive = true){ return createTextButton(mRoot, name, text, theme, reactive); }
 
-		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "");
-		ImageButton::Ptr createImageButton(const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "")
-		{ return createImageButton(mRoot, name, texture, imageRect, theme); }
+		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "", bool reactive = true);
+		ImageButton::Ptr createImageButton(const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "", bool reactive = true)
+		{ return createImageButton(mRoot, name, texture, imageRect, theme, reactive); }
 
 		// Using standalone texture
 		Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect());

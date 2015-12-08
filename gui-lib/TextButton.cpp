@@ -4,8 +4,8 @@
 
 namespace gui
 {
-	TextButton::TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme) :
-		BorderWidget(parent, gui, name, theme),
+	TextButton::TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, bool reactive) :
+		BorderWidget(parent, gui, name, theme, reactive),
 		mText(new Label(static_cast<Widget::Ptr>(this), gui, "", ""))
 	{
 		setText(text);

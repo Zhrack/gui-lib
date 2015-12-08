@@ -13,7 +13,7 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<TextButton>;
 
-		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme);
+		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, bool reactive = true);
 		~TextButton();
 
 		// Changes the text of the button

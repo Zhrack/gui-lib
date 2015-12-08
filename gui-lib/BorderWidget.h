@@ -15,7 +15,8 @@ namespace gui
 	enum ButtonState{ 
 		Normal, 
 		Hover, 
-		Down 
+		Down,
+		NotReactive
 	};
 
 	// Manages resize of button through 9-patch
@@ -24,7 +25,7 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<BorderWidget>;
 
-		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme);
+		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme, bool reactive);
 		~BorderWidget();
 
 		ButtonState getCurrentState() const { return mCurrentButtonState; }

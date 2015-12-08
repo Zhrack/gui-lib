@@ -35,22 +35,24 @@ namespace gui
 	}
 
 	// Ctor for Text Button
-	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme) :
+	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme, bool reactive) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(100, 100), true, true, false, true, false),
 		mVerts(sf::PrimitiveType::Quads, 9 * 4),
 		mTexture(theme->texture),
 		mNormalState(theme->textButton.normalState),
 		mHoverState(theme->textButton.hoverState),
-		mDownState(theme->textButton.downState),
-
-		mCurrentButtonState(ButtonState::Normal)
+		mDownState(theme->textButton.downState)
 	{		
+		mCurrentButtonState = reactive == true ? ButtonState::Normal : ButtonState::NotReactive;
 		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
 
-		bindCallback(GuiEvent::MouseEntered, OnMouseEntered, this);
-		bindCallback(GuiEvent::MouseLeft, OnMouseLeft, this);
-		bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, this);
-		bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, this);
+		if (mCurrentButtonState == ButtonState::Normal)
+		{
+			bindCallback(GuiEvent::MouseEntered, OnMouseEntered, this);
+			bindCallback(GuiEvent::MouseLeft, OnMouseLeft, this);
+			bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, this);
+			bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, this);
+		}
 	}
 
 

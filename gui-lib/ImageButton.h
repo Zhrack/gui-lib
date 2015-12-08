@@ -13,7 +13,7 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<ImageButton>;
 
-		ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme);
+		ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme, bool reactive = true);
 		~ImageButton();
 
 		// Changes the texture of the button
