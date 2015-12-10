@@ -97,6 +97,14 @@ namespace gui
 		return widget;
 	}
 
+	ChildWindow::Ptr Gui::createChildWindow(const Widget::Ptr& parent, const std::string& name, const std::string& title, const std::string& theme)
+	{
+		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		ChildWindow::Ptr widget(new ChildWindow(parent, this, name, title, getTheme(t)));
+		parent->addChild(widget, name);
+		return widget;
+	}
+
 	//convert from sf::Event to GuiEvent
 	bool Gui::handleEvent(sf::Event& event)
 	{

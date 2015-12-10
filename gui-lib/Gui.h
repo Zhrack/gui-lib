@@ -8,6 +8,7 @@
 #include "Image.h"
 #include "TextButton.h"
 #include "ImageButton.h"
+#include "ChildWindow.h"
 
 #include "Theme.h"
 
@@ -87,10 +88,14 @@ namespace gui
 		ImageButton::Ptr createImageButton(const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "", bool reactive = true)
 		{ return createImageButton(mRoot, name, texture, imageRect, theme, reactive); }
 
-		// Using standalone texture
 		Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect());
 		Image::Ptr createImage(const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect()){ return createImage(mRoot, name, texture, rect); }
 
+		ChildWindow::Ptr createChildWindow(const Widget::Ptr& parent, const std::string& name, const std::string& title, const std::string& theme = "");
+		ChildWindow::Ptr createChildWindow(const std::string& name, const std::string& title, const std::string& theme = "")
+		{
+			return createChildWindow(mRoot, name, title, theme);
+		}
 
 		void update();
 

@@ -54,6 +54,9 @@
     <ClCompile Include="ImageButton.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="ChildWindow.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackManager.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImageButton.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildWindow.h">
       <Filter>Widgets</Filter>
     </ClInclude>
   </ItemGroup>
