@@ -80,10 +80,10 @@ int main()
 	imageButton->resize(200, 200);
 	imageButton->setDraggable(true);
 
-	gui::TextButton::Ptr renameB = gui.createTextButton("resize button", "Resize");
-	renameB->setGlobalPosition(sf::Vector2f(400, 200));
-	function = resizeImage;
-	renameB->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &imageButton);
+
+	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
+	childWindow->setSize(200, 300);
+	childWindow->setDraggable(true);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

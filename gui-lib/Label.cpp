@@ -45,6 +45,13 @@ namespace gui
 		updateTextTransform();
 	}
 
+	void Label::setCharacterSize(unsigned int size)
+	{
+		mText.setCharacterSize(size);
+
+		updateTextTransform();
+	}
+
 	void Label::updateTextTransform()
 	{
 		sf::FloatRect textRect = mText.getLocalBounds();

@@ -39,6 +39,13 @@ namespace gui
 
 	}
 
+	void TextButton::setCharacterSize(unsigned int size)
+	{
+		mText->getString().setCharacterSize(size);
+
+		setDirty();
+	}
+
 	void TextButton::update()
 	{
 		if (isDirty())

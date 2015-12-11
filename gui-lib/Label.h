@@ -19,6 +19,9 @@ namespace gui
 		void setText(const std::string& str);
 		sf::Text& getString() { return mText; }
 
+		// Default value is 30
+		void setCharacterSize(unsigned int size);
+
 		// Update mRect and mText after a change
 		// Internal use only.
 		void updateTextTransform();

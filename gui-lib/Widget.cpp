@@ -356,10 +356,21 @@ namespace gui
 	}
 
 	// Set position. Local position to parent.
+	void Widget::setPosition(float x, float y)
+	{
+		setPosition(sf::Vector2f(x, y));
+	}
+
+	// Set position. Local position to parent.
 	void Widget::setPosition(const sf::Vector2f& pos)
 	{
 		if (mParent)
 			mRect.setPosition(pos + mParent->getGlobalPosition());
+	}
+
+	void Widget::setGlobalPosition(float x, float y)
+	{
+		setGlobalPosition(sf::Vector2f(x, y));
 	}
 
 	// Set position with global coords

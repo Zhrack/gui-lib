@@ -18,6 +18,8 @@ namespace gui
 
 		// Changes the text of the button
 		void setText(const std::string& str);
+		// Default value is 30
+		void setCharacterSize(unsigned int size);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

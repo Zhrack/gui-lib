@@ -134,7 +134,7 @@ namespace gui
 						}
 						
 					}
-					else if (sectionName == "TextButton")
+					else if (sectionName == "Button")
 					{
 						if (property == "externalMarginNormal")
 						{
@@ -142,10 +142,6 @@ namespace gui
 							if (readFloatRect(value, rect))
 							{
 								// Get first and fourth points of BorderWidget(the external ones)
-								//newTheme->textButton.texRect.left = rect.left;
-								//newTheme->textButton.texRect.top = rect.top;
-								//newTheme->textButton.texRect.width = rect.left + rect.width;
-								//newTheme->textButton.texRect.height = rect.top + rect.height;
 								newTheme->textButton.normalState.externalMargin.left = rect.left;
 								newTheme->textButton.normalState.externalMargin.top = rect.top;
 								newTheme->textButton.normalState.externalMargin.width = rect.left + rect.width;
@@ -255,19 +251,73 @@ namespace gui
 							}
 						}
 					}
-					//else if (sectionName == "ImageButton")
-					//{
-					//	sf::IntRect rect;
-					//	if (readIntRect(value, rect))
-					//	{
+					else if (sectionName == "ChildWindow")
+					{
+						if (property == "externalMargin")
+						{
+							sf::FloatRect rect;
+							if (readFloatRect(value, rect))
+							{
+								newTheme->childWindow.margins.externalMargin.left = rect.left;
+								newTheme->childWindow.margins.externalMargin.top = rect.top;
+								newTheme->childWindow.margins.externalMargin.width = rect.left + rect.width;
+								newTheme->childWindow.margins.externalMargin.height = rect.top + rect.height;
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "internalMargin")
+						{
+							sf::FloatRect rect;
+							if (readFloatRect(value, rect))
+							{
+								newTheme->childWindow.margins.internalMargin.left = rect.left;
+								newTheme->childWindow.margins.internalMargin.top = rect.top;
+								newTheme->childWindow.margins.internalMargin.width = rect.left + rect.width;
+								newTheme->childWindow.margins.internalMargin.height = rect.top + rect.height;
 
-					//	}
-					//	else
-					//	{
-					//		std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
-					//		lineError = true;
-					//	}
-					//}
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "closeButtonRect")
+						{
+							sf::IntRect rect;
+							if (readIntRect(value, rect))
+							{
+								newTheme->childWindow.closeButtonRect.left = rect.left;
+								newTheme->childWindow.closeButtonRect.top = rect.top;
+								newTheme->childWindow.closeButtonRect.width = rect.left + rect.width;
+								newTheme->childWindow.closeButtonRect.height = rect.top + rect.height;
+
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "textColor")
+						{
+							// value is a Color
+							sf::Color color;
+							if (readColor(value, color))
+							{
+								newTheme->childWindow.label.textColor = color;
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+					}
 				}
 
 				error |= lineError;
@@ -424,6 +474,21 @@ namespace gui
 		}
 
 		return false;
+	}
+
+	bool ThemeCache::readIntRect(std::string value, sf::IntRect& rect) const
+	{
+		sf::FloatRect fRect;
+		if (readFloatRect(value, fRect))
+		{
+			rect.left = fRect.left;
+			rect.top = fRect.top;
+			rect.width = fRect.width;
+			rect.height = fRect.height;
+			return true;
+		}
+		else
+			return false;
 	}
 
 	std::string ThemeCache::toLower(const std::string& str)

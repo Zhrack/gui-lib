@@ -22,8 +22,11 @@ namespace gui
 
 		// Changes title
 		void setTitle(const std::string& title) { mTitle->setText(title); }
+		// Default value is 30
+		void setTitleSize(unsigned int size);
 		// Set a new size for the window
 		void setSize(const sf::Vector2f& size);
+		void setSize(float x, float y);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	private:
