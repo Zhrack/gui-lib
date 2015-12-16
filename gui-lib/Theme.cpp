@@ -293,8 +293,8 @@ namespace gui
 							{
 								newTheme->childWindow.closeButtonRect.left = rect.left;
 								newTheme->childWindow.closeButtonRect.top = rect.top;
-								newTheme->childWindow.closeButtonRect.width = rect.left + rect.width;
-								newTheme->childWindow.closeButtonRect.height = rect.top + rect.height;
+								newTheme->childWindow.closeButtonRect.width = rect.width;
+								newTheme->childWindow.closeButtonRect.height = rect.height;
 
 							}
 							else

@@ -28,6 +28,11 @@ namespace gui
 		void setSize(const sf::Vector2f& size);
 		void setSize(float x, float y);
 
+		void setPosition(const sf::Vector2f& localPos) override;
+		void setPosition(float x, float y) override;
+		void setGlobalPosition(const sf::Vector2f& globalPos) override;
+		void setGlobalPosition(float x, float y) override;
+
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	private:
 		// To update graphic pos

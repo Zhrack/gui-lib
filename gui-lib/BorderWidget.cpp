@@ -68,6 +68,7 @@ namespace gui
 	{
 		mRect.setSize(newSize + sf::Vector2f(mInternalMargins.left, mInternalMargins.top) + sf::Vector2f(mInternalMargins.width, mInternalMargins.height));
 		updateVertsPosition();
+		setDirty();
 	}
 
 	//	Points must be an array of size 4, with coords of 4 points in pixel space of the texture

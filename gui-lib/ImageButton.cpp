@@ -8,6 +8,8 @@ namespace gui
 		mImage(new Image(static_cast<Widget::Ptr>(this), gui, "", texture, imageRect))
 	{
 		setTexture(texture, imageRect);
+		resize(mRect.getSize());
+		setDirty();
 	}
 
 
@@ -19,6 +21,7 @@ namespace gui
 	void ImageButton::setTexture(sf::Texture* tex, const sf::IntRect& clipRect)
 	{
 		mImage->setTexture(tex);
+		setTextureRect(clipRect);
 
 		//updateNinePatchPoints(rect1, rect2);
 	}
@@ -32,7 +35,7 @@ namespace gui
 	{
 		mImage->resize(newSize);
 
-		// now resize button accondingly
+		// now resize button accordingly
 		resizeButton(newSize);
 	}
 
@@ -41,16 +44,39 @@ namespace gui
 		resize(sf::Vector2f(x, y));
 	}
 
+	void ImageButton::setPosition(const sf::Vector2f& localPos)
+	{
+		mRect.setPosition(localPos + mParent->getGlobalPosition());
+		updateVertsPosition();
+
+		mImage->setPosition(mInternalMargins.left, mInternalMargins.top);
+	}
+
+	void ImageButton::setPosition(float x, float y)
+	{
+		setPosition(sf::Vector2f(x, y));
+	}
+
+	void ImageButton::setGlobalPosition(const sf::Vector2f& globalPos)
+	{
+		mRect.setPosition(globalPos);
+		updateVertsPosition();
+
+		mImage->setPosition(mInternalMargins.left, mInternalMargins.top);
+	}
+
+	void ImageButton::setGlobalPosition(float x, float y)
+	{
+		setGlobalPosition(sf::Vector2f(x, y));
+	}
+
 	void ImageButton::update()
 	{
 		if (isDirty())
 		{
 			updateVertsPosition();
 
-			mImage->setGlobalPosition(sf::Vector2f(
-				getGlobalPosition().x + mInternalMargins.left,
-				getGlobalPosition().y + mInternalMargins.top)
-				);
+			mImage->setPosition(mInternalMargins.left, mInternalMargins.top);
 
 			setClean();
 		}

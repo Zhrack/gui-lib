@@ -60,11 +60,11 @@ namespace gui
 
 		void move(const sf::Vector2f& delta);
 		// Set position. Local position to parent.
-		void setPosition(const sf::Vector2f& localPos);
-		void setPosition(float x, float y);
+		virtual void setPosition(const sf::Vector2f& localPos);
+		virtual void setPosition(float x, float y);
 		// Set position with global coords
-		void setGlobalPosition(const sf::Vector2f& globalPos);
-		void setGlobalPosition(float x, float y);
+		virtual void setGlobalPosition(const sf::Vector2f& globalPos);
+		virtual void setGlobalPosition(float x, float y);
 
 		const sf::Vector2f& getPosition() const;
 		const sf::Vector2f& getGlobalPosition() const;
