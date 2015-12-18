@@ -13,6 +13,8 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<ImageButton>;
 
+		static const std::string mImageName;
+
 		ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme, bool reactive = true);
 		~ImageButton();
 
@@ -24,10 +26,8 @@ namespace gui
 
 		// Resizes the image.
 		// newSize = new pixel size of the image
-		void resize(sf::Vector2f newSize);
-		void resize(float x, float y);
-
-		Image::Ptr getImage() const { return mImage; }
+		void setSize(sf::Vector2f newSize);
+		void setSize(float x, float y);
 
 		void setPosition(const sf::Vector2f& localPos) override;
 		void setPosition(float x, float y) override;

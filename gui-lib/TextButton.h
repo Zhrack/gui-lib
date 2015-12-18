@@ -13,6 +13,8 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<TextButton>;
 
+		static const std::string mLabelName;
+
 		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, bool reactive = true);
 		~TextButton();
 
@@ -20,6 +22,11 @@ namespace gui
 		void setText(const std::string& str);
 		// Default value is 30
 		void setCharacterSize(unsigned int size);
+
+		void setPosition(const sf::Vector2f& localPos) override;
+		void setPosition(float x, float y) override;
+		void setGlobalPosition(const sf::Vector2f& globalPos) override;
+		void setGlobalPosition(float x, float y) override;
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

@@ -13,12 +13,17 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<ChildWindow>;
 
+		// Child names
+		static const std::string mBodyName;
+		static const std::string mTitleBarName;
+		static const std::string mTitleName;
+		static const std::string mButtonName;
+
 		ChildWindow(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& title, Theme* theme);
 		~ChildWindow();
 
 		Panel::Ptr getBody() const { return mBody; }
 		Label::Ptr getTitle() const { return mTitle; }
-		ImageButton::Ptr getCloseButton() const { return mCloseButton; }
 
 		// Changes title
 		void setTitle(const std::string& title) { mTitle->setText(title); }

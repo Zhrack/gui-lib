@@ -3,18 +3,24 @@
 
 namespace gui
 {
+	const std::string ChildWindow::mBodyName = "body";
+	const std::string ChildWindow::mTitleBarName = "titleBar";
+	const std::string ChildWindow::mTitleName = "title";
+	const std::string ChildWindow::mButtonName = "closeButton";
+
 	ChildWindow::ChildWindow(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& title, Theme* theme) :
 		BorderWidget(parent, gui, name, theme, false),
-		mBody(new Panel(static_cast<Widget::Ptr>(this), gui, "body")),
-		mTitleBar(new Panel(static_cast<Widget::Ptr>(this), gui, "titleBar")),
-		mTitle(new Label(static_cast<Widget::Ptr>(this), gui, "title", title)),
-		mCloseButton(new ImageButton(static_cast<Widget::Ptr>(this), gui, "closeButton", theme->texture, theme->childWindow.closeButtonRect, theme, false))
+		mBody(new Panel(static_cast<Widget::Ptr>(this), gui, mBodyName)),
+		mTitleBar(new Panel(static_cast<Widget::Ptr>(this), gui, mTitleBarName)),
+		mTitle(new Label(static_cast<Widget::Ptr>(this), gui, mTitleName, title)),
+		mCloseButton(new ImageButton(static_cast<Widget::Ptr>(this), gui, mButtonName, theme->texture, theme->childWindow.closeButtonRect, theme, theme->childWindow.reactive))
 	{
-		mBody->getShape().setFillColor(sf::Color::Blue);
-		mTitleBar->getShape().setFillColor(sf::Color::Yellow);
+		mTitleBar->getShape().setTexture(theme->texture);
+		mTitleBar->getShape().setTextureRect(theme->childWindow.titleBarRect);
+		mBody->getShape().setTexture(theme->texture);
+		mBody->getShape().setTextureRect(theme->childWindow.bodyRect);
 
 		setSize(mRect.getSize());
-		mCloseButton->setDraggable(true);
 
 		addChild(mCloseButton, mCloseButton->getName());
 	}
@@ -49,7 +55,7 @@ namespace gui
 			);
 		mBody->setPosition(sf::Vector2f(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y));
 		
-		mCloseButton->resize(5, 5);
+		mCloseButton->setSize(5, 5);
 		mCloseButton->setPosition(mRect.getSize().x - mCloseButton->getShape().getSize().x, 0);
 	}
 
@@ -118,7 +124,7 @@ namespace gui
 			states = sf::RenderStates::Default;
 			target.draw(*mBody, states);
 			target.draw(*mTitleBar, states);
-			//target.draw(*mTitle, states);
+			target.draw(*mTitle, states);
 
 			for (auto& widget : mChildWidgets)
 			{

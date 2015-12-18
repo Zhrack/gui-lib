@@ -39,9 +39,9 @@ namespace gui
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(100, 100), true, true, false, true, false),
 		mVerts(sf::PrimitiveType::Quads, 9 * 4),
 		mTexture(theme->texture),
-		mNormalState(theme->textButton.normalState),
-		mHoverState(theme->textButton.hoverState),
-		mDownState(theme->textButton.downState)
+		mNormalState(theme->button.normalState),
+		mHoverState(theme->button.hoverState),
+		mDownState(theme->button.downState)
 	{		
 		mCurrentButtonState = reactive == true ? ButtonState::Normal : ButtonState::NotReactive;
 		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);

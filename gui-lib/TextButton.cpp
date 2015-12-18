@@ -4,12 +4,14 @@
 
 namespace gui
 {
+	const std::string TextButton::mLabelName = "label";
+
 	TextButton::TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, bool reactive) :
-		BorderWidget(parent, gui, name, theme, reactive),
-		mText(new Label(static_cast<Widget::Ptr>(this), gui, "", ""))
+		BorderWidget(parent, gui, name, theme, theme->button.reactive),
+		mText(new Label(static_cast<Widget::Ptr>(this), gui, mLabelName, ""))
 	{
 		setText(text);
-		mText->getString().setColor(theme->textButton.label.textColor);
+		mText->getString().setColor(theme->button.label.textColor);
 		//updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
 		//toNormalButtonState();
 	}
@@ -44,6 +46,32 @@ namespace gui
 		mText->getString().setCharacterSize(size);
 
 		setDirty();
+	}
+
+	void TextButton::setPosition(const sf::Vector2f& localPos)
+	{
+		mRect.setPosition(localPos + mParent->getGlobalPosition());
+		updateVertsPosition();
+
+		mText->setPosition(mInternalMargins.left, mInternalMargins.top);
+	}
+
+	void TextButton::setPosition(float x, float y)
+	{
+		setPosition(sf::Vector2f(x, y));
+	}
+
+	void TextButton::setGlobalPosition(const sf::Vector2f& globalPos)
+	{
+		mRect.setPosition(globalPos);
+		updateVertsPosition();
+
+		mText->setPosition(mInternalMargins.left, mInternalMargins.top);
+	}
+
+	void TextButton::setGlobalPosition(float x, float y)
+	{
+		setGlobalPosition(sf::Vector2f(x, y));
 	}
 
 	void TextButton::update()

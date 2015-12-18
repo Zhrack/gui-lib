@@ -17,11 +17,12 @@ namespace gui
 	};
 
 	// Holds theme data for textbuttons and imagebuttons
-	struct TextButtonData
+	struct ButtonData
 	{
 		TextureMarginsCoords normalState;
 		TextureMarginsCoords hoverState;
 		TextureMarginsCoords downState;
+		bool reactive;
 		LabelData label;
 	};
 
@@ -30,13 +31,16 @@ namespace gui
 	{
 		TextureMarginsCoords margins;
 		sf::IntRect closeButtonRect;
+		sf::IntRect titleBarRect;
+		sf::IntRect bodyRect;
+		bool reactive;
 		LabelData label;
 	};
 
 	struct Theme
 	{
 		LabelData label;
-		TextButtonData textButton;
+		ButtonData button;
 		ChildWindowData childWindow;
 
 		sf::Texture* texture;
@@ -70,6 +74,12 @@ namespace gui
 		bool readFloatRect(std::string value, sf::FloatRect& rect) const;
 		// Extract a sf::IntRect
 		bool readIntRect(std::string value, sf::IntRect& rect) const;
+		// Extract margins for Border Widgets
+		bool getMargin(const std::string& value, sf::FloatRect& rect);
+		// Extract texture rects
+		bool getTexRect(const std::string& value, sf::IntRect& rect);
+		// Extract a boolean value
+		bool getBool(const std::string& value, bool& b);
 
 		// Reads a new word while advancing the iterator
 		std::string readWord(const std::string& line, std::string::const_iterator& iter) const;

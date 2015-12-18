@@ -32,7 +32,7 @@ void resizeImage(gui::GuiEvent& event, void* args)
 	gui::ImageButton::Ptr* buttonPtr = static_cast<gui::ImageButton::Ptr*>(args);
 	gui::ImageButton::Ptr button = *buttonPtr;
 
-	button->resize(400, 400);
+	button->setSize(400, 400);
 }
 
 int main()
@@ -77,7 +77,7 @@ int main()
 	sf::Texture* texture = new sf::Texture();
 	texture->loadFromFile("themes/darkTheme.png");
 	gui::ImageButton::Ptr imageButton = gui.createImageButton("imageButton", texture, sf::IntRect(0, 0, 400, 481));
-	imageButton->resize(200, 200);
+	imageButton->setSize(200, 200);
 	imageButton->setDraggable(true);
 
 

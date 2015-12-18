@@ -93,11 +93,7 @@ namespace gui
 				// Read the property in lowercase
 				property = readWord(line, c);
 
-				if (!removeWhitespace(line, c))
-				{
-					std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
-					lineError = true;
-				}
+				removeWhitespace(line, c);
 
 				// There has to be an assignment character
 				if (*c == '=')
@@ -108,11 +104,7 @@ namespace gui
 					lineError = true;
 				}
 
-				if (!removeWhitespace(line, c))
-				{
-					std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
-					lineError = true;
-				}
+				removeWhitespace(line, c);
 
 				if (!lineError)
 				{
@@ -138,16 +130,7 @@ namespace gui
 					{
 						if (property == "externalMarginNormal")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								// Get first and fourth points of BorderWidget(the external ones)
-								newTheme->textButton.normalState.externalMargin.left = rect.left;
-								newTheme->textButton.normalState.externalMargin.top = rect.top;
-								newTheme->textButton.normalState.externalMargin.width = rect.left + rect.width;
-								newTheme->textButton.normalState.externalMargin.height = rect.top + rect.height;
-							}
-							else
+							if (!getMargin(value, newTheme->button.normalState.externalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -155,15 +138,7 @@ namespace gui
 						}
 						else if (property == "externalMarginHover")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								newTheme->textButton.hoverState.externalMargin.left = rect.left;
-								newTheme->textButton.hoverState.externalMargin.top = rect.top;
-								newTheme->textButton.hoverState.externalMargin.width = rect.left + rect.width;
-								newTheme->textButton.hoverState.externalMargin.height = rect.top + rect.height;
-							}
-							else
+							if (!getMargin(value, newTheme->button.hoverState.externalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -171,15 +146,7 @@ namespace gui
 						}
 						else if (property == "externalMarginDown")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								newTheme->textButton.downState.externalMargin.left = rect.left;
-								newTheme->textButton.downState.externalMargin.top = rect.top;
-								newTheme->textButton.downState.externalMargin.width = rect.left + rect.width;
-								newTheme->textButton.downState.externalMargin.height = rect.top + rect.height;
-							}
-							else
+							if (!getMargin(value, newTheme->button.downState.externalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -187,16 +154,7 @@ namespace gui
 						}
 						else if (property == "internalMarginNormal")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								// Get second and third points of BorderWidget(the internal ones)
-								newTheme->textButton.normalState.internalMargin.left = rect.left;
-								newTheme->textButton.normalState.internalMargin.top = rect.top;
-								newTheme->textButton.normalState.internalMargin.width = rect.left + rect.width;
-								newTheme->textButton.normalState.internalMargin.height = rect.top + rect.height;
-							}
-							else
+							if (!getMargin(value, newTheme->button.normalState.internalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -204,16 +162,7 @@ namespace gui
 						}
 						else if (property == "internalMarginHover")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								newTheme->textButton.hoverState.internalMargin.left = rect.left;
-								newTheme->textButton.hoverState.internalMargin.top = rect.top;
-								newTheme->textButton.hoverState.internalMargin.width = rect.left + rect.width;
-								newTheme->textButton.hoverState.internalMargin.height = rect.top + rect.height;
-
-							}
-							else
+							if (!getMargin(value, newTheme->button.hoverState.internalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -221,16 +170,15 @@ namespace gui
 						}
 						else if (property == "internalMarginDown")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
+							if (!getMargin(value, newTheme->button.downState.internalMargin))
 							{
-								newTheme->textButton.downState.internalMargin.left = rect.left;
-								newTheme->textButton.downState.internalMargin.top = rect.top;
-								newTheme->textButton.downState.internalMargin.width = rect.left + rect.width;
-								newTheme->textButton.downState.internalMargin.height = rect.top + rect.height;
-
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
 							}
-							else
+						}
+						else if (property == "reactive")
+						{
+							if (!getBool(value, newTheme->button.reactive))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -242,7 +190,7 @@ namespace gui
 							sf::Color color;
 							if (readColor(value, color))
 							{
-								newTheme->textButton.label.textColor = color;
+								newTheme->button.label.textColor = color;
 							}
 							else
 							{
@@ -255,15 +203,7 @@ namespace gui
 					{
 						if (property == "externalMargin")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								newTheme->childWindow.margins.externalMargin.left = rect.left;
-								newTheme->childWindow.margins.externalMargin.top = rect.top;
-								newTheme->childWindow.margins.externalMargin.width = rect.left + rect.width;
-								newTheme->childWindow.margins.externalMargin.height = rect.top + rect.height;
-							}
-							else
+							if (!getMargin(value, newTheme->childWindow.margins.externalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -271,16 +211,7 @@ namespace gui
 						}
 						else if (property == "internalMargin")
 						{
-							sf::FloatRect rect;
-							if (readFloatRect(value, rect))
-							{
-								newTheme->childWindow.margins.internalMargin.left = rect.left;
-								newTheme->childWindow.margins.internalMargin.top = rect.top;
-								newTheme->childWindow.margins.internalMargin.width = rect.left + rect.width;
-								newTheme->childWindow.margins.internalMargin.height = rect.top + rect.height;
-
-							}
-							else
+							if (!getMargin(value, newTheme->childWindow.margins.internalMargin))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -288,16 +219,31 @@ namespace gui
 						}
 						else if (property == "closeButtonRect")
 						{
-							sf::IntRect rect;
-							if (readIntRect(value, rect))
+							if (!getTexRect(value, newTheme->childWindow.closeButtonRect))
 							{
-								newTheme->childWindow.closeButtonRect.left = rect.left;
-								newTheme->childWindow.closeButtonRect.top = rect.top;
-								newTheme->childWindow.closeButtonRect.width = rect.width;
-								newTheme->childWindow.closeButtonRect.height = rect.height;
-
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
 							}
-							else
+						}
+						else if (property == "titleBarRect")
+						{
+							if (!getTexRect(value, newTheme->childWindow.titleBarRect))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "bodyRect")
+						{
+							if (!getTexRect(value, newTheme->childWindow.bodyRect))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "reactive")
+						{
+							if (!getBool(value, newTheme->childWindow.reactive))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
@@ -373,7 +319,7 @@ namespace gui
 		std::string word;
 		while (c != line.end())
 		{
-			if ((*c != ' ') && (*c != '\t') && (*c != '\r'))
+			if ((*c != ' ') && (*c != '\t') && (*c != '\r') && (*c != '='))
 			{
 				word.push_back(*c);
 				++c;
@@ -489,6 +435,61 @@ namespace gui
 		}
 		else
 			return false;
+	}
+
+	bool ThemeCache::getMargin(const std::string& value, sf::FloatRect& rect)
+	{
+		sf::FloatRect temp;
+		if (readFloatRect(value, temp))
+		{
+			rect.left = temp.left;
+			rect.top = temp.top;
+			rect.width = temp.left + temp.width;
+			rect.height = temp.top + temp.height;
+			return true;
+		}
+		else
+		{
+			std::cout << "Parse error on margin." << std::endl;
+			return false;
+		}
+	}
+
+	bool ThemeCache::getTexRect(const std::string& value, sf::IntRect& rect)
+	{
+		sf::IntRect temp;
+		if (readIntRect(value, temp))
+		{
+			rect.left = temp.left;
+			rect.top = temp.top;
+			rect.width = temp.width;
+			rect.height = temp.height;
+			return true;
+		}
+		else
+		{
+			std::cout << "Parse error on margin." << std::endl;
+			return false;
+		}
+	}
+
+	bool ThemeCache::getBool(const std::string& value, bool& b)
+	{
+		if (value == "true" || value == "TRUE")
+		{
+			b = true;
+			return true;
+		}
+		else if (value == "false" || value == "FALSE")
+		{
+			b = false;
+			return true;
+		}
+		else
+		{
+			std::cout << "Parse error on boolean." << std::endl;
+			return false;
+		}
 	}
 
 	std::string ThemeCache::toLower(const std::string& str)

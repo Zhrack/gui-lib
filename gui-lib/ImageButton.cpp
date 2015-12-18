@@ -1,14 +1,18 @@
 #include "ImageButton.h"
 
+#include "Theme.h"
+
 namespace gui
 {
+	const std::string ImageButton::mImageName = "image";
+
 	// ImageButton stores a pointer to the texture, so lifetime of the texture must be managed.
 	ImageButton::ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme, bool reactive) :
-		BorderWidget(parent, gui, name, theme, reactive),
-		mImage(new Image(static_cast<Widget::Ptr>(this), gui, "", texture, imageRect))
+		BorderWidget(parent, gui, name, theme, theme->button.reactive),
+		mImage(new Image(static_cast<Widget::Ptr>(this), gui, mImageName, texture, imageRect))
 	{
 		setTexture(texture, imageRect);
-		resize(mRect.getSize());
+		setSize(mRect.getSize());
 		setDirty();
 	}
 
@@ -31,7 +35,7 @@ namespace gui
 		mImage->setTextureRect(rect);
 	}
 
-	void ImageButton::resize(sf::Vector2f newSize)
+	void ImageButton::setSize(sf::Vector2f newSize)
 	{
 		mImage->resize(newSize);
 
@@ -39,9 +43,9 @@ namespace gui
 		resizeButton(newSize);
 	}
 
-	void ImageButton::resize(float x, float y)
+	void ImageButton::setSize(float x, float y)
 	{
-		resize(sf::Vector2f(x, y));
+		setSize(sf::Vector2f(x, y));
 	}
 
 	void ImageButton::setPosition(const sf::Vector2f& localPos)
@@ -87,7 +91,7 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			target.draw(mRect, states); // debug
+			//target.draw(mRect, states); // debug
 			states.texture = mTexture;
 			target.draw(mVerts, states);
 			states = sf::RenderStates::Default;
