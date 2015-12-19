@@ -8,12 +8,11 @@ namespace gui
 
 	TextButton::TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, bool reactive) :
 		BorderWidget(parent, gui, name, theme, theme->button.reactive),
-		mText(new Label(static_cast<Widget::Ptr>(this), gui, mLabelName, ""))
+		mText(new Label(static_cast<Widget::Ptr>(this), gui, mLabelName, "", theme))
 	{
-		setText(text);
 		mText->getString().setColor(theme->button.label.textColor);
-		//updateNinePatchPoints(theme->textButton.texRect, theme->textButton.internalMargins);
-		//toNormalButtonState();
+		mText->setCharacterSize(theme->button.label.textSize);
+		setText(text);
 	}
 
 

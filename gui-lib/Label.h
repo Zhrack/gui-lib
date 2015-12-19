@@ -8,12 +8,14 @@
 
 namespace gui
 {
+	struct Theme;
+
 	class Label : public Widget
 	{
 	public:
 		using Ptr = std::shared_ptr<Label>;
 
-		Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, sf::Font* font = nullptr, const std::string& theme = "");
+		Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, sf::Font* font = nullptr);
 		~Label();
 
 		void setText(const std::string& str);

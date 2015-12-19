@@ -82,7 +82,7 @@ int main()
 
 
 	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
-	childWindow->setSize(200, 200);
+	childWindow->setSize(400, 400);
 	childWindow->setDraggable(true);
 
 	// run the program as long as the window is open

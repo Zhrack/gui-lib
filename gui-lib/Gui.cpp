@@ -68,7 +68,8 @@ namespace gui
 
 	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text, sf::Font* font, const std::string& theme)
 	{
-		Label::Ptr widget(new Label(parent, this, name, text, font));
+		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		Label::Ptr widget(new Label(parent, this, name, text, getTheme(t), font));
 		parent->addChild(widget, name);
 		return widget;
 	}

@@ -1,11 +1,12 @@
 #include "Label.h"
 
 #include "Gui.h"
+#include "Theme.h"
 #include <iostream>
 
 namespace gui
 {
-	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, sf::Font* font, const std::string& theme) :
+	Label::Label(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, sf::Font* font) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(50, 50), true, true, false, true, false),
 		mText()
 	{
@@ -18,19 +19,11 @@ namespace gui
 			mText.setFont(*(mMainGui->getDefaultFont()));
 		}
 
-		if (theme == "")
-		{
-			Theme* t = mMainGui->getDefaultTheme();
-			mText.setColor(t->label.textColor);
-		}
-		else
-		{
-			Theme* t = mMainGui->getTheme(theme);
-			mText.setColor(t->label.textColor);
-		}
+		setText(text);
+		mText.setColor(theme->label.textColor);
+		setCharacterSize(theme->label.textSize);
 
 		mRect.setFillColor(sf::Color::Transparent);
-		setText(text);
 	}
 
 

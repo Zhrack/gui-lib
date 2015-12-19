@@ -14,6 +14,7 @@ namespace gui
 	struct LabelData
 	{
 		sf::Color textColor;
+		unsigned int textSize;
 	};
 
 	// Holds theme data for textbuttons and imagebuttons
@@ -80,6 +81,8 @@ namespace gui
 		bool getTexRect(const std::string& value, sf::IntRect& rect);
 		// Extract a boolean value
 		bool getBool(const std::string& value, bool& b);
+		// Extract a integer value
+		unsigned int getUInt(const std::string& value);
 
 		// Reads a new word while advancing the iterator
 		std::string readWord(const std::string& line, std::string::const_iterator& iter) const;

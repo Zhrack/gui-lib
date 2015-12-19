@@ -12,13 +12,15 @@ namespace gui
 		BorderWidget(parent, gui, name, theme, false),
 		mBody(new Panel(static_cast<Widget::Ptr>(this), gui, mBodyName)),
 		mTitleBar(new Panel(static_cast<Widget::Ptr>(this), gui, mTitleBarName)),
-		mTitle(new Label(static_cast<Widget::Ptr>(this), gui, mTitleName, title)),
+		mTitle(new Label(static_cast<Widget::Ptr>(this), gui, mTitleName, title, theme)),
 		mCloseButton(new ImageButton(static_cast<Widget::Ptr>(this), gui, mButtonName, theme->texture, theme->childWindow.closeButtonRect, theme, theme->childWindow.reactive))
 	{
 		mTitleBar->getShape().setTexture(theme->texture);
 		mTitleBar->getShape().setTextureRect(theme->childWindow.titleBarRect);
 		mBody->getShape().setTexture(theme->texture);
 		mBody->getShape().setTextureRect(theme->childWindow.bodyRect);
+
+		mTitle->setCharacterSize(theme->childWindow.label.textSize);
 
 		setSize(mRect.getSize());
 

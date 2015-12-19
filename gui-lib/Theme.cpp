@@ -113,16 +113,23 @@ namespace gui
 
 					if (sectionName == "Label")
 					{
-						// value is a Color
-						sf::Color color;
-						if (readColor(value, color))
+						if (property == "textColor")
 						{
-							newTheme->label.textColor = color;
+							// value is a Color
+							sf::Color color;
+							if (readColor(value, color))
+							{
+								newTheme->label.textColor = color;
+							}
+							else
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
 						}
-						else
+						else if (property == "textSize")
 						{
-							std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
-							lineError = true;
+							newTheme->label.textSize = getUInt(value);
 						}
 						
 					}
@@ -198,6 +205,10 @@ namespace gui
 								lineError = true;
 							}
 						}
+						else if (property == "textSize")
+						{
+							newTheme->button.label.textSize = getUInt(value);
+						}
 					}
 					else if (sectionName == "ChildWindow")
 					{
@@ -262,6 +273,10 @@ namespace gui
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;
 							}
+						}
+						else if (property == "textSize")
+						{
+							newTheme->childWindow.label.textSize = getUInt(value);
 						}
 					}
 				}
@@ -490,6 +505,11 @@ namespace gui
 			std::cout << "Parse error on boolean: " << value << std::endl;
 			return false;
 		}
+	}
+
+	unsigned int ThemeCache::getUInt(const std::string& value)
+	{
+		return std::stoi(value);
 	}
 
 	std::string ThemeCache::toLower(const std::string& str)
