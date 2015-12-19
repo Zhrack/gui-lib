@@ -25,10 +25,16 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<BorderWidget>;
 
+		// Index of button state callbacks
+		static int mCloseButtonCallbackIndices;
+
 		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme, bool reactive);
 		~BorderWidget();
 
 		ButtonState getCurrentState() const { return mCurrentButtonState; }
+
+		// Sets if the button state has to be reactive or not
+		void setReactive(bool reactive);
 
 		void toNormalButtonState();
 		void toHoverButtonState();
@@ -44,6 +50,9 @@ namespace gui
 		// Resizes the button to a new size.
 		// newSize is the size of the internal margin
 		void resizeButton(sf::Vector2f newSize);
+
+		void bindButtonStateFunctions();
+		void unbindButtonStateFunctions();
 
 	protected:
 		// Vertices of the 9-patch

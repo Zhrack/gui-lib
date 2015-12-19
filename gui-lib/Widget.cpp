@@ -55,7 +55,7 @@ namespace gui
 		// Children didn't process event, try this widget
 		checkEventType(event);
 		// If there are callbacks available
-		if (mCallbacks[event.type].empty() == false)
+		if (mCallbacks[event.type].functionList.empty() == false)
 		{
 			switch (event.type)
 			{
@@ -85,7 +85,7 @@ namespace gui
 			}
 
 			auto list = mCallbacks[event.type];
-			for (auto& func : list)
+			for (auto& func : list.functionList)
 			{
 				func(event);
 			}

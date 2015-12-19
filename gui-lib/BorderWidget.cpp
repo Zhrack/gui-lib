@@ -6,6 +6,8 @@
 
 namespace gui
 {
+	int BorderWidget::mCloseButtonCallbackIndices = -1;
+
 	void OnMouseEntered(gui::GuiEvent& event, void* args)
 	{
 		BorderWidget* widget = static_cast<BorderWidget*>(args);
@@ -48,10 +50,7 @@ namespace gui
 
 		if (mCurrentButtonState == ButtonState::Normal)
 		{
-			bindCallback(GuiEvent::MouseEntered, OnMouseEntered, this);
-			bindCallback(GuiEvent::MouseLeft, OnMouseLeft, this);
-			bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, this);
-			bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, this);
+			bindButtonStateFunctions();
 		}
 	}
 
@@ -60,6 +59,26 @@ namespace gui
 	{
 		// Data is destroyed by ThemeCache
 		mTexture = nullptr;
+	}
+
+	void BorderWidget::setReactive(bool reactive)
+	{
+		if (reactive)
+		{
+			if (mCurrentButtonState != ButtonState::NotReactive)
+				return;
+
+			mCurrentButtonState = ButtonState::Normal;
+			bindButtonStateFunctions();
+		}
+		else
+		{
+			if (mCurrentButtonState == ButtonState::NotReactive)
+				return;
+
+			mCurrentButtonState = ButtonState::NotReactive;
+			unbindButtonStateFunctions();
+		}
 	}
 
 	// Resizes the button to a new size.
@@ -235,6 +254,22 @@ namespace gui
 		mVerts[32 + 1].position = sf::Vector2f(fourth.x, third.y);
 		mVerts[32 + 2].position = sf::Vector2f(fourth);
 		mVerts[32 + 3].position = sf::Vector2f(third.x, fourth.y);
+	}
+
+	void BorderWidget::bindButtonStateFunctions()
+	{
+		bindCallback(GuiEvent::MouseEntered, OnMouseEntered, this, mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseLeft, OnMouseLeft, this, mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, this, mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, this, mCloseButtonCallbackIndices);
+	}
+
+	void BorderWidget::unbindButtonStateFunctions()
+	{
+		unbind(GuiEvent::MouseEntered, mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseLeft, mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseButtonPressed, mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseButtonReleased, mCloseButtonCallbackIndices);
 	}
 
 	void BorderWidget::toNormalButtonState()

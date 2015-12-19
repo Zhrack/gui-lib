@@ -475,19 +475,19 @@ namespace gui
 
 	bool ThemeCache::getBool(const std::string& value, bool& b)
 	{
-		if (value == "true" || value == "TRUE")
+		if (value == "true" || value == "TRUE" || value == "1")
 		{
 			b = true;
 			return true;
 		}
-		else if (value == "false" || value == "FALSE")
+		else if (value == "false" || value == "FALSE" || value == "0")
 		{
 			b = false;
 			return true;
 		}
 		else
 		{
-			std::cout << "Parse error on boolean." << std::endl;
+			std::cout << "Parse error on boolean: " << value << std::endl;
 			return false;
 		}
 	}

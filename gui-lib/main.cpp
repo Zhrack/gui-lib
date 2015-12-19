@@ -61,7 +61,7 @@ int main()
 	str.gui = &gui;
 	str.newChild = nullptr;
 	std::function<void(gui::GuiEvent& event, void*)> function = test;
-	panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str);
+	panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str, 0);
 
 	gui::Label::Ptr text = gui.createLabel(panel, "text");
 	text->setText("Hello World!");
@@ -72,7 +72,7 @@ int main()
 	button->setDraggable(true);
 	button->setGlobalPosition(sf::Vector2f(400, 400));
 	function = removeChild;
-	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text);
+	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);
 
 	sf::Texture* texture = new sf::Texture();
 	texture->loadFromFile("themes/darkTheme.png");

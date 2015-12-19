@@ -23,6 +23,8 @@ namespace gui
 		setSize(mRect.getSize());
 
 		addChild(mCloseButton, mCloseButton->getName());
+
+		mCloseButton->setReactive(theme->childWindow.reactive);
 	}
 
 

@@ -15,7 +15,11 @@ namespace gui
 	class CallbackManager
 	{
 	public:
-		using FunctionList = std::list<std::function<void(GuiEvent&)>>;
+		struct FunctionList
+		{
+			std::vector<std::function<void(GuiEvent&)>> functionList;
+			std::vector<int> functionIDs;
+		};
 
 		CallbackManager();
 		~CallbackManager();
@@ -27,16 +31,36 @@ namespace gui
 		//	mCallbacks[eventType].push_back(func);
 		//}
 
-		void bindCallback(GuiEvent::EventType eventType, std::function<void(GuiEvent&, void*)> function, void* args)
+		void bindCallback(GuiEvent::EventType eventType, std::function<void(GuiEvent&, void*)> function, void* args, int id)
 		{
 			std::function<void(GuiEvent&)> func = std::bind(function, std::placeholders::_1, args);
-			mCallbacks[eventType].push_back(func);
+			auto& list = mCallbacks[eventType];
+			list.functionList.push_back(func);
+			list.functionIDs.push_back(id);
+		}
+
+		void unbind(GuiEvent::EventType eventType, int id)
+		{
+			auto& list = mCallbacks[eventType];
+
+			auto& i = list.functionIDs.begin();
+			for (int index = 0; i != list.functionIDs.end(); ++i, ++index)
+			{
+				if (*i == id)
+				{
+					list.functionList.erase(list.functionList.begin() + index);
+					list.functionIDs.erase(i);
+					return;
+				}
+			}
 		}
 
 		// Eliminates all callbacks associated with this event
-		void unbindCallback(GuiEvent::EventType eventType)
+		void unbindAll(GuiEvent::EventType eventType)
 		{
-			mCallbacks[eventType].clear();
+			auto& list = mCallbacks[eventType];
+			list.functionList.clear();
+			list.functionIDs.clear();
 		}
 
 	protected:
