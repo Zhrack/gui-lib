@@ -183,6 +183,14 @@ namespace gui
 								lineError = true;
 							}
 						}
+						else if (property == "renderBorder")
+						{
+							if (!getBool(value, newTheme->button.renderBorder))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
 						else if (property == "reactive")
 						{
 							if (!getBool(value, newTheme->button.reactive))
@@ -223,6 +231,14 @@ namespace gui
 						else if (property == "internalMargin")
 						{
 							if (!getMargin(value, newTheme->childWindow.margins.internalMargin))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "renderBorder")
+						{
+							if (!getBool(value, newTheme->childWindow.renderBorder))
 							{
 								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
 								lineError = true;

@@ -24,6 +24,7 @@ namespace gui
 		TextureMarginsCoords hoverState;
 		TextureMarginsCoords downState;
 		bool reactive;
+		bool renderBorder;
 		LabelData label;
 	};
 
@@ -35,6 +36,7 @@ namespace gui
 		sf::IntRect titleBarRect;
 		sf::IntRect bodyRect;
 		bool reactive;
+		bool renderBorder;
 		LabelData label;
 	};
 

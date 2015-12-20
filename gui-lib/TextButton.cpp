@@ -13,6 +13,8 @@ namespace gui
 		mText->getString().setColor(theme->button.label.textColor);
 		mText->setCharacterSize(theme->button.label.textSize);
 		setText(text);
+
+		setBorderRendered(theme->button.renderBorder);
 	}
 
 
@@ -23,21 +25,7 @@ namespace gui
 	void TextButton::setText(const std::string& str)
 	{
 		mText->setText(str);
-
-		// Resize button
-		mRect.setSize(sf::Vector2f(
-			mInternalMargins.left + mText->mRect.getSize().x + mInternalMargins.width,
-			mInternalMargins.top + mText->mRect.getSize().y + mInternalMargins.height
-			));
-
-		updateVertsPosition();
-
-		// Reposition text inside button
-		mText->setGlobalPosition(sf::Vector2f(
-			getGlobalPosition().x + mInternalMargins.left,
-			getGlobalPosition().y + mInternalMargins.top)
-			);
-
+		setDirty();
 	}
 
 	void TextButton::setCharacterSize(unsigned int size)
@@ -52,7 +40,13 @@ namespace gui
 		mRect.setPosition(localPos + mParent->getGlobalPosition());
 		updateVertsPosition();
 
-		mText->setPosition(mInternalMargins.left, mInternalMargins.top);
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
+
+		mText->setPosition(marginOffset);
 	}
 
 	void TextButton::setPosition(float x, float y)
@@ -65,7 +59,13 @@ namespace gui
 		mRect.setPosition(globalPos);
 		updateVertsPosition();
 
-		mText->setPosition(mInternalMargins.left, mInternalMargins.top);
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
+
+		mText->setPosition(marginOffset);
 	}
 
 	void TextButton::setGlobalPosition(float x, float y)
@@ -77,15 +77,27 @@ namespace gui
 	{
 		if (isDirty())
 		{
+			// Resize button
+			if (mBorderRendered)
+			{
+				mRect.setSize(sf::Vector2f(
+					mInternalMargins.left + mText->mRect.getSize().x + mInternalMargins.width,
+					mInternalMargins.top + mText->mRect.getSize().y + mInternalMargins.height
+					));
+
+				// Reposition text inside button
+				mText->setPosition(mInternalMargins.left, mInternalMargins.top);
+			}
+			else
+			{
+				mRect.setSize(mText->mRect.getSize());
+
+				// Reposition text inside button
+				mText->setPosition(0, 0);
+			}
+
 			updateVertsPosition();
 
-			// Reposition text inside button
-			mText->setGlobalPosition(sf::Vector2f(
-				getGlobalPosition().x + mInternalMargins.left,
-				getGlobalPosition().y + mInternalMargins.top)
-				);
-
-			mText->updateTextTransform();
 			setClean();
 		}
 	}
@@ -95,10 +107,13 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			//target.draw(mRect, states); // debug
-			states.texture = mTexture;
-			target.draw(mVerts, states);
-			states = sf::RenderStates::Default;
+			target.draw(mRect, states); // debug
+			if (mBorderRendered)
+			{
+				states.texture = mTexture;
+				target.draw(mVerts, states);
+				states = sf::RenderStates::Default;
+			}
 			target.draw(*mText, states);
 
 			for (auto& widget : mChildWidgets)

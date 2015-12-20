@@ -43,10 +43,13 @@ namespace gui
 		mTexture(theme->texture),
 		mNormalState(theme->button.normalState),
 		mHoverState(theme->button.hoverState),
-		mDownState(theme->button.downState)
+		mDownState(theme->button.downState),
+		mBorderRendered(true)		
 	{		
 		mCurrentButtonState = reactive == true ? ButtonState::Normal : ButtonState::NotReactive;
 		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
+
+		mInternalSize = mRect.getSize() - sf::Vector2f(mInternalMargins.left, mInternalMargins.top) - sf::Vector2f(mInternalMargins.width, mInternalMargins.height);
 
 		if (mCurrentButtonState == ButtonState::Normal)
 		{
@@ -85,8 +88,46 @@ namespace gui
 	// newSize is the size of the internal margin
 	void BorderWidget::resizeButton(sf::Vector2f newSize)
 	{
-		mRect.setSize(newSize + sf::Vector2f(mInternalMargins.left, mInternalMargins.top) + sf::Vector2f(mInternalMargins.width, mInternalMargins.height));
+		if (mBorderRendered)
+		{
+			mRect.setSize(
+				newSize +
+				sf::Vector2f(mInternalMargins.left, mInternalMargins.top) + 
+				sf::Vector2f(mInternalMargins.width, mInternalMargins.height)
+				);
+			mInternalSize = newSize;
+		}
+		else
+		{
+			mRect.setSize(newSize);
+			mInternalSize = newSize;
+		}
 		updateVertsPosition();
+		setDirty();
+	}
+
+	void BorderWidget::setBorderRendered(bool border)
+	{
+		if (border)
+		{
+			if (mBorderRendered)
+				return;
+
+			mBorderRendered = true;
+			resizeButton(mInternalSize);
+		}
+		else
+		{
+			if (!mBorderRendered)
+				return;
+
+			mBorderRendered = false;
+			resizeButton(
+				mInternalSize - 
+				sf::Vector2f(mInternalMargins.left, mInternalMargins.top) - 
+				sf::Vector2f(mInternalMargins.width, mInternalMargins.height)
+				);
+		}
 		setDirty();
 	}
 

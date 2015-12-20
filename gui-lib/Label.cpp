@@ -55,6 +55,30 @@ namespace gui
 		mText.setRotation(mRect.getRotation());
 	}
 
+	void Label::setPosition(const sf::Vector2f& localPos)
+	{
+		mRect.setPosition(localPos + mParent->getGlobalPosition());
+
+		updateTextTransform();
+	}
+
+	void Label::setPosition(float x, float y)
+	{
+		setPosition(sf::Vector2f(x, y));
+	}
+
+	void Label::setGlobalPosition(const sf::Vector2f& globalPos)
+	{
+		mRect.setPosition(globalPos);
+		
+		updateTextTransform();
+	}
+
+	void Label::setGlobalPosition(float x, float y)
+	{
+		setGlobalPosition(sf::Vector2f(x, y));
+	}
+
 	void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		// draw the vertex array

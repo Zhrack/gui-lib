@@ -13,6 +13,8 @@ namespace gui
 	{
 		setTexture(texture, imageRect);
 		setSize(mRect.getSize());
+
+		setBorderRendered(theme->button.renderBorder);
 		setDirty();
 	}
 
@@ -53,7 +55,13 @@ namespace gui
 		mRect.setPosition(localPos + mParent->getGlobalPosition());
 		updateVertsPosition();
 
-		mImage->setPosition(mInternalMargins.left, mInternalMargins.top);
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
+
+		mImage->setPosition(marginOffset);
 	}
 
 	void ImageButton::setPosition(float x, float y)
@@ -66,7 +74,13 @@ namespace gui
 		mRect.setPosition(globalPos);
 		updateVertsPosition();
 
-		mImage->setPosition(mInternalMargins.left, mInternalMargins.top);
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
+
+		mImage->setPosition(marginOffset);
 	}
 
 	void ImageButton::setGlobalPosition(float x, float y)
@@ -80,7 +94,14 @@ namespace gui
 		{
 			updateVertsPosition();
 
-			mImage->setPosition(mInternalMargins.left, mInternalMargins.top);
+			sf::Vector2f marginOffset;
+			if (mBorderRendered)
+			{
+				marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+			}
+
+			mImage->resize(mRect.getSize());
+			mImage->setPosition(marginOffset);
 
 			setClean();
 		}
@@ -91,10 +112,13 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			//target.draw(mRect, states); // debug
-			states.texture = mTexture;
-			target.draw(mVerts, states);
-			states = sf::RenderStates::Default;
+			target.draw(mRect, states); // debug
+			if (mBorderRendered)
+			{
+				states.texture = mTexture;
+				target.draw(mVerts, states);
+				states = sf::RenderStates::Default;
+			}
 			target.draw(*mImage, states);
 
 			for (auto& widget : mChildWidgets)

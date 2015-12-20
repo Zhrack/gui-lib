@@ -24,15 +24,21 @@ namespace gui
 		// Default value is 30
 		void setCharacterSize(unsigned int size);
 
-		// Update mRect and mText after a change
-		// Internal use only.
-		void updateTextTransform();
+		
+
+		void setPosition(const sf::Vector2f& localPos) override;
+		void setPosition(float x, float y) override;
+		void setGlobalPosition(const sf::Vector2f& globalPos) override;
+		void setGlobalPosition(float x, float y) override;
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:
 		// To update bbox of mRect
 		virtual void update() override;
+
+		// Update mRect and mText after a change
+		void updateTextTransform();
 	private:
 		sf::Text mText;
 

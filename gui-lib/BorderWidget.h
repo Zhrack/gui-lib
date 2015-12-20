@@ -36,6 +36,9 @@ namespace gui
 		// Sets if the button state has to be reactive or not
 		void setReactive(bool reactive);
 
+		// Is border nedded being rendered?
+		void setBorderRendered(bool border);
+
 		void toNormalButtonState();
 		void toHoverButtonState();
 		void toDownButtonState();
@@ -57,6 +60,11 @@ namespace gui
 	protected:
 		// Vertices of the 9-patch
 		sf::VertexArray mVerts;
+
+		sf::Vector2f mInternalSize;
+
+		// Is the border needed?
+		bool mBorderRendered;
 
 		// Ptr to the theme texture
 		sf::Texture* mTexture;

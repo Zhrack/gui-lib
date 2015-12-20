@@ -27,6 +27,9 @@ namespace gui
 		addChild(mCloseButton, mCloseButton->getName());
 
 		mCloseButton->setReactive(theme->childWindow.reactive);
+
+		setBorderRendered(theme->childWindow.renderBorder);
+		setDirty();
 	}
 
 
@@ -48,16 +51,22 @@ namespace gui
 
 	void ChildWindow::setSize(const sf::Vector2f& size)
 	{
-		mRect.setSize(size);
+		resizeButton(size);
+
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
 
 		mTitleBar->getShape().setSize(sf::Vector2f(size.x - mInternalMargins.left - mInternalMargins.width, mInternalMargins.top));
-		mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
+		mTitleBar->setPosition(marginOffset);
 
 		mBody->getShape().setSize(sf::Vector2f(
 			size.x - mInternalMargins.left - mInternalMargins.width,
 			size.y - mInternalMargins.top - mInternalMargins.width - mTitleBar->getShape().getSize().y)
 			);
-		mBody->setPosition(sf::Vector2f(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y));
+		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
 		
 		mCloseButton->setSize(5, 5);
 		mCloseButton->setPosition(mRect.getSize().x - mCloseButton->getShape().getSize().x, 0);
@@ -68,9 +77,17 @@ namespace gui
 		mRect.setPosition(localPos + mParent->getGlobalPosition());
 		updateVertsPosition();
 
-		mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
 
-		mBody->setPosition(sf::Vector2f(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y));
+		mTitleBar->setPosition(marginOffset);
+
+		mTitle->setPosition(marginOffset);
+
+		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
 
 		mCloseButton->setPosition(mRect.getSize().x - mCloseButton->getShape().getSize().x, 0);
 	}
@@ -84,10 +101,18 @@ namespace gui
 	{
 		mRect.setPosition(globalPos);
 		updateVertsPosition();
-		
-		mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
 
-		mBody->setPosition(sf::Vector2f(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y));
+		sf::Vector2f marginOffset;
+		if (mBorderRendered)
+		{
+			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+		}
+		
+		mTitleBar->setPosition(marginOffset);
+
+		mTitle->setPosition(marginOffset);
+
+		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
 
 		mCloseButton->setPosition(mRect.getSize().x - mCloseButton->getShape().getSize().x, 0);
 	}
@@ -103,13 +128,18 @@ namespace gui
 		{
 			updateVertsPosition();
 
+			sf::Vector2f marginOffset;
+			if (mBorderRendered)
+			{
+				marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+			}
+
 			// Reposition text inside button
-			mTitle->setPosition(mInternalMargins.left, mInternalMargins.top);
-			mTitle->updateTextTransform();
+			mTitle->setPosition(marginOffset);
 
-			mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
+			mTitleBar->setPosition(marginOffset);
 
-			mBody->setPosition(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y);
+			mBody->setPosition(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y);
 
 			mCloseButton->setPosition(mTitleBar->getShape().getSize().x - mCloseButton->getShape().getSize().x, 0);
 
@@ -122,10 +152,13 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			//target.draw(mRect, states); // debug
-			states.texture = mTexture;
-			target.draw(mVerts, states);
-			states = sf::RenderStates::Default;
+			target.draw(mRect, states); // debug
+			if (mBorderRendered)
+			{
+				states.texture = mTexture;
+				target.draw(mVerts, states);
+				states = sf::RenderStates::Default;
+			}
 			target.draw(*mBody, states);
 			target.draw(*mTitleBar, states);
 			target.draw(*mTitle, states);
