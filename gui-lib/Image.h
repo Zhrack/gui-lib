@@ -23,9 +23,6 @@ namespace gui
 		// Defines a new clip rect inside the texture
 		void setTextureRect(const sf::IntRect& rect);
 
-		void resize(sf::Vector2f newSize);
-		void resize(float x, float y);
-
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	private:
 

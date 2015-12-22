@@ -12,9 +12,10 @@ namespace gui
 		mImage(new Image(static_cast<Widget::Ptr>(this), gui, mImageName, texture, imageRect))
 	{
 		setTexture(texture, imageRect);
-		setSize(mRect.getSize());
+		
 
 		setBorderRendered(theme->button.renderBorder);
+		setSize(mRect.getSize());
 		setDirty();
 	}
 
@@ -37,12 +38,14 @@ namespace gui
 		mImage->setTextureRect(rect);
 	}
 
-	void ImageButton::setSize(sf::Vector2f newSize)
+	void ImageButton::setSize(const sf::Vector2f& newSize)
 	{
-		mImage->resize(newSize);
+		mImage->setSize(newSize);
 
 		// now resize button accordingly
 		resizeButton(newSize);
+
+		setDirty();
 	}
 
 	void ImageButton::setSize(float x, float y)
@@ -100,7 +103,6 @@ namespace gui
 				marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
 			}
 
-			mImage->resize(mRect.getSize());
 			mImage->setPosition(marginOffset);
 
 			setClean();

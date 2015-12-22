@@ -22,13 +22,14 @@ namespace gui
 
 		mTitle->setCharacterSize(theme->childWindow.label.textSize);
 
-		setSize(mRect.getSize());
+		
 
 		addChild(mCloseButton, mCloseButton->getName());
 
 		mCloseButton->setReactive(theme->childWindow.reactive);
 
 		setBorderRendered(theme->childWindow.renderBorder);
+		setSize(mRect.getSize());
 		setDirty();
 	}
 
@@ -53,23 +54,24 @@ namespace gui
 	{
 		resizeButton(size);
 
-		sf::Vector2f marginOffset;
 		if (mBorderRendered)
 		{
-			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+			mTitleBar->setSize(size.x, mInternalMargins.top);
+			mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
+			mBody->setSize(size.x, size.y - mTitleBar->getShape().getSize().y);
+			mBody->setPosition(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y);
 		}
-
-		mTitleBar->getShape().setSize(sf::Vector2f(size.x - mInternalMargins.left - mInternalMargins.width, mInternalMargins.top));
-		mTitleBar->setPosition(marginOffset);
-
-		mBody->getShape().setSize(sf::Vector2f(
-			size.x - mInternalMargins.left - mInternalMargins.width,
-			size.y - mInternalMargins.top - mInternalMargins.width - mTitleBar->getShape().getSize().y)
-			);
-		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
+		else
+		{
+			mTitleBar->setSize(size.x, mInternalMargins.top);
+			mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
+			mBody->setSize(size.x, size.y - mTitleBar->getShape().getSize().y);
+			mBody->setPosition(0, mTitleBar->getShape().getSize().y);
+		}
 		
 		mCloseButton->setSize(5, 5);
-		mCloseButton->setPosition(mRect.getSize().x - mCloseButton->getShape().getSize().x, 0);
+
+		setDirty();
 	}
 
 	void ChildWindow::setPosition(const sf::Vector2f& localPos)
@@ -89,7 +91,7 @@ namespace gui
 
 		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
 
-		mCloseButton->setPosition(mRect.getSize().x - mCloseButton->getShape().getSize().x, 0);
+		mCloseButton->setPosition(mTitleBar->getShape().getSize().x - mCloseButton->getShape().getSize().x, 0);
 	}
 
 	void ChildWindow::setPosition(float x, float y)
@@ -128,18 +130,24 @@ namespace gui
 		{
 			updateVertsPosition();
 
-			sf::Vector2f marginOffset;
 			if (mBorderRendered)
 			{
-				marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+				// Reposition text inside button
+				mTitle->setPosition(mInternalMargins.left, mInternalMargins.top);
+
+				mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
+
+				mBody->setPosition(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y);
 			}
+			else
+			{
+				// Reposition text inside button
+				mTitle->setPosition(0, 0);
 
-			// Reposition text inside button
-			mTitle->setPosition(marginOffset);
+				mTitleBar->setPosition(0, 0);
 
-			mTitleBar->setPosition(marginOffset);
-
-			mBody->setPosition(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y);
+				mBody->setPosition(sf::Vector2f(0, mTitleBar->getShape().getSize().y));
+			}
 
 			mCloseButton->setPosition(mTitleBar->getShape().getSize().x - mCloseButton->getShape().getSize().x, 0);
 

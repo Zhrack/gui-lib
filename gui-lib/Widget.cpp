@@ -316,6 +316,11 @@ namespace gui
 
 	void Widget::update()
 	{
+		if (isDirty())
+		{
+			setClean();
+		}
+
 		for (auto& widget : mChildWidgets)
 		{
 			widget->update();
@@ -391,5 +396,16 @@ namespace gui
 	const sf::Vector2f& Widget::getGlobalPosition() const 
 	{ 
 		return mRect.getPosition(); 
+	}
+
+	void Widget::setSize(float x, float y)
+	{
+		setSize(sf::Vector2f(x, y)); 
+	}
+
+	void Widget::setSize(const sf::Vector2f& newSize)
+	{
+		mRect.setSize(newSize);
+		setDirty();
 	}
 }// namespace

@@ -66,6 +66,9 @@ namespace gui
 		virtual void setGlobalPosition(const sf::Vector2f& globalPos);
 		virtual void setGlobalPosition(float x, float y);
 
+		virtual void setSize(float x, float y);
+		virtual void setSize(const sf::Vector2f& newSize);
+
 		const sf::Vector2f& getPosition() const;
 		const sf::Vector2f& getGlobalPosition() const;
 

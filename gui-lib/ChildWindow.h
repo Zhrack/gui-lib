@@ -30,8 +30,8 @@ namespace gui
 		// Default value is 30
 		void setTitleSize(unsigned int size);
 		// Set a new size for the window
-		void setSize(const sf::Vector2f& size);
-		void setSize(float x, float y);
+		void setSize(const sf::Vector2f& size) override;
+		void setSize(float x, float y) override;
 
 		void setPosition(const sf::Vector2f& localPos) override;
 		void setPosition(float x, float y) override;

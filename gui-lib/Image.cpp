@@ -26,16 +26,6 @@ namespace gui
 		mRect.setTextureRect(rect);
 	}
 
-	void Image::resize(sf::Vector2f newSize)
-	{
-		mRect.setSize(newSize);
-	}
-
-	void Image::resize(float x, float y)
-	{
-		resize(sf::Vector2f(x, y));
-	}
-
 	void Image::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		// draw the vertex array

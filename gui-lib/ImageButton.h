@@ -26,8 +26,8 @@ namespace gui
 
 		// Resizes the image.
 		// newSize = new pixel size of the image
-		void setSize(sf::Vector2f newSize);
-		void setSize(float x, float y);
+		void setSize(const sf::Vector2f& newSize) override;
+		void setSize(float x, float y) override;
 
 		void setPosition(const sf::Vector2f& localPos) override;
 		void setPosition(float x, float y) override;

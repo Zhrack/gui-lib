@@ -43,8 +43,7 @@ namespace gui
 		mTexture(theme->texture),
 		mNormalState(theme->button.normalState),
 		mHoverState(theme->button.hoverState),
-		mDownState(theme->button.downState),
-		mBorderRendered(true)		
+		mDownState(theme->button.downState)
 	{		
 		mCurrentButtonState = reactive == true ? ButtonState::Normal : ButtonState::NotReactive;
 		updateNinePatchPoints(mNormalState.externalMargin, mNormalState.internalMargin);
@@ -92,7 +91,7 @@ namespace gui
 		{
 			mRect.setSize(
 				newSize +
-				sf::Vector2f(mInternalMargins.left, mInternalMargins.top) + 
+				sf::Vector2f(mInternalMargins.left, mInternalMargins.top) +
 				sf::Vector2f(mInternalMargins.width, mInternalMargins.height)
 				);
 			mInternalSize = newSize;
@@ -123,9 +122,9 @@ namespace gui
 
 			mBorderRendered = false;
 			resizeButton(
-				mInternalSize - 
+				mInternalSize/* - 
 				sf::Vector2f(mInternalMargins.left, mInternalMargins.top) - 
-				sf::Vector2f(mInternalMargins.width, mInternalMargins.height)
+				sf::Vector2f(mInternalMargins.width, mInternalMargins.height)*/
 				);
 		}
 		setDirty();

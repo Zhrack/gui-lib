@@ -41,19 +41,19 @@ int main()
 
 	gui::Gui gui(window);
 	gui::Panel::Ptr panel = gui.createPanel("panel");
-	panel->getShape().setSize(sf::Vector2f(300, 300));
+	panel->setSize(sf::Vector2f(300, 300));
 	//panel->setPosition(sf::Vector2f(50, 50));
 	
 	panel->setDraggable(true);
 	panel->getShape().setFillColor(sf::Color(200, 50, 50));
 
 	gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
-	childPanel->getShape().setSize(sf::Vector2f(250, 100));
+	childPanel->setSize(sf::Vector2f(250, 100));
 	childPanel->setDraggable(true);
 	childPanel->getShape().setFillColor(sf::Color::Blue);
 
 	gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
-	childPanel2->getShape().setSize(sf::Vector2f(150, 70));
+	childPanel2->setSize(sf::Vector2f(150, 70));
 	childPanel2->setDraggable(true);
 	
 	testStruct str;
