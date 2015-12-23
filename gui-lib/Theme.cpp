@@ -252,6 +252,14 @@ namespace gui
 								lineError = true;
 							}
 						}
+						else if (property == "closeButtonBorderRendered")
+						{
+							if (!getBool(value, newTheme->childWindow.closeButtonBorderRendered))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
 						else if (property == "titleBarRect")
 						{
 							if (!getTexRect(value, newTheme->childWindow.titleBarRect))

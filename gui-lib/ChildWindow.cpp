@@ -21,12 +21,12 @@ namespace gui
 		mBody->getShape().setTextureRect(theme->childWindow.bodyRect);
 
 		mTitle->setCharacterSize(theme->childWindow.label.textSize);
-
-		
+		mTextLayout.mCurrentLayout = TextLayout::Center;
 
 		addChild(mCloseButton, mCloseButton->getName());
 
 		mCloseButton->setReactive(theme->childWindow.reactive);
+		mCloseButton->setBorderRendered(theme->childWindow.closeButtonBorderRendered);
 
 		setBorderRendered(theme->childWindow.renderBorder);
 		setSize(mRect.getSize());
@@ -45,9 +45,26 @@ namespace gui
 		setDirty();
 	}
 
+	void ChildWindow::setButtonPos(const sf::Vector2f& localPos)
+	{
+		mCloseButton->setPosition(localPos);
+	}
+
+	void ChildWindow::setTextLayout(const TextLayout& layout)
+	{
+		mTextLayout.mCurrentLayout = layout;
+	}
+
 	void ChildWindow::setSize(float x, float y)
 	{
 		setSize(sf::Vector2f(x, y));
+	}
+
+	void ChildWindow::recalculateTextLayout()
+	{
+		mTextLayout.mCenterLayoutMargin = sf::Vector2f((mTitleBar->getSize().x - mTitle->getSize().x) / 2, 0);
+		mTextLayout.mLeftLayoutMargin = sf::Vector2f(5, 0);
+		mTextLayout.mRightLayoutMargin = sf::Vector2f(mTitleBar->getSize().x - mTitle->getSize().x, 0);
 	}
 
 	void ChildWindow::setSize(const sf::Vector2f& size)
@@ -69,7 +86,10 @@ namespace gui
 			mBody->setPosition(0, mTitleBar->getShape().getSize().y);
 		}
 		
-		mCloseButton->setSize(5, 5);
+		mCloseButton->setSize(mTitleBar->getSize().y, mTitleBar->getSize().y);
+
+		// Recalculate text margins
+		recalculateTextLayout();
 
 		setDirty();
 	}
@@ -87,7 +107,20 @@ namespace gui
 
 		mTitleBar->setPosition(marginOffset);
 
-		mTitle->setPosition(marginOffset);
+		sf::Vector2f textMargin;
+		switch (mTextLayout.mCurrentLayout)
+		{
+		case Left:
+			textMargin = mTextLayout.mLeftLayoutMargin;
+			break;
+		case Center:
+			textMargin = mTextLayout.mCenterLayoutMargin;
+			break;
+		//case Right:
+		//	textMargin = mTextLayout.mRightLayoutMargin;
+		//	break;
+		}
+		mTitle->setPosition(marginOffset + textMargin);
 
 		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
 
@@ -112,7 +145,20 @@ namespace gui
 		
 		mTitleBar->setPosition(marginOffset);
 
-		mTitle->setPosition(marginOffset);
+		sf::Vector2f textMargin;
+		switch (mTextLayout.mCurrentLayout)
+		{
+		case Left:
+			textMargin = mTextLayout.mLeftLayoutMargin;
+			break;
+		case Center:
+			textMargin = mTextLayout.mCenterLayoutMargin;
+			break;
+		//case Right:
+		//	textMargin = mTextLayout.mRightLayoutMargin;
+		//	break;
+		}
+		mTitle->setPosition(marginOffset + textMargin);
 
 		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
 
@@ -133,7 +179,21 @@ namespace gui
 			if (mBorderRendered)
 			{
 				// Reposition text inside button
-				mTitle->setPosition(mInternalMargins.left, mInternalMargins.top);
+				sf::Vector2f textMargin;
+				switch (mTextLayout.mCurrentLayout)
+				{
+				case Left:
+					textMargin = mTextLayout.mLeftLayoutMargin;
+					break;
+				case Center:
+					textMargin = mTextLayout.mCenterLayoutMargin;
+					break;
+				//case Right:
+				//	textMargin = mTextLayout.mRightLayoutMargin;
+				//	break;
+				}
+				textMargin += sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
+				mTitle->setPosition(textMargin);
 
 				mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
 
@@ -142,7 +202,20 @@ namespace gui
 			else
 			{
 				// Reposition text inside button
-				mTitle->setPosition(0, 0);
+				sf::Vector2f textMargin;
+				switch (mTextLayout.mCurrentLayout)
+				{
+				case Left:
+					textMargin = mTextLayout.mLeftLayoutMargin;
+					break;
+				case Center:
+					textMargin = mTextLayout.mCenterLayoutMargin;
+					break;
+				//case Right:
+				//	textMargin = mTextLayout.mRightLayoutMargin;
+				//	break;
+				}
+				mTitle->setPosition(textMargin);
 
 				mTitleBar->setPosition(0, 0);
 
@@ -160,7 +233,7 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			target.draw(mRect, states); // debug
+			//target.draw(mRect, states); // debug
 			if (mBorderRendered)
 			{
 				states.texture = mTexture;

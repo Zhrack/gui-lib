@@ -33,6 +33,7 @@ namespace gui
 	{
 		TextureMarginsCoords margins;
 		sf::IntRect closeButtonRect;
+		bool closeButtonBorderRendered;
 		sf::IntRect titleBarRect;
 		sf::IntRect bodyRect;
 		bool reactive;

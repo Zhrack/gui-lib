@@ -69,6 +69,8 @@ namespace gui
 		virtual void setSize(float x, float y);
 		virtual void setSize(const sf::Vector2f& newSize);
 
+		const sf::Vector2f& getSize() const { return mRect.getSize(); }
+
 		const sf::Vector2f& getPosition() const;
 		const sf::Vector2f& getGlobalPosition() const;
 
