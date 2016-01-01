@@ -20,7 +20,7 @@ namespace gui
 		mBody->getShape().setTexture(theme->texture);
 		mBody->getShape().setTextureRect(theme->childWindow.bodyRect);
 
-		mTitle->setCharacterSize(theme->childWindow.label.textSize);
+		setTitleSize(theme->childWindow.label.textSize);
 		mTextLayout.mCurrentLayout = TextLayout::Center;
 
 		addChild(mCloseButton, mCloseButton->getName());
@@ -40,7 +40,9 @@ namespace gui
 
 	void ChildWindow::setTitleSize(unsigned int size)
 	{
-		mTitle->getString().setCharacterSize(size);
+		mTitle->setCharacterSize(size);
+
+		mTitleBar->setSize(getSize().x, mTitle->getSize().y);
 
 		setDirty();
 	}
@@ -73,14 +75,14 @@ namespace gui
 
 		if (mBorderRendered)
 		{
-			mTitleBar->setSize(size.x, mInternalMargins.top);
+			mTitleBar->setSize(size.x, mTitleBar->getSize().y);
 			mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
 			mBody->setSize(size.x, size.y - mTitleBar->getShape().getSize().y);
 			mBody->setPosition(mInternalMargins.left, mInternalMargins.top + mTitleBar->getShape().getSize().y);
 		}
 		else
 		{
-			mTitleBar->setSize(size.x, mInternalMargins.top);
+			mTitleBar->setSize(size.x, mTitleBar->getSize().y);
 			mTitleBar->setPosition(mInternalMargins.left, mInternalMargins.top);
 			mBody->setSize(size.x, size.y - mTitleBar->getShape().getSize().y);
 			mBody->setPosition(0, mTitleBar->getShape().getSize().y);

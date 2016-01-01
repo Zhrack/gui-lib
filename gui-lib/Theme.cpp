@@ -7,10 +7,10 @@
 namespace gui
 {
 	ThemeCache::ThemeCache() :
-		darkTheme("darkTheme"),
+		defaultTheme("defaultTheme"),
 		themePath("themes/")
 	{
-		if (!loadTheme(darkTheme))
+		if (!loadTheme(defaultTheme))
 		{
 			std::cout << "Error loading darkTheme" << std::endl;
 		}

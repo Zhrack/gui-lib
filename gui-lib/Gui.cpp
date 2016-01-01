@@ -68,7 +68,7 @@ namespace gui
 
 	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text, sf::Font* font, const std::string& theme)
 	{
-		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
 		Label::Ptr widget(new Label(parent, this, name, text, getTheme(t), font));
 		parent->addChild(widget, name);
 		return widget;
@@ -76,7 +76,7 @@ namespace gui
 
 	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text, const std::string& theme, bool reactive)
 	{
-		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
 		TextButton::Ptr widget(new TextButton(parent, this, name, text, getTheme(t), reactive));
 		parent->addChild(widget, name);
 		return widget;
@@ -84,7 +84,7 @@ namespace gui
 
 	ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, const std::string& theme, bool reactive)
 	{
-		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
 		ImageButton::Ptr widget(new ImageButton(parent, this, name, texture, imageRect, getTheme(t), reactive));
 		parent->addChild(widget, name);
 		return widget;
@@ -100,7 +100,7 @@ namespace gui
 
 	ChildWindow::Ptr Gui::createChildWindow(const Widget::Ptr& parent, const std::string& name, const std::string& title, const std::string& theme)
 	{
-		std::string t = theme == "" ? mThemeCache.darkTheme : theme;
+		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
 		ChildWindow::Ptr widget(new ChildWindow(parent, this, name, title, getTheme(t)));
 		parent->addChild(widget, name);
 		return widget;

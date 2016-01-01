@@ -63,7 +63,7 @@ namespace gui
 		void addFont(const std::string& name, sf::Font& font);
 
 		Theme* getTheme(const std::string& theme) { return mThemeCache.getTheme(theme); }
-		Theme* getDefaultTheme() { return mThemeCache.getTheme(mThemeCache.darkTheme); }
+		Theme* getDefaultTheme() { return mThemeCache.getTheme(mThemeCache.defaultTheme); }
 
 		void addTheme(const std::string& filename);
 

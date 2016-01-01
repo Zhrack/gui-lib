@@ -55,7 +55,7 @@ namespace gui
 	public:
 		class Gui;
 
-		const std::string darkTheme;
+		const std::string defaultTheme;
 		const std::string themePath;
 
 		ThemeCache();

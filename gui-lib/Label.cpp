@@ -22,8 +22,6 @@ namespace gui
 		setText(text);
 		mText.setColor(theme->label.textColor);
 		setCharacterSize(theme->label.textSize);
-
-		mRect.setFillColor(sf::Color::Transparent);
 	}
 
 
@@ -84,7 +82,7 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			target.draw(mRect, states); // debug
+			//target.draw(mRect, states); // debug
 			target.draw(mText, states);
 
 			for (auto& widget : mChildWidgets)

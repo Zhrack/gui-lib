@@ -75,7 +75,7 @@ int main()
 	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);
 
 	sf::Texture* texture = new sf::Texture();
-	texture->loadFromFile("themes/darkTheme.png");
+	texture->loadFromFile("themes/defaultTheme.png");
 	gui::ImageButton::Ptr imageButton = gui.createImageButton("imageButton", texture, sf::IntRect(0, 0, 400, 481));
 	imageButton->setSize(200, 200);
 	imageButton->setDraggable(true);

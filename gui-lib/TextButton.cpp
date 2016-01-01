@@ -30,7 +30,7 @@ namespace gui
 
 	void TextButton::setCharacterSize(unsigned int size)
 	{
-		mText->getString().setCharacterSize(size);
+		mText->setCharacterSize(size);
 
 		setDirty();
 	}
@@ -81,8 +81,8 @@ namespace gui
 			if (mBorderRendered)
 			{
 				mRect.setSize(sf::Vector2f(
-					mInternalMargins.left + mText->mRect.getSize().x + mInternalMargins.width,
-					mInternalMargins.top + mText->mRect.getSize().y + mInternalMargins.height
+					mInternalMargins.left + mText->getSize().x + mInternalMargins.width,
+					mInternalMargins.top + mText->getSize().y + mInternalMargins.height
 					));
 
 				// Reposition text inside button
