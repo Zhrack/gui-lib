@@ -78,8 +78,8 @@ namespace gui
 		Panel::Ptr createPanel(const Widget::Ptr& parent, const std::string& name);
 		Panel::Ptr createPanel(const std::string& name){ return createPanel(mRoot, name); }
 
-		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", sf::Font* font = nullptr, const std::string& theme = "");
-		Label::Ptr createLabel(const std::string& name, const std::string& text = "", sf::Font* font = nullptr, const std::string& theme = ""){ return createLabel(mRoot, name, text, font, theme); }
+		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", sf::Font* font = nullptr, Label::TextWrap wrap = Label::TextWrap::Free, const std::string& theme = "");
+		Label::Ptr createLabel(const std::string& name, const std::string& text = "", sf::Font* font = nullptr, Label::TextWrap wrap = Label::TextWrap::Free, const std::string& theme = ""){ return createLabel(mRoot, name, text, font, wrap, theme); }
 
 		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "", bool reactive = true);
 		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = "", bool reactive = true){ return createTextButton(mRoot, name, text, theme, reactive); }

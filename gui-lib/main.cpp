@@ -64,12 +64,15 @@ int main()
 	panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str, 0);
 
 	gui::Label::Ptr text = gui.createLabel(panel, "text");
-	text->setText("Hello World!");
+	
+	text->setWrapStyle(gui::Label::TextWrap::Horizontal, 200);
+	text->setText("Hello Wo rldaaaab aaaaaab aaab aaaab aaaaaaab aaaaaaab aaaaaaaab aaaaab aaaaaaab aaaaab!");
 	text->setDraggable(true);
 	text->setGlobalPosition(sf::Vector2f(100, 200));
 
 	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label", "", false);
 	button->setDraggable(true);
+	button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
 	button->setGlobalPosition(sf::Vector2f(400, 400));
 	function = removeChild;
 	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);

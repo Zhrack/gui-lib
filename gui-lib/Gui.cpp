@@ -66,10 +66,10 @@ namespace gui
 		return widget;
 	}
 
-	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text, sf::Font* font, const std::string& theme)
+	Label::Ptr Gui::createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text, sf::Font* font, Label::TextWrap wrap, const std::string& theme)
 	{
 		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
-		Label::Ptr widget(new Label(parent, this, name, text, getTheme(t), font));
+		Label::Ptr widget(new Label(parent, this, name, text, getTheme(t), font, wrap));
 		parent->addChild(widget, name);
 		return widget;
 	}

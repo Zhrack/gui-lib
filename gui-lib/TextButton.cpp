@@ -73,6 +73,13 @@ namespace gui
 		setGlobalPosition(sf::Vector2f(x, y));
 	}
 
+	void TextButton::setTextWrapStyle(Label::TextWrap wrap, int maxWidth, const std::string& text)
+	{
+		mText->setWrapStyle(wrap, maxWidth, text);
+		setDirty();
+		update();
+	}
+
 	void TextButton::update()
 	{
 		if (isDirty())
