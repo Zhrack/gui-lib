@@ -74,18 +74,18 @@ namespace gui
 		return widget;
 	}
 
-	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text, const std::string& theme, bool reactive)
+	TextButton::Ptr Gui::createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text, const std::string& theme)
 	{
 		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
-		TextButton::Ptr widget(new TextButton(parent, this, name, text, getTheme(t), reactive));
+		TextButton::Ptr widget(new TextButton(parent, this, name, text, getTheme(t)));
 		parent->addChild(widget, name);
 		return widget;
 	}
 
-	ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, const std::string& theme, bool reactive)
+	ImageButton::Ptr Gui::createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, const std::string& theme)
 	{
 		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
-		ImageButton::Ptr widget(new ImageButton(parent, this, name, texture, imageRect, getTheme(t), reactive));
+		ImageButton::Ptr widget(new ImageButton(parent, this, name, texture, imageRect, getTheme(t)));
 		parent->addChild(widget, name);
 		return widget;
 	}

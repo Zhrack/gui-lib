@@ -70,7 +70,7 @@ int main()
 	text->setDraggable(true);
 	text->setGlobalPosition(sf::Vector2f(100, 200));
 
-	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label", "", false);
+	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
 	button->setDraggable(true);
 	button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
 	button->setGlobalPosition(sf::Vector2f(400, 400));

@@ -15,7 +15,7 @@ namespace gui
 
 		static const std::string mLabelName;
 
-		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme, bool reactive = true);
+		TextButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, const std::string& text, Theme* theme);
 		~TextButton();
 
 		// Changes the text of the button

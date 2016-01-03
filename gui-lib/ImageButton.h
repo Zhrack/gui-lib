@@ -15,7 +15,7 @@ namespace gui
 
 		static const std::string mImageName;
 
-		ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme, bool reactive = true);
+		ImageButton(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme);
 		~ImageButton();
 
 		// Changes the texture of the button

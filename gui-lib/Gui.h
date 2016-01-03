@@ -81,12 +81,12 @@ namespace gui
 		Label::Ptr createLabel(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", sf::Font* font = nullptr, Label::TextWrap wrap = Label::TextWrap::Free, const std::string& theme = "");
 		Label::Ptr createLabel(const std::string& name, const std::string& text = "", sf::Font* font = nullptr, Label::TextWrap wrap = Label::TextWrap::Free, const std::string& theme = ""){ return createLabel(mRoot, name, text, font, wrap, theme); }
 
-		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "", bool reactive = true);
-		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = "", bool reactive = true){ return createTextButton(mRoot, name, text, theme, reactive); }
+		TextButton::Ptr createTextButton(const Widget::Ptr& parent, const std::string& name, const std::string& text = "", const std::string& theme = "");
+		TextButton::Ptr createTextButton(const std::string& name, const std::string& text, const std::string& theme = ""){ return createTextButton(mRoot, name, text, theme); }
 
-		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "", bool reactive = true);
-		ImageButton::Ptr createImageButton(const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "", bool reactive = true)
-		{ return createImageButton(mRoot, name, texture, imageRect, theme, reactive); }
+		ImageButton::Ptr createImageButton(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "");
+		ImageButton::Ptr createImageButton(const std::string& name, sf::Texture* texture, sf::IntRect& imageRect = sf::IntRect(), const std::string& theme = "")
+		{ return createImageButton(mRoot, name, texture, imageRect, theme); }
 
 		Image::Ptr createImage(const Widget::Ptr& parent, const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect());
 		Image::Ptr createImage(const std::string& name, sf::Texture* texture, sf::IntRect& rect = sf::IntRect()){ return createImage(mRoot, name, texture, rect); }
