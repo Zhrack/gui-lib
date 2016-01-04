@@ -41,11 +41,18 @@ namespace gui
 		LabelData label;
 	};
 
+	// Holds theme data for scrollbars
+	struct ScrollBarData
+	{
+		
+	};
+
 	struct Theme
 	{
 		LabelData label;
 		ButtonData button;
 		ChildWindowData childWindow;
+		ScrollBarData scrollBar;
 
 		sf::Texture* texture;
 	};

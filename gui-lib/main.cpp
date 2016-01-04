@@ -66,7 +66,7 @@ int main()
 	gui::Label::Ptr text = gui.createLabel(panel, "text");
 	
 	text->setWrapStyle(gui::Label::TextWrap::Horizontal, 200);
-	text->setText("Hello Wo rldaaaab aaaaaab aaab aaaab aaaaaaab aaaaaaab aaaaaaaab aaaaab aaaaaaab aaaaab!");
+	text->setText("Hello Wo rldaaaab aaaaaac aaad aaaae aaaaaaaf aaaaaaag aaaaaaaah aaaaai aaaaaaal aaaaam!");
 	text->setDraggable(true);
 	text->setGlobalPosition(sf::Vector2f(100, 200));
 
@@ -84,9 +84,9 @@ int main()
 	imageButton->setDraggable(true);
 
 
-	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
-	childWindow->setSize(400, 400);
-	childWindow->setDraggable(true);
+	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
+	//childWindow->setSize(400, 400);
+	//childWindow->setDraggable(true);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

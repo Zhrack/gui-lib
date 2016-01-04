@@ -84,6 +84,7 @@
     <ClCompile Include="ImageButton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="ScrollBar.cpp" />
     <ClCompile Include="TextButton.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Theme.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageButton.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="ScrollBar.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="TextureMarginCoords.h" />

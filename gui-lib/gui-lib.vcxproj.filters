@@ -57,6 +57,9 @@
     <ClCompile Include="ChildWindow.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="ScrollBar.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackManager.h">
@@ -99,6 +102,9 @@
       <Filter>Widgets</Filter>
     </ClInclude>
     <ClInclude Include="ChildWindow.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollBar.h">
       <Filter>Widgets</Filter>
     </ClInclude>
   </ItemGroup>
