@@ -83,6 +83,8 @@ int main()
 	imageButton->setSize(200, 200);
 	imageButton->setDraggable(true);
 
+	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
+
 
 	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
 	//childWindow->setSize(400, 400);

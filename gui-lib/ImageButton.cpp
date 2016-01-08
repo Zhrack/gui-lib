@@ -54,7 +54,7 @@ namespace gui
 
 	void ImageButton::setPosition(const sf::Vector2f& localPos)
 	{
-		mRect.setPosition(localPos + mParent->getGlobalPosition());
+		/*mRect.setPosition(localPos + mParent->getGlobalPosition());
 		updateVertsPosition();
 
 		sf::Vector2f marginOffset;
@@ -63,7 +63,8 @@ namespace gui
 			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
 		}
 
-		mImage->setPosition(marginOffset);
+		mImage->setPosition(marginOffset);*/
+		setGlobalPosition(localPos + mParent->getGlobalPosition());
 	}
 
 	void ImageButton::setPosition(float x, float y)

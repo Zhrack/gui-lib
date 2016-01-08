@@ -44,7 +44,11 @@ namespace gui
 	// Holds theme data for scrollbars
 	struct ScrollBarData
 	{
-		
+		sf::IntRect backgroundRect;
+		sf::IntRect arrowRect;
+		sf::IntRect thumbRect;
+		bool reactiveThumb;
+		bool reactiveArrows;
 	};
 
 	struct Theme

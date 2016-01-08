@@ -18,7 +18,7 @@ namespace gui
 		static const std::string mArrowUpRightName;
 		static const std::string mArrowDownLeftName;
 
-		ScrollBar(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* texture, sf::IntRect& imageRect, Theme* theme);
+		ScrollBar(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme);
 		~ScrollBar();
 
 		// Binds a widget to the scrollbar, its children will be scrolled
@@ -44,7 +44,7 @@ namespace gui
 		bool isVertical() const { return mVertical; }
 		uint getScrollAmount() const { return mScrollAmount; }
 		bool isArrowShown() const { return mShowArrows; }
-		bool getValue() const { return mValue; }
+		uint getValue() const { return mValue; }
 		uint getViewableArea() const { return mViewableArea; }
 		uint getMaximumArea() const { return mMaximumArea; }
 
@@ -60,6 +60,8 @@ namespace gui
 
 	private:
 		virtual void update() override;
+
+		void resizeThumb(const sf::Vector2f& newSize);
 
 	private:
 		// Bound widget

@@ -106,6 +106,14 @@ namespace gui
 		return widget;
 	}
 
+	ScrollBar::Ptr Gui::createScrollBar(const Widget::Ptr& parent, const std::string& name, const std::string& theme)
+	{
+		std::string t = theme == "" ? mThemeCache.defaultTheme : theme;
+		ScrollBar::Ptr widget(new ScrollBar(parent, this, name, getTheme(t)));
+		parent->addChild(widget, name);
+		return widget;
+	}
+
 	//convert from sf::Event to GuiEvent
 	bool Gui::handleEvent(sf::Event& event)
 	{

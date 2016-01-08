@@ -9,6 +9,7 @@
 #include "TextButton.h"
 #include "ImageButton.h"
 #include "ChildWindow.h"
+#include "ScrollBar.h"
 
 #include "Theme.h"
 
@@ -95,6 +96,12 @@ namespace gui
 		ChildWindow::Ptr createChildWindow(const std::string& name, const std::string& title, const std::string& theme = "")
 		{
 			return createChildWindow(mRoot, name, title, theme);
+		}
+
+		ScrollBar::Ptr createScrollBar(const Widget::Ptr& parent, const std::string& name, const std::string& theme = "");
+		ScrollBar::Ptr createScrollBar(const std::string& name, const std::string& theme = "")
+		{
+			return createScrollBar(mRoot, name, theme);
 		}
 
 		void update();

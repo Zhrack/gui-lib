@@ -303,6 +303,49 @@ namespace gui
 							newTheme->childWindow.label.textSize = getUInt(value);
 						}
 					}
+					else if (sectionName == "ScrollBar")
+					{
+						if (property == "arrowRect")
+						{
+							if (!getTexRect(value, newTheme->scrollBar.arrowRect))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "thumbRect")
+						{
+							if (!getTexRect(value, newTheme->scrollBar.thumbRect))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "backgroundRect")
+						{
+							if (!getTexRect(value, newTheme->scrollBar.backgroundRect))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "reactiveThumb")
+						{
+							if (!getBool(value, newTheme->scrollBar.reactiveThumb))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+						else if (property == "reactiveArrows")
+						{
+							if (!getBool(value, newTheme->scrollBar.reactiveArrows))
+							{
+								std::cout << "Error: Failed to parse line " + std::to_string(lineNumber) + "." << std::endl;
+								lineError = true;
+							}
+						}
+					}
 				}
 
 				error |= lineError;
