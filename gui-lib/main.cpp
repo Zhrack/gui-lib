@@ -40,51 +40,52 @@ int main()
 	sf::RenderWindow* window(new sf::RenderWindow(sf::VideoMode(800, 600), "My window"));
 
 	gui::Gui gui(window);
-	gui::Panel::Ptr panel = gui.createPanel("panel");
-	panel->setSize(sf::Vector2f(300, 300));
-	//panel->setPosition(sf::Vector2f(50, 50));
-	
-	panel->setDraggable(true);
-	panel->getShape().setFillColor(sf::Color(200, 50, 50));
+	//gui::Panel::Ptr panel = gui.createPanel("panel");
+	//panel->setSize(sf::Vector2f(300, 300));
+	////panel->setPosition(sf::Vector2f(50, 50));
+	//
+	//panel->setDraggable(true);
+	//panel->getShape().setFillColor(sf::Color(200, 50, 50));
 
-	gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
-	childPanel->setSize(sf::Vector2f(250, 100));
-	childPanel->setDraggable(true);
-	childPanel->getShape().setFillColor(sf::Color::Blue);
+	//gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
+	//childPanel->setSize(sf::Vector2f(250, 100));
+	//childPanel->setDraggable(true);
+	//childPanel->getShape().setFillColor(sf::Color::Blue);
 
-	gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
-	childPanel2->setSize(sf::Vector2f(150, 70));
-	childPanel2->setDraggable(true);
-	
-	testStruct str;
-	str.panel = panel;
-	str.gui = &gui;
-	str.newChild = nullptr;
-	std::function<void(gui::GuiEvent& event, void*)> function = test;
-	panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str, 0);
+	//gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
+	//childPanel2->setSize(sf::Vector2f(150, 70));
+	//childPanel2->setDraggable(true);
+	//
+	//testStruct str;
+	//str.panel = panel;
+	//str.gui = &gui;
+	//str.newChild = nullptr;
+	//std::function<void(gui::GuiEvent& event, void*)> function = test;
+	//panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str, 0);
 
-	gui::Label::Ptr text = gui.createLabel(panel, "text");
-	
-	text->setWrapStyle(gui::Label::TextWrap::Horizontal, 200);
-	text->setText("Hello Wo rldaaaab aaaaaac aaad aaaae aaaaaaaf aaaaaaag aaaaaaaah aaaaai aaaaaaal aaaaam!");
-	text->setDraggable(true);
-	text->setGlobalPosition(sf::Vector2f(100, 200));
+	//gui::Label::Ptr text = gui.createLabel(panel, "text");
+	//
+	//text->setWrapStyle(gui::Label::TextWrap::Horizontal, 200);
+	//text->setText("Hello Wo rldaaaab aaaaaac aaad aaaae aaaaaaaf aaaaaaag aaaaaaaah aaaaai aaaaaaal aaaaam!");
+	//text->setDraggable(true);
+	//text->setGlobalPosition(sf::Vector2f(100, 200));
 
-	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
-	button->setDraggable(true);
-	button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
-	button->setGlobalPosition(sf::Vector2f(400, 400));
-	function = removeChild;
-	button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);
+	//gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
+	//button->setDraggable(true);
+	//button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
+	//button->setGlobalPosition(sf::Vector2f(400, 400));
+	//function = removeChild;
+	//button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);
 
-	sf::Texture* texture = new sf::Texture();
-	texture->loadFromFile("themes/defaultTheme.png");
-	gui::ImageButton::Ptr imageButton = gui.createImageButton("imageButton", texture, sf::IntRect(0, 0, 400, 481));
-	imageButton->setSize(200, 200);
-	imageButton->setDraggable(true);
+	//sf::Texture* texture = new sf::Texture();
+	//texture->loadFromFile("themes/defaultTheme.png");
+	//gui::ImageButton::Ptr imageButton = gui.createImageButton("imageButton", texture, sf::IntRect(0, 0, 400, 481));
+	//imageButton->setSize(200, 200);
+	//imageButton->setDraggable(true);
 
 	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
-
+	scrollBar->setDraggable(true);
+	scrollBar->setVertical(false);
 
 	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
 	//childWindow->setSize(400, 400);

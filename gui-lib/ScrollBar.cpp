@@ -29,8 +29,24 @@ namespace gui
 		mArrowUpRight->setReactive(theme->scrollBar.reactiveArrows);
 		mArrowDownLeft->setReactive(theme->scrollBar.reactiveArrows);
 
+		mThumb->setBorderRendered(false);
+		mArrowUpRight->setBorderRendered(false);
+		mArrowDownLeft->setBorderRendered(false);
+
 		mRect.setTexture(theme->texture);
 		mRect.setTextureRect(theme->scrollBar.backgroundRect);
+
+		mThumb->getShape().setFillColor(sf::Color::Green);
+		mArrowUpRight->getShape().setFillColor(sf::Color::Blue);
+		mArrowDownLeft->getShape().setFillColor(sf::Color::Red);
+
+		setSize(50, 300);
+		
+		setMaximumArea(100);
+		setViewableArea(50);
+		
+
+		setValue(1000);
 	}
 
 
@@ -80,10 +96,15 @@ namespace gui
 		if (mViewableArea != viewableArea)
 		{
 			mViewableArea = viewableArea;
+			resizeThumb(getSize());
 
-			if (mViewableArea > mMaximumArea)
+			if (mMaximumArea < mViewableArea)
 			{
-				mViewableArea = mMaximumArea;
+				setValue(0);
+			}
+			else if (mValue > mMaximumArea - mViewableArea)
+			{
+				setValue(mMaximumArea - mViewableArea);
 			}
 		}
 	}
@@ -93,14 +114,23 @@ namespace gui
 		if (mMaximumArea != maximum)
 		{
 			mMaximumArea = maximum;
+			resizeThumb(getSize());
 
 			if (mMaximumArea < mViewableArea)
 			{
+				setValue(0);
 				if (mAutoHide)
 					hide();
 			}
-			else if (mAutoHide)
-				show();
+			else if (mValue > mMaximumArea - mViewableArea)
+			{
+				
+				setValue(mMaximumArea - mViewableArea);
+
+				if (mAutoHide)
+					show();
+			}
+				
 		}
 	}
 
@@ -143,13 +173,13 @@ namespace gui
 		{
 			mValue = value;
 
-			if (mValue < 0)
+			if (mMaximumArea < mViewableArea)
 			{
 				mValue = 0;
 			}
-			else if (mValue > mMaximumArea)
+			else if (mValue > mMaximumArea - mViewableArea)
 			{
-				mValue = mMaximumArea;
+				mValue = mMaximumArea - mViewableArea;
 			}
 
 			int arrowSize = 0;
@@ -161,11 +191,21 @@ namespace gui
 			// Reposition thumb
 			if (mVertical)
 			{
-				mThumb->setPosition(0, (mThumb->getSize().y * mValue) / mMaximumArea + arrowSize);
+				int ypos = (mRect.getSize().y * mValue) / mMaximumArea;
+				if (ypos < arrowSize)
+				{
+					ypos += arrowSize;
+				}
+				mThumb->setPosition(0, ypos);
 			}
 			else // Horizontal
 			{
-				mThumb->setPosition((mThumb->getSize().x * mValue + arrowSize) / mMaximumArea, 0);
+				int xpos = (mRect.getSize().x * mValue) / mMaximumArea;
+				if (xpos < arrowSize)
+				{
+					xpos += arrowSize;
+				}
+				mThumb->setPosition(0, xpos);
 			}
 		}
 	}
@@ -180,23 +220,33 @@ namespace gui
 
 		if (mVertical)
 		{
-			mThumb->setSize(newSize.x, (mRect.getSize().y * mViewableArea) / mMaximumArea);
+			int sbSize = mRect.getSize().y  -  arrowSize * 2;
+			mThumb->setSize(newSize.x, (sbSize * mViewableArea) / mMaximumArea);
 
-			mThumb->setPosition(0, (mThumb->getSize().y * mValue) / mMaximumArea + arrowSize);
+			int ypos = (mRect.getSize().y * mValue) / mMaximumArea;
+			if (ypos < arrowSize)
+			{
+				ypos += arrowSize;
+			}
+			mThumb->setPosition(0, ypos);
 		}
 		else // Horizontal
 		{
-			mThumb->setSize((mRect.getSize().x * mViewableArea) / mMaximumArea, newSize.y);
+			int sbSize = mRect.getSize().x - arrowSize * 2;
+			mThumb->setSize((sbSize * mViewableArea) / mMaximumArea, newSize.y);
 
-			mThumb->setPosition((mThumb->getSize().x * mValue + arrowSize) / mMaximumArea, 0);
+			int xpos = (mRect.getSize().x * mValue) / mMaximumArea;
+			if (xpos < arrowSize)
+			{
+				xpos += arrowSize;
+			}
+			mThumb->setPosition(0, xpos);
 		}
 	}
 
 	void ScrollBar::setSize(const sf::Vector2f& newSize)
 	{
 		mRect.setSize(newSize);
-
-		resizeThumb(newSize);
 
 		if (mVertical)
 		{
@@ -214,6 +264,8 @@ namespace gui
 			mArrowUpRight->setPosition(0, 0);
 			mArrowDownLeft->setPosition(newSize.x - newSize.y, 0); // mRectsize.x - arrow size.y
 		}
+
+		resizeThumb(newSize);
 	}
 
 	void ScrollBar::setSize(float x, float y)
@@ -243,14 +295,24 @@ namespace gui
 
 		if (mVertical)
 		{
-			mThumb->setPosition(0, (mThumb->getSize().y * mValue) / mMaximumArea + arrowSize);
+			int ypos = (mRect.getSize().y * mValue) / mMaximumArea;
+			if (ypos < arrowSize)
+			{
+				ypos += arrowSize;
+			}
+			mThumb->setPosition(0, ypos);
 
 			mArrowUpRight->setPosition(0, 0);
 			mArrowDownLeft->setPosition(0, mRect.getSize().y - mArrowDownLeft->getSize().x); // mRectsize.y - arrow size.x
 		}
 		else // Horizontal
 		{
-			mThumb->setPosition((mThumb->getSize().x * mValue + arrowSize) / mMaximumArea, 0);
+			int xpos = (mRect.getSize().x * mValue) / mMaximumArea;
+			if (xpos < arrowSize)
+			{
+				xpos += arrowSize;
+			}
+			mThumb->setPosition(0, xpos);
 
 			mArrowUpRight->setPosition(0, 0);
 			mArrowDownLeft->setPosition(mRect.getSize().x - mArrowDownLeft->getSize().y, 0); // mRectsize.x - arrow size.y
@@ -269,11 +331,12 @@ namespace gui
 		if (isEnabled() && isVisible())
 		{
 			target.draw(mRect, states);
+
 			target.draw(*mThumb, states);
+
 			target.draw(*mArrowUpRight, states);
-			states.transform.scale(0, -1);
+			//states.transform.rotate(180);
 			target.draw(*mArrowDownLeft, states);
-			states = sf::RenderStates::Default;
 
 			for (auto& widget : mChildWidgets)
 			{
