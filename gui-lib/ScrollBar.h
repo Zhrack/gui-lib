@@ -63,6 +63,9 @@ namespace gui
 
 		void resizeThumb(const sf::Vector2f& newSize);
 
+		// Small utility function to avoid code duplication
+		int calculateThumbPos(int arrowSize);
+
 	private:
 		// Bound widget
 		Widget::Ptr mScrollableWidget;
