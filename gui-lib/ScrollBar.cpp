@@ -42,11 +42,10 @@ namespace gui
 
 		setSize(50, 300);
 		
-		setMaximumArea(600);
-		setViewableArea(300);
+		setMaximumArea(100);
+		setViewableArea(50);
 		
-		hideArrows();
-		setValue(600);
+		setValue(0);
 	}
 
 
