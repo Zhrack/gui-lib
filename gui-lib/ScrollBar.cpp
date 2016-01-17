@@ -42,11 +42,11 @@ namespace gui
 
 		setSize(50, 300);
 		
-		setMaximumArea(100);
-		setViewableArea(20);
+		setMaximumArea(600);
+		setViewableArea(300);
 		
-		//hideArrows();
-		setValue(100);
+		hideArrows();
+		setValue(600);
 	}
 
 
@@ -80,14 +80,6 @@ namespace gui
 			// Swap dimensions
 			sf::Vector2f size = getSize();
 			setSize(size.y, size.x);
-			if (mVertical)
-			{
-				setPosition(mParent->getSize().x - size.x, 0);
-			}
-			else
-			{
-				setPosition(mParent->getSize().y - size.y, 0);
-			}
 		}
 	}
 
@@ -96,6 +88,9 @@ namespace gui
 		if (mViewableArea != viewableArea)
 		{
 			mViewableArea = viewableArea;
+
+			if (mViewableArea < 10)
+				mViewableArea = 10;
 
 			resizeThumb(getSize());
 
@@ -152,6 +147,8 @@ namespace gui
 
 		mShowArrows = true;
 
+		resizeThumb(getSize());
+
 		setDirty();
 		update();
 	}
@@ -162,6 +159,8 @@ namespace gui
 		mArrowDownLeft->disable();
 
 		mShowArrows = false;
+
+		resizeThumb(getSize());
 
 		setDirty();
 		update();
@@ -229,11 +228,11 @@ namespace gui
 	int ScrollBar::calculateThumbPos(int arrowSize)
 	{
 		int sbSize = mVertical 
-			? (mRect.getSize().y - arrowSize * 2) 
+			? (mRect.getSize().y - arrowSize * 2)
 			: (mRect.getSize().x - arrowSize * 2);
 
 		int pos = (sbSize * mValue) / mMaximumArea;
-		if (pos < arrowSize)
+		if (mShowArrows || pos < arrowSize)
 		{
 			pos += arrowSize;
 		}
