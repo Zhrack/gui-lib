@@ -25,8 +25,6 @@ namespace gui
 
 		void setTextWrapStyle(Label::TextWrap wrap, int maxWidth, const std::string& text = "");
 
-		void setPosition(const sf::Vector2f& localPos) override;
-		void setPosition(float x, float y) override;
 		void setGlobalPosition(const sf::Vector2f& globalPos) override;
 		void setGlobalPosition(float x, float y) override;
 

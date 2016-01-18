@@ -40,6 +40,8 @@ namespace gui
 		mArrowUpRight->getShape().setFillColor(sf::Color::Blue);
 		mArrowDownLeft->getShape().setFillColor(sf::Color::Red);
 
+		mArrowDownLeft->getShape().setRotation(90);
+
 		setSize(50, 300);
 		
 		setMaximumArea(100);
@@ -268,16 +270,6 @@ namespace gui
 		setSize(sf::Vector2f(x, y));
 	}
 
-	void ScrollBar::setPosition(const sf::Vector2f& localPos)
-	{
-		setGlobalPosition(localPos + mParent->getGlobalPosition());
-	}
-
-	void ScrollBar::setPosition(float x, float y)
-	{
-		setPosition(sf::Vector2f(x, y));
-	}
-
 	void ScrollBar::setGlobalPosition(const sf::Vector2f& globalPos)
 	{
 		mRect.setPosition(globalPos);
@@ -317,12 +309,10 @@ namespace gui
 		{
 			target.draw(mRect, states);
 
-			
+			target.draw(*mThumb, states);
 
 			target.draw(*mArrowUpRight, states);
-			//states.transform.rotate(180);
 			target.draw(*mArrowDownLeft, states);
-			target.draw(*mThumb, states);
 
 			for (auto& widget : mChildWidgets)
 			{

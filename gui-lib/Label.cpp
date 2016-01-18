@@ -107,19 +107,6 @@ namespace gui
 			setText(text);
 	}
 
-	void Label::setPosition(const sf::Vector2f& localPos)
-	{
-		mRect.setPosition(localPos + mParent->getGlobalPosition());
-
-		setDirty();
-		update();
-	}
-
-	void Label::setPosition(float x, float y)
-	{
-		setPosition(sf::Vector2f(x, y));
-	}
-
 	void Label::setGlobalPosition(const sf::Vector2f& globalPos)
 	{
 		mRect.setPosition(globalPos);

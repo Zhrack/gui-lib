@@ -51,8 +51,6 @@ namespace gui
 		void setSize(const sf::Vector2f& newSize) override;
 		void setSize(float x, float y) override;
 
-		void setPosition(const sf::Vector2f& localPos) override;
-		void setPosition(float x, float y) override;
 		void setGlobalPosition(const sf::Vector2f& globalPos) override;
 		void setGlobalPosition(float x, float y) override;
 

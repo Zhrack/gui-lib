@@ -35,25 +35,6 @@ namespace gui
 		setDirty();
 	}
 
-	void TextButton::setPosition(const sf::Vector2f& localPos)
-	{
-		mRect.setPosition(localPos + mParent->getGlobalPosition());
-		updateVertsPosition();
-
-		sf::Vector2f marginOffset;
-		if (mBorderRendered)
-		{
-			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
-		}
-
-		mText->setPosition(marginOffset);
-	}
-
-	void TextButton::setPosition(float x, float y)
-	{
-		setPosition(sf::Vector2f(x, y));
-	}
-
 	void TextButton::setGlobalPosition(const sf::Vector2f& globalPos)
 	{
 		mRect.setPosition(globalPos);

@@ -42,8 +42,8 @@ int main()
 	gui::Gui gui(window);
 	//gui::Panel::Ptr panel = gui.createPanel("panel");
 	//panel->setSize(sf::Vector2f(300, 300));
-	////panel->setPosition(sf::Vector2f(50, 50));
-	//
+	//panel->setPosition(sf::Vector2f(50, 50));
+	
 	//panel->setDraggable(true);
 	//panel->getShape().setFillColor(sf::Color(200, 50, 50));
 
@@ -87,9 +87,9 @@ int main()
 	scrollBar->setDraggable(true);
 	//scrollBar->setVertical(false);
 
-	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
-	//childWindow->setSize(400, 400);
-	//childWindow->setDraggable(true);
+	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
+	childWindow->setSize(400, 400);
+	childWindow->setDraggable(true);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

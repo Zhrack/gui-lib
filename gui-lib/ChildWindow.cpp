@@ -96,44 +96,6 @@ namespace gui
 		setDirty();
 	}
 
-	void ChildWindow::setPosition(const sf::Vector2f& localPos)
-	{
-		mRect.setPosition(localPos + mParent->getGlobalPosition());
-		updateVertsPosition();
-
-		sf::Vector2f marginOffset;
-		if (mBorderRendered)
-		{
-			marginOffset = sf::Vector2f(mInternalMargins.left, mInternalMargins.top);
-		}
-
-		mTitleBar->setPosition(marginOffset);
-
-		sf::Vector2f textMargin;
-		switch (mTextLayout.mCurrentLayout)
-		{
-		case Left:
-			textMargin = mTextLayout.mLeftLayoutMargin;
-			break;
-		case Center:
-			textMargin = mTextLayout.mCenterLayoutMargin;
-			break;
-		//case Right:
-		//	textMargin = mTextLayout.mRightLayoutMargin;
-		//	break;
-		}
-		mTitle->setPosition(marginOffset + textMargin);
-
-		mBody->setPosition(sf::Vector2f(marginOffset.x, marginOffset.y + mTitleBar->getShape().getSize().y));
-
-		mCloseButton->setPosition(mTitleBar->getShape().getSize().x - mCloseButton->getShape().getSize().x, 0);
-	}
-
-	void ChildWindow::setPosition(float x, float y)
-	{
-		setPosition(sf::Vector2f(x, y));
-	}
-
 	void ChildWindow::setGlobalPosition(const sf::Vector2f& globalPos)
 	{
 		mRect.setPosition(globalPos);

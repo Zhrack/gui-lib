@@ -370,7 +370,7 @@ namespace gui
 	void Widget::setPosition(const sf::Vector2f& pos)
 	{
 		if (mParent)
-			mRect.setPosition(pos + mParent->getGlobalPosition());
+			setGlobalPosition(pos + mParent->getGlobalPosition());
 	}
 
 	void Widget::setGlobalPosition(float x, float y)

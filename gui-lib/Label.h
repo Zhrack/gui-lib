@@ -38,8 +38,6 @@ namespace gui
 		// Default value is 30
 		void setCharacterSize(unsigned int size);
 
-		void setPosition(const sf::Vector2f& localPos) override;
-		void setPosition(float x, float y) override;
 		void setGlobalPosition(const sf::Vector2f& globalPos) override;
 		void setGlobalPosition(float x, float y) override;
 
