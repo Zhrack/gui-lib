@@ -37,6 +37,20 @@ namespace gui
 		mImage->setTextureRect(rect);
 	}
 
+	void ImageButton::setOrigin(const sf::Vector2f& origin)
+	{
+		mRect.setOrigin(origin);
+
+		mImage->setOrigin(origin);
+	}
+
+	void ImageButton::setRotation(float angle)
+	{
+		mRect.setRotation(angle);
+
+		mImage->getShape().setRotation(angle);
+	}
+
 	void ImageButton::setSize(const sf::Vector2f& newSize)
 	{
 		mImage->setSize(newSize);
@@ -94,7 +108,7 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			//target.draw(mRect, states); // debug
+			target.draw(mRect, states); // debug
 			if (mBorderRendered)
 			{
 				states.texture = mTexture;

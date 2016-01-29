@@ -56,9 +56,14 @@ namespace gui
 		void setDraggable(bool draggable) { mDraggable = draggable; }
 		void setDragging(bool drag) { mDragging = drag; }
 
-		void setOrigin(const sf::Vector2f& origin){ mRect.setOrigin(origin); }
+		void setChildrenOut(bool out){ mChildrenOut = out; }
 
 		void move(const sf::Vector2f& delta);
+
+		// Set a new origin position. Default is (0, 0), top left corner of widget
+		virtual void setOrigin(const sf::Vector2f& origin){ mRect.setOrigin(origin); }
+
+
 		// Set position. Local position to parent.
 		virtual void setPosition(const sf::Vector2f& localPos);
 		virtual void setPosition(float x, float y);
@@ -85,6 +90,7 @@ namespace gui
 		bool isDragging() const { return mDragging; }
 		bool isDirty() const { return mDirty; }
 		bool allowFocus() const { return mAllowFocus; }
+		bool allowChildrenOut() const { return mChildrenOut; }
 
 		// Check to see if mouse pointer is on this widget
 		bool mouseOnWidget(float x, float y);
@@ -149,6 +155,8 @@ namespace gui
 		bool mDragging;
 		// Does it nedds an update?
 		bool mDirty;
+		// Does it limit children movement?
+		bool mChildrenOut;
 
 		friend class Gui;
 	};

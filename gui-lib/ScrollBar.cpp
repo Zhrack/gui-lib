@@ -33,6 +33,10 @@ namespace gui
 		mArrowUpRight->setBorderRendered(false);
 		mArrowDownLeft->setBorderRendered(false);
 
+		addChild(mThumb, mThumbName);
+		addChild(mArrowUpRight, mArrowUpRightName);
+		addChild(mArrowDownLeft, mArrowDownLeftName);
+
 		mRect.setTexture(theme->texture);
 		mRect.setTextureRect(theme->scrollBar.backgroundRect);
 
@@ -40,7 +44,9 @@ namespace gui
 		mArrowUpRight->getShape().setFillColor(sf::Color::Blue);
 		mArrowDownLeft->getShape().setFillColor(sf::Color::Red);
 
-		mArrowDownLeft->getShape().setRotation(90);
+		sf::Vector2f origin(mArrowDownLeft->getSize().x / 2, mArrowDownLeft->getSize().y / 2);
+		mArrowDownLeft->setOrigin(origin);
+		mArrowDownLeft->setRotation(180);
 
 		setSize(50, 300);
 		
@@ -259,7 +265,7 @@ namespace gui
 			mArrowDownLeft->setSize(newSize.y, newSize.y);
 
 			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(newSize.x - newSize.y, 0); // mRectsize.x - arrow size.y
+			mArrowDownLeft->setPosition(newSize.x - newSize.x, 0); // mRectsize.x - arrow size.y
 		}
 
 		resizeThumb(newSize);
@@ -285,14 +291,14 @@ namespace gui
 			mThumb->setPosition(0, calculateThumbPos(arrowSize));
 
 			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(0, mRect.getSize().y - mArrowDownLeft->getSize().x); // mRectsize.y - arrow size.x
+			mArrowDownLeft->setPosition(0, mRect.getSize().y - arrowSize); // mRectsize.y - arrow size.x
 		}
 		else // Horizontal
 		{
 			mThumb->setPosition(calculateThumbPos(arrowSize), 0);
 
 			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(mRect.getSize().x - mArrowDownLeft->getSize().y, 0); // mRectsize.x - arrow size.y
+			mArrowDownLeft->setPosition(mRect.getSize().x - arrowSize, 0); // mRectsize.x - arrow size.y
 		}
 	}
 

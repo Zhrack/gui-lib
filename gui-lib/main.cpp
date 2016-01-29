@@ -85,11 +85,12 @@ int main()
 
 	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
 	scrollBar->setDraggable(true);
+	scrollBar->setChildrenOut(false);
 	//scrollBar->setVertical(false);
 
-	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
-	childWindow->setSize(400, 400);
-	childWindow->setDraggable(true);
+	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
+	//childWindow->setSize(400, 400);
+	//childWindow->setDraggable(true);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

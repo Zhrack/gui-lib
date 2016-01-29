@@ -16,6 +16,7 @@ namespace gui
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
+		mRoot->setChildrenOut(false);
 
 		sf::Font font;
 		if (!font.loadFromFile("fonts/DejaVuSans.ttf"))

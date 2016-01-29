@@ -23,7 +23,8 @@ namespace gui
 		mMouseHover(false),
 		mDraggable(draggable),
 		mDragging(false),
-		mDirty(true)
+		mDirty(true),
+		mChildrenOut(true)
 	{
 		setGlobalPosition(pos);
 	}
@@ -234,22 +235,25 @@ namespace gui
 		sf::FloatRect rect = mParent->getShape().getGlobalBounds();
 		sf::Vector2f size = mRect.getSize();
 
-		if (resultPos.x < rect.left) // correct on left
+		if (!mChildrenOut)
 		{
-			resultPos.x = rect.left;
-		}
-		else if (resultPos.x + size.x > rect.left + rect.width) // correct on right
-		{
-			resultPos.x = rect.left + rect.width - size.x;
-		}
+			if (resultPos.x < rect.left) // correct on left
+			{
+				resultPos.x = rect.left;
+			}
+			else if (resultPos.x + size.x > rect.left + rect.width) // correct on right
+			{
+				resultPos.x = rect.left + rect.width - size.x;
+			}
 
-		if (resultPos.y < rect.top) // correct on top
-		{
-			resultPos.y = rect.top;
-		}
-		else if (resultPos.y + size.y > rect.top + rect.height) // correct on bottom
-		{
-			resultPos.y = rect.top + rect.height - size.y;
+			if (resultPos.y < rect.top) // correct on top
+			{
+				resultPos.y = rect.top;
+			}
+			else if (resultPos.y + size.y > rect.top + rect.height) // correct on bottom
+			{
+				resultPos.y = rect.top + rect.height - size.y;
+			}
 		}
 
 		setGlobalPosition(resultPos);

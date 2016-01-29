@@ -24,6 +24,9 @@ namespace gui
 		// Defines a new clip rect inside the texture
 		void setTextureRect(const sf::IntRect& rect);
 
+		virtual void setOrigin(const sf::Vector2f& origin) override;
+		void setRotation(float angle);
+
 		// Resizes the image.
 		// newSize = new pixel size of the image
 		void setSize(const sf::Vector2f& newSize) override;
