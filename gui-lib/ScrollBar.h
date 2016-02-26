@@ -15,8 +15,8 @@ namespace gui
 
 		// Child names
 		static const std::string mThumbName;
-		static const std::string mArrowUpRightName;
-		static const std::string mArrowDownLeftName;
+		static const std::string mArrowUpLeftName;
+		static const std::string mArrowDownRightName;
 
 		ScrollBar(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme);
 		~ScrollBar();
@@ -72,9 +72,9 @@ namespace gui
 		ImageButton::Ptr mThumb;
 
 		// Can be the Up arrow for vertical mode, Right arrow otherwise
-		ImageButton::Ptr mArrowUpRight;
+		ImageButton::Ptr mArrowUpLeft;
 		// Can be the Down arrow for vertical mode, Left arrow otherwise
-		ImageButton::Ptr mArrowDownLeft;
+		ImageButton::Ptr mArrowDownRight;
 
 		// Does the scrollbar lies vertically?
 		bool mVertical;

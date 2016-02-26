@@ -3,6 +3,13 @@
 
 #include <iostream>
 
+#define USEDEBUG
+#ifdef USEDEBUG
+#define Debug(x) std::cout << x
+#else
+#define Debug(x) 
+#endif 
+
 namespace gui
 {
 	Widget::Widget(Widget::Ptr parent, Gui* const gui, const std::string& name,
@@ -24,7 +31,8 @@ namespace gui
 		mDraggable(draggable),
 		mDragging(false),
 		mDirty(true),
-		mChildrenOut(true)
+		mChildrenOut(true),
+		mMoveFlag(false)
 	{
 		setGlobalPosition(pos);
 	}
@@ -112,40 +120,47 @@ namespace gui
 		{
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::LostFocus:
-			std::cout << getName() << ": lost focus" << std::endl;
+			Debug(getName() << ": lost focus" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::GainedFocus:
-			std::cout << getName() << ": gained focus" << std::endl;
+			Debug(getName() << ": gained focus" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::TextEntered:
+			Debug(getName() << ": text entered" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::KeyPressed:
+			Debug(getName() << ": key pressed" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::KeyReleased:
+			Debug(getName() << ": key released" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseWheelScrolled:
+			Debug(getName() << ": wheel scroll" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseButtonPressed:
+			Debug(getName() << ": mouse button pressed" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseButtonReleased:
+			Debug(getName() << ": mouse button released" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseMoved:
+			//std::cout << getName() << ": move" << std::endl;
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseEntered:
-			std::cout << getName() << ": mouse entered" << std::endl;
+			Debug(getName() << ": mouse entered" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::MouseLeft:
-			std::cout << getName() << ": mouse left" << std::endl;
+			Debug(getName() << ": mouse left" << std::endl);
 			break;
 			//////////////////////////////////////////////////////////////////////
 		case GuiEvent::JoystickButtonPressed:
@@ -235,7 +250,7 @@ namespace gui
 		sf::FloatRect rect = mParent->getShape().getGlobalBounds();
 		sf::Vector2f size = mRect.getSize();
 
-		if (!mChildrenOut)
+		if (mParent->allowChildrenOut() == false)
 		{
 			if (resultPos.x < rect.left) // correct on left
 			{
@@ -256,7 +271,9 @@ namespace gui
 			}
 		}
 
+		mMoveFlag = true;
 		setGlobalPosition(resultPos);
+		mMoveFlag = false;
 		setDirty();
 
 		sf::Vector2f movement = resultPos - oldPos;

@@ -157,6 +157,8 @@ namespace gui
 		bool mDirty;
 		// Does it limit children movement?
 		bool mChildrenOut;
+		// Internal use only. True if setGlobalPosition is being called from move() function
+		bool mMoveFlag;
 
 		friend class Gui;
 	};

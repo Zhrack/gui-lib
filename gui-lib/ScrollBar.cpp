@@ -5,12 +5,12 @@
 namespace gui
 {
 	const std::string ScrollBar::mThumbName = "thumb";
-	const std::string ScrollBar::mArrowUpRightName = "arrowUpRight";
-	const std::string ScrollBar::mArrowDownLeftName = "arrowDownLeft";
+	const std::string ScrollBar::mArrowUpLeftName = "arrowUpRight";
+	const std::string ScrollBar::mArrowDownRightName = "arrowDownLeft";
 
 	ScrollBar::ScrollBar(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(100, 15), true, true, false, true, false),
-		
+
 		mValue(1),
 		mViewableArea(5),
 		mMaximumArea(10),
@@ -22,33 +22,40 @@ namespace gui
 
 		mScrollableWidget(nullptr),
 		mThumb(new ImageButton(static_cast<Widget::Ptr>(this), gui, mThumbName, theme->texture, theme->scrollBar.thumbRect, theme)),
-		mArrowUpRight(new ImageButton(static_cast<Widget::Ptr>(this), gui, mArrowUpRightName, theme->texture, theme->scrollBar.arrowRect, theme)),
-		mArrowDownLeft(new ImageButton(static_cast<Widget::Ptr>(this), gui, mArrowDownLeftName, theme->texture, theme->scrollBar.arrowRect, theme))
+		mArrowUpLeft(new ImageButton(static_cast<Widget::Ptr>(this), gui, mArrowUpLeftName, theme->texture, theme->scrollBar.arrowRect, theme)),
+		mArrowDownRight(new ImageButton(static_cast<Widget::Ptr>(this), gui, mArrowDownRightName, theme->texture, theme->scrollBar.arrowRect, theme))
 	{
 		mThumb->setReactive(theme->scrollBar.reactiveThumb);
-		mArrowUpRight->setReactive(theme->scrollBar.reactiveArrows);
-		mArrowDownLeft->setReactive(theme->scrollBar.reactiveArrows);
+		mArrowUpLeft->setReactive(theme->scrollBar.reactiveArrows);
+		mArrowDownRight->setReactive(theme->scrollBar.reactiveArrows);
 
 		mThumb->setBorderRendered(false);
-		mArrowUpRight->setBorderRendered(false);
-		mArrowDownLeft->setBorderRendered(false);
+		mArrowUpLeft->setBorderRendered(false);
+		mArrowDownRight->setBorderRendered(false);
 
 		addChild(mThumb, mThumbName);
-		addChild(mArrowUpRight, mArrowUpRightName);
-		addChild(mArrowDownLeft, mArrowDownLeftName);
+		addChild(mArrowUpLeft, mArrowUpLeftName);
+		addChild(mArrowDownRight, mArrowDownRightName);
 
 		mRect.setTexture(theme->texture);
 		mRect.setTextureRect(theme->scrollBar.backgroundRect);
 
-		mThumb->getShape().setFillColor(sf::Color::Green);
-		mArrowUpRight->getShape().setFillColor(sf::Color::Blue);
-		mArrowDownLeft->getShape().setFillColor(sf::Color::Red);
-
-		sf::Vector2f origin(mArrowDownLeft->getSize().x / 2, mArrowDownLeft->getSize().y / 2);
-		mArrowDownLeft->setOrigin(origin);
-		mArrowDownLeft->setRotation(180);
+		//mThumb->getShape().setFillColor(sf::Color::Green);
+		//mArrowUpLeft->getShape().setFillColor(sf::Color::Blue);
+		//mArrowDownRight->getShape().setFillColor(sf::Color::Red);
 
 		setSize(50, 300);
+
+		if (mVertical)
+		{
+			sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
+			mArrowUpLeft->setOrigin(originUp);
+			mArrowUpLeft->setRotation(0);
+
+			sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
+			mArrowDownRight->setOrigin(originDown);
+			mArrowDownRight->setRotation(180);
+		}
 		
 		setMaximumArea(100);
 		setViewableArea(50);
@@ -83,6 +90,27 @@ namespace gui
 		if (mVertical != vertical)
 		{
 			mVertical = vertical;
+
+			if (mVertical)
+			{
+				sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
+				mArrowUpLeft->setOrigin(originUp);
+				mArrowUpLeft->setRotation(0);
+
+				sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
+				mArrowDownRight->setOrigin(originDown);
+				mArrowDownRight->setRotation(180);
+			}
+			else
+			{
+				sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
+				mArrowUpLeft->setOrigin(originUp);
+				mArrowUpLeft->setRotation(-90);
+
+				sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
+				mArrowDownRight->setOrigin(originDown);
+				mArrowDownRight->setRotation(90);
+			}
 
 			// Swap dimensions
 			sf::Vector2f size = getSize();
@@ -149,8 +177,8 @@ namespace gui
 	// Decides whether to show arrows
 	void ScrollBar::showArrows()
 	{
-		mArrowUpRight->enable();
-		mArrowDownLeft->enable();
+		mArrowUpLeft->enable();
+		mArrowDownRight->enable();
 
 		mShowArrows = true;
 
@@ -162,8 +190,8 @@ namespace gui
 
 	void ScrollBar::hideArrows()
 	{
-		mArrowUpRight->disable();
-		mArrowDownLeft->disable();
+		mArrowUpLeft->disable();
+		mArrowDownRight->disable();
 
 		mShowArrows = false;
 
@@ -193,7 +221,7 @@ namespace gui
 			int arrowSize = 0;
 			if (mShowArrows)
 			{
-				arrowSize = mArrowDownLeft->getSize().y;
+				arrowSize = mArrowDownRight->getSize().y;
 			}
 
 			// Reposition thumb
@@ -213,7 +241,7 @@ namespace gui
 		int arrowSize = 0;
 		if (mShowArrows)
 		{
-			arrowSize = mArrowDownLeft->getSize().y;
+			arrowSize = mArrowDownRight->getSize().y;
 		}
 
 		if (mVertical)
@@ -253,19 +281,19 @@ namespace gui
 
 		if (mVertical)
 		{
-			mArrowUpRight->setSize(newSize.x, newSize.x);
-			mArrowDownLeft->setSize(newSize.x, newSize.x);
+			mArrowUpLeft->setSize(newSize.x, newSize.x);
+			mArrowDownRight->setSize(newSize.x, newSize.x);
 
-			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(0, newSize.y - newSize.x); // mRectsize.y - arrow size.x
+			mArrowUpLeft->setPosition(newSize.x * 0.5, newSize.x * 0.5);
+			mArrowDownRight->setPosition(newSize.x * 0.5, newSize.x * 0.5 + newSize.y - newSize.x); // mRectsize.y - arrow size.x
 		}
 		else // Horizontal
 		{
-			mArrowUpRight->setSize(newSize.y, newSize.y);
-			mArrowDownLeft->setSize(newSize.y, newSize.y);
+			mArrowUpLeft->setSize(newSize.y, newSize.y);
+			mArrowDownRight->setSize(newSize.y, newSize.y);
 
-			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(newSize.x - newSize.x, 0); // mRectsize.x - arrow size.y
+			mArrowUpLeft->setPosition(newSize.y * 0.5, newSize.y * 0.5);
+			mArrowDownRight->setPosition(newSize.y * 0.5 + newSize.x - newSize.y, newSize.y * 0.5); // mRectsize.x - arrow size.y
 		}
 
 		resizeThumb(newSize);
@@ -283,23 +311,31 @@ namespace gui
 		int arrowSize = 0;
 		if (mShowArrows)
 		{
-			arrowSize = mArrowDownLeft->getSize().y;
+			arrowSize = mArrowDownRight->getSize().y;
 		}
 
-		if (mVertical)
+		if (mMoveFlag == false)
 		{
-			mThumb->setPosition(0, calculateThumbPos(arrowSize));
+			if (mVertical)
+			{
+				mThumb->setPosition(0, calculateThumbPos(arrowSize));
 
-			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(0, mRect.getSize().y - arrowSize); // mRectsize.y - arrow size.x
-		}
-		else // Horizontal
-		{
-			mThumb->setPosition(calculateThumbPos(arrowSize), 0);
+				sf::Vector2f upLeft = mArrowUpLeft->getSize();
+				mArrowUpLeft->setPosition(upLeft.x * 0.5, upLeft.y * 0.5);
+				sf::Vector2f downRight = mArrowDownRight->getSize();
+				mArrowDownRight->setPosition(downRight.x * 0.5, downRight.y * 0.5 + mRect.getSize().y - arrowSize); // mRectsize.y - arrow size.x
+			}
+			else // Horizontal
+			{
+				mThumb->setPosition(calculateThumbPos(arrowSize), 0);
 
-			mArrowUpRight->setPosition(0, 0);
-			mArrowDownLeft->setPosition(mRect.getSize().x - arrowSize, 0); // mRectsize.x - arrow size.y
+				sf::Vector2f upLeft = mArrowUpLeft->getSize();
+				mArrowUpLeft->setPosition(upLeft.x * 0.5, upLeft.y * 0.5);
+				sf::Vector2f downRight = mArrowDownRight->getSize();
+				mArrowDownRight->setPosition(downRight.x * 0.5 + mRect.getSize().x - arrowSize, downRight.x * 0.5); // mRectsize.x - arrow size.y
+			}
 		}
+		
 	}
 
 	void ScrollBar::setGlobalPosition(float x, float y)
@@ -317,8 +353,8 @@ namespace gui
 
 			target.draw(*mThumb, states);
 
-			target.draw(*mArrowUpRight, states);
-			target.draw(*mArrowDownLeft, states);
+			target.draw(*mArrowUpLeft, states);
+			target.draw(*mArrowDownRight, states);
 
 			for (auto& widget : mChildWidgets)
 			{

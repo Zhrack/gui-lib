@@ -40,28 +40,30 @@ int main()
 	sf::RenderWindow* window(new sf::RenderWindow(sf::VideoMode(800, 600), "My window"));
 
 	gui::Gui gui(window);
-	//gui::Panel::Ptr panel = gui.createPanel("panel");
-	//panel->setSize(sf::Vector2f(300, 300));
-	//panel->setPosition(sf::Vector2f(50, 50));
+	gui::Panel::Ptr panel = gui.createPanel("panel");
+	panel->setSize(sf::Vector2f(300, 300));
+	panel->setPosition(sf::Vector2f(50, 50));
 	
-	//panel->setDraggable(true);
-	//panel->getShape().setFillColor(sf::Color(200, 50, 50));
+	panel->setDraggable(true);
+	panel->getShape().setFillColor(sf::Color(200, 50, 50));
+	//panel->setChildrenOut(false);
 
-	//gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
-	//childPanel->setSize(sf::Vector2f(250, 100));
-	//childPanel->setDraggable(true);
-	//childPanel->getShape().setFillColor(sf::Color::Blue);
+	gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
+	childPanel->setSize(sf::Vector2f(300, 100));
+	childPanel->setDraggable(true);
+	childPanel->getShape().setFillColor(sf::Color::Blue);
+	//childPanel->setChildrenOut(false);
 
-	//gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
-	//childPanel2->setSize(sf::Vector2f(150, 70));
-	//childPanel2->setDraggable(true);
-	//
-	//testStruct str;
-	//str.panel = panel;
-	//str.gui = &gui;
-	//str.newChild = nullptr;
-	//std::function<void(gui::GuiEvent& event, void*)> function = test;
-	//panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str, 0);
+	gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
+	childPanel2->setSize(sf::Vector2f(150, 70));
+	childPanel2->setDraggable(true);
+	
+	testStruct str;
+	str.panel = panel;
+	str.gui = &gui;
+	str.newChild = nullptr;
+	std::function<void(gui::GuiEvent& event, void*)> function = test;
+	panel->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &str, 0);
 
 	//gui::Label::Ptr text = gui.createLabel(panel, "text");
 	//
@@ -85,12 +87,13 @@ int main()
 
 	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
 	scrollBar->setDraggable(true);
-	scrollBar->setChildrenOut(false);
+	//scrollBar->setChildrenOut(false);
+	scrollBar->setGlobalPosition(50, 300);
 	//scrollBar->setVertical(false);
 
-	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
-	//childWindow->setSize(400, 400);
-	//childWindow->setDraggable(true);
+	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
+	childWindow->setSize(400, 400);
+	childWindow->setDraggable(true);
 
 	// run the program as long as the window is open
 	while (window->isOpen())
