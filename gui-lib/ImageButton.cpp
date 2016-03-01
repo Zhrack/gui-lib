@@ -108,7 +108,6 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			target.draw(mRect, states); // debug
 			if (mBorderRendered)
 			{
 				states.texture = mTexture;
