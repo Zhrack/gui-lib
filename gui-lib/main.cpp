@@ -72,11 +72,11 @@ int main()
 	//text->setDraggable(true);
 	//text->setGlobalPosition(sf::Vector2f(100, 200));
 
-	//gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
-	//button->setDraggable(true);
-	//button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
-	//button->setGlobalPosition(sf::Vector2f(400, 400));
-	//function = removeChild;
+	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
+	button->setDraggable(true);
+	button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
+	button->setGlobalPosition(sf::Vector2f(400, 400));
+	function = removeChild;
 	//button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);
 
 	//sf::Texture* texture = new sf::Texture();
@@ -91,9 +91,9 @@ int main()
 	scrollBar->setGlobalPosition(50, 300);
 	//scrollBar->setVertical(false);
 
-	gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
-	childWindow->setSize(400, 400);
-	childWindow->setDraggable(true);
+	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
+	//childWindow->setSize(400, 400);
+	//childWindow->setDraggable(true);
 
 	// run the program as long as the window is open
 	while (window->isOpen())

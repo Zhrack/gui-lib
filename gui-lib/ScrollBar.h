@@ -3,6 +3,14 @@
 
 #include "Widget.h"
 #include "ImageButton.h"
+#include "Callbacks.h"
+
+#define USEDEBUG
+#ifdef USEDEBUG
+#define Debug(x) std::cout << x
+#else
+#define Debug(x) 
+#endif 
 
 namespace gui
 {
@@ -12,6 +20,8 @@ namespace gui
 	{
 	public:
 		using Ptr = std::shared_ptr<ScrollBar>;
+
+		static ScrollBarCallbacks mScrollBarCallbacks;
 
 		// Child names
 		static const std::string mThumbName;
@@ -98,6 +108,8 @@ namespace gui
 
 		// How much does arrows scroll when pressed?
 		uint mScrollAmount;
+
+		friend struct ScrollBarCallbacks;
 	};
 } // namespace
 

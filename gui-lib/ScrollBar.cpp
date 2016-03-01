@@ -2,8 +2,17 @@
 
 #include "Theme.h"
 
+#include <iostream>
+
+#define USEDEBUG
+#ifdef USEDEBUG
+#define Debug(x) std::cout << x
+#else
+#define Debug(x) 
+#endif 
+
 namespace gui
-{
+{	
 	const std::string ScrollBar::mThumbName = "thumb";
 	const std::string ScrollBar::mArrowUpLeftName = "arrowUpRight";
 	const std::string ScrollBar::mArrowDownRightName = "arrowDownLeft";
@@ -33,6 +42,8 @@ namespace gui
 		mArrowUpLeft->setBorderRendered(false);
 		mArrowDownRight->setBorderRendered(false);
 
+		mThumb->setDraggable(true);
+
 		addChild(mThumb, mThumbName);
 		addChild(mArrowUpLeft, mArrowUpLeftName);
 		addChild(mArrowDownRight, mArrowDownRightName);
@@ -40,9 +51,9 @@ namespace gui
 		mRect.setTexture(theme->texture);
 		mRect.setTextureRect(theme->scrollBar.backgroundRect);
 
-		//mThumb->getShape().setFillColor(sf::Color::Green);
-		//mArrowUpLeft->getShape().setFillColor(sf::Color::Blue);
-		//mArrowDownRight->getShape().setFillColor(sf::Color::Red);
+		mThumb->bindCallback(GuiEvent::EventType::MouseDrag, mScrollBarCallbacks.OnThumbDrag, this, mScrollBarCallbacks.mCallbackIndices);
+		mArrowUpLeft->bindCallback(GuiEvent::EventType::MouseButtonPressed, mScrollBarCallbacks.OnUpLeftArrowClick, this, mScrollBarCallbacks.mCallbackIndices);
+		mArrowDownRight->bindCallback(GuiEvent::EventType::MouseButtonPressed, mScrollBarCallbacks.OnDownRightArrowClick, this, mScrollBarCallbacks.mCallbackIndices);
 
 		setSize(50, 300);
 
@@ -209,7 +220,7 @@ namespace gui
 		{
 			mValue = value;
 
-			if (mMaximumArea < mViewableArea)
+			if (mValue < 0 || mMaximumArea < mViewableArea)
 			{
 				mValue = 0;
 			}

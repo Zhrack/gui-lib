@@ -60,6 +60,9 @@
     <ClCompile Include="ScrollBar.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Callbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackManager.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="ScrollBar.h">
       <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Callbacks.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
