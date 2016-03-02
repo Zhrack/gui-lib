@@ -51,22 +51,21 @@ namespace gui
 		mRect.setTexture(theme->texture);
 		mRect.setTextureRect(theme->scrollBar.backgroundRect);
 
-		mThumb->bindCallback(GuiEvent::EventType::MouseDrag, mScrollBarCallbacks.OnThumbDrag, this, mScrollBarCallbacks.mCallbackIndices);
-		mArrowUpLeft->bindCallback(GuiEvent::EventType::MouseButtonPressed, mScrollBarCallbacks.OnUpLeftArrowClick, this, mScrollBarCallbacks.mCallbackIndices);
-		mArrowDownRight->bindCallback(GuiEvent::EventType::MouseButtonPressed, mScrollBarCallbacks.OnDownRightArrowClick, this, mScrollBarCallbacks.mCallbackIndices);
+		setChildrenOut(false);
+
+		mThumb->bindCallback(GuiEvent::EventType::MouseDrag, &ScrollBarCallbacks::OnThumbDrag, this, ScrollBarCallbacks::mCallbackIndices);
+		mArrowUpLeft->bindCallback(GuiEvent::EventType::MouseButtonPressed, &ScrollBarCallbacks::OnUpLeftArrowClick, this, ScrollBarCallbacks::mCallbackIndices);
+		mArrowDownRight->bindCallback(GuiEvent::EventType::MouseButtonPressed, &ScrollBarCallbacks::OnDownRightArrowClick, this, ScrollBarCallbacks::mCallbackIndices);
 
 		setSize(50, 300);
 
-		if (mVertical)
-		{
-			sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
-			mArrowUpLeft->setOrigin(originUp);
-			mArrowUpLeft->setRotation(0);
+		sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
+		mArrowUpLeft->setOrigin(originUp);
+		mArrowUpLeft->setRotation(0);
 
-			sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
-			mArrowDownRight->setOrigin(originDown);
-			mArrowDownRight->setRotation(180);
-		}
+		sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
+		mArrowDownRight->setOrigin(originDown);
+		mArrowDownRight->setRotation(180);
 		
 		setMaximumArea(100);
 		setViewableArea(50);
@@ -179,9 +178,10 @@ namespace gui
 
 
 	// Sets the amount of scroll of the arrows, when pressed
+	// Value clamped to a minimum of 1
 	void ScrollBar::setScrollAmount(uint amount)
 	{
-		mScrollAmount = amount;			
+		mScrollAmount = amount > 0 ? amount : 1;			
 	}
 
 
@@ -214,20 +214,20 @@ namespace gui
 
 
 	// Sets the current value, clamped to [mViewableArea, mMaximumArea] or 0
-	void ScrollBar::setValue(uint value)
+	void ScrollBar::setValue(int value)
 	{
 		if (mValue != value)
 		{
-			mValue = value;
+			if (value < 0 || mMaximumArea < mViewableArea)
+			{
+				value = 0;
+			}
+			else if (value > mMaximumArea - mViewableArea)
+			{
+				value = mMaximumArea - mViewableArea;
+			}
 
-			if (mValue < 0 || mMaximumArea < mViewableArea)
-			{
-				mValue = 0;
-			}
-			else if (mValue > mMaximumArea - mViewableArea)
-			{
-				mValue = mMaximumArea - mViewableArea;
-			}
+			mValue = value;
 
 			int arrowSize = 0;
 			if (mShowArrows)

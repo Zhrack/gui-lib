@@ -1,41 +1,13 @@
 #include "BorderWidget.h"
 #include "Theme.h"
 
+#include "Callbacks.h"
+
 #include <assert.h>
 #include <iostream>
 
 namespace gui
 {
-	int BorderWidget::mCloseButtonCallbackIndices = -1;
-
-	void OnMouseEntered(gui::GuiEvent& event, void* args)
-	{
-		BorderWidget* widget = static_cast<BorderWidget*>(args);
-		// Set Hover state
-		widget->toHoverButtonState();
-	}
-
-	void OnMouseLeft(gui::GuiEvent& event, void* args)
-	{
-		BorderWidget* widget = static_cast<BorderWidget*>(args);
-		// Set Normal state
-		widget->toNormalButtonState();
-	}
-
-	void OnMouseButtonDown(gui::GuiEvent& event, void* args)
-	{
-		BorderWidget* widget = static_cast<BorderWidget*>(args);
-		// Set Down state
-		widget->toDownButtonState();
-	}
-
-	void OnMouseButtonUp(gui::GuiEvent& event, void* args)
-	{
-		BorderWidget* widget = static_cast<BorderWidget*>(args);
-		// Set Hover state
-		widget->toHoverButtonState();
-	}
-
 	// Ctor for Text Button
 	BorderWidget::BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme, bool reactive) :
 		Widget(parent, gui, name, sf::Vector2f(), sf::Vector2u(100, 100), true, true, false, true, false),
@@ -298,18 +270,18 @@ namespace gui
 
 	void BorderWidget::bindButtonStateFunctions()
 	{
-		bindCallback(GuiEvent::MouseEntered, OnMouseEntered, this, mCloseButtonCallbackIndices);
-		bindCallback(GuiEvent::MouseLeft, OnMouseLeft, this, mCloseButtonCallbackIndices);
-		bindCallback(GuiEvent::MouseButtonPressed, OnMouseButtonDown, this, mCloseButtonCallbackIndices);
-		bindCallback(GuiEvent::MouseButtonReleased, OnMouseButtonUp, this, mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseEntered, BorderWidgetCallbacks::OnMouseEntered, this, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseLeft, BorderWidgetCallbacks::OnMouseLeft, this, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseButtonPressed, BorderWidgetCallbacks::OnMouseButtonDown, this, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
+		bindCallback(GuiEvent::MouseButtonReleased, BorderWidgetCallbacks::OnMouseButtonUp, this, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
 	}
 
 	void BorderWidget::unbindButtonStateFunctions()
 	{
-		unbind(GuiEvent::MouseEntered, mCloseButtonCallbackIndices);
-		unbind(GuiEvent::MouseLeft, mCloseButtonCallbackIndices);
-		unbind(GuiEvent::MouseButtonPressed, mCloseButtonCallbackIndices);
-		unbind(GuiEvent::MouseButtonReleased, mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseEntered, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseLeft, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseButtonPressed, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
+		unbind(GuiEvent::MouseButtonReleased, BorderWidgetCallbacks::mCloseButtonCallbackIndices);
 	}
 
 	void BorderWidget::toNormalButtonState()

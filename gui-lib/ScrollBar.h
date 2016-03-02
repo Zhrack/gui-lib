@@ -21,8 +21,6 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<ScrollBar>;
 
-		static ScrollBarCallbacks mScrollBarCallbacks;
-
 		// Child names
 		static const std::string mThumbName;
 		static const std::string mArrowUpLeftName;
@@ -49,7 +47,7 @@ namespace gui
 		void hideArrows();
 
 		// Sets the current value, clamped to [mViewableArea, mMaximumArea] or 0
-		void setValue(uint value);
+		void setValue(int value);
 
 		bool isVertical() const { return mVertical; }
 		uint getScrollAmount() const { return mScrollAmount; }

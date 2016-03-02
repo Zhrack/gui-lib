@@ -25,9 +25,6 @@ namespace gui
 	public:
 		using Ptr = std::shared_ptr<BorderWidget>;
 
-		// Index of button state callbacks
-		static int mCloseButtonCallbackIndices;
-
 		BorderWidget(const Widget::Ptr& parent, Gui* const gui, const std::string& name, Theme* theme, bool reactive);
 		~BorderWidget();
 

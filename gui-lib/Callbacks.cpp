@@ -1,6 +1,8 @@
 #include "Callbacks.h"
 #include <iostream>
 
+#include "Gui.h"
+
 #include "ScrollBar.h"
 
 #define USEDEBUG
@@ -12,6 +14,35 @@
 
 namespace gui
 {
+	////////////// BORDERWIDGET
+	void BorderWidgetCallbacks::OnMouseEntered(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Hover state
+		widget->toHoverButtonState();
+	}
+
+	void BorderWidgetCallbacks::OnMouseLeft(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Normal state
+		widget->toNormalButtonState();
+	}
+
+	void BorderWidgetCallbacks::OnMouseButtonDown(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Down state
+		widget->toDownButtonState();
+	}
+
+	void BorderWidgetCallbacks::OnMouseButtonUp(gui::GuiEvent& event, void* args)
+	{
+		BorderWidget* widget = static_cast<BorderWidget*>(args);
+		// Set Hover state
+		widget->toHoverButtonState();
+	}
+
 	////////////// SCROLLBAR
 
 	void ScrollBarCallbacks::OnUpLeftArrowClick(gui::GuiEvent& event, void* args)
@@ -32,17 +63,18 @@ namespace gui
 	{
 		ScrollBar* widget = static_cast<ScrollBar*>(args);
 		sf::Vector2f pos(event.mouseDrag.x, event.mouseDrag.y);
+		sf::Vector2i oldMousePos = widget->getGui()->getOldMousePosition();
 
-		Debug(widget->getName() << ": drag" << std::endl);
+		sf::Vector2f movement = pos - sf::Vector2f(oldMousePos);
 
-		widget->setValue
-			(
-			widget->isVertical()
-			? (pos - widget->mThumb->getGlobalPosition()).y
-			: (pos - widget->mThumb->getGlobalPosition()).x
-			);
+		if (widget->isVertical())
+		{
+			widget->setValue(widget->getValue() + movement.y);
+		}
+		else // Horizontal
+		{
+			widget->setValue(widget->getValue() + movement.x);
+		}
 	}
-
-	////////////// END SCROLLBAR
 
 } // namespace

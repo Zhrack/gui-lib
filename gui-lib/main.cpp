@@ -87,9 +87,9 @@ int main()
 
 	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
 	scrollBar->setDraggable(true);
-	//scrollBar->setChildrenOut(false);
 	scrollBar->setGlobalPosition(50, 300);
 	//scrollBar->setVertical(false);
+	scrollBar->setValue(1);
 
 	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");
 	//childWindow->setSize(400, 400);
