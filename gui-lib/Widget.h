@@ -54,8 +54,7 @@ namespace gui
 		void setFocusable(bool focusable) { mAllowFocus = focusable; }
 
 		void setDraggable(bool draggable) { mDraggable = draggable; }
-		void setDragging(bool drag) { mDragging = drag; }
-
+		
 		void setChildrenOut(bool out){ mChildrenOut = out; }
 
 		void move(const sf::Vector2f& delta);
@@ -114,6 +113,8 @@ namespace gui
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 		
 	protected:
+		void setDragging(bool drag) { mDragging = drag; }
+
 		void checkEventType(GuiEvent& event);
 		bool removeChild(Widget* widget, bool recursive = false);
 

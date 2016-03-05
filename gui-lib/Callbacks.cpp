@@ -48,9 +48,7 @@ namespace gui
 	void ScrollBarCallbacks::OnUpLeftArrowClick(gui::GuiEvent& event, void* args)
 	{
 		ScrollBar* widget = static_cast<ScrollBar*>(args);
-		int value = widget->getValue() - widget->getScrollAmount();
-		value = value < 0 ? 0 : value;
-		widget->setValue(value);
+		widget->setValue(widget->getValue() - widget->getScrollAmount());
 	}
 
 	void ScrollBarCallbacks::OnDownRightArrowClick(gui::GuiEvent& event, void* args)
@@ -67,14 +65,23 @@ namespace gui
 
 		sf::Vector2f movement = pos - sf::Vector2f(oldMousePos);
 
+		Debug("\nold value: " << widget->getValue() << std::endl);
+		
+
 		if (widget->isVertical())
 		{
+			if (movement.y == 0)
+				return;
 			widget->setValue(widget->getValue() + movement.y);
 		}
 		else // Horizontal
 		{
+			if (movement.x == 0)
+				return;
 			widget->setValue(widget->getValue() + movement.x);
 		}
+
+		Debug("new value: " << widget->getValue() << std::endl);
 	}
 
 } // namespace

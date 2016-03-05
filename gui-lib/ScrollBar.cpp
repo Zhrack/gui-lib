@@ -56,9 +56,7 @@ namespace gui
 		mThumb->bindCallback(GuiEvent::EventType::MouseDrag, &ScrollBarCallbacks::OnThumbDrag, this, ScrollBarCallbacks::mCallbackIndices);
 		mArrowUpLeft->bindCallback(GuiEvent::EventType::MouseButtonPressed, &ScrollBarCallbacks::OnUpLeftArrowClick, this, ScrollBarCallbacks::mCallbackIndices);
 		mArrowDownRight->bindCallback(GuiEvent::EventType::MouseButtonPressed, &ScrollBarCallbacks::OnDownRightArrowClick, this, ScrollBarCallbacks::mCallbackIndices);
-
-		setSize(50, 300);
-
+		
 		sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
 		mArrowUpLeft->setOrigin(originUp);
 		mArrowUpLeft->setRotation(0);
@@ -66,6 +64,8 @@ namespace gui
 		sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
 		mArrowDownRight->setOrigin(originDown);
 		mArrowDownRight->setRotation(180);
+
+		setSize(50, 300);
 		
 		setMaximumArea(100);
 		setViewableArea(50);
@@ -293,7 +293,12 @@ namespace gui
 		if (mVertical)
 		{
 			mArrowUpLeft->setSize(newSize.x, newSize.x);
+			sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
+			mArrowUpLeft->setOrigin(originUp);
+
 			mArrowDownRight->setSize(newSize.x, newSize.x);
+			sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
+			mArrowDownRight->setOrigin(originDown);
 
 			mArrowUpLeft->setPosition(newSize.x * 0.5, newSize.x * 0.5);
 			mArrowDownRight->setPosition(newSize.x * 0.5, newSize.x * 0.5 + newSize.y - newSize.x); // mRectsize.y - arrow size.x
@@ -301,7 +306,12 @@ namespace gui
 		else // Horizontal
 		{
 			mArrowUpLeft->setSize(newSize.y, newSize.y);
+			sf::Vector2f originUp(mArrowUpLeft->getSize().x / 2, mArrowUpLeft->getSize().y / 2);
+			mArrowUpLeft->setOrigin(originUp);
+
 			mArrowDownRight->setSize(newSize.y, newSize.y);
+			sf::Vector2f originDown(mArrowDownRight->getSize().x / 2, mArrowDownRight->getSize().y / 2);
+			mArrowDownRight->setOrigin(originDown);
 
 			mArrowUpLeft->setPosition(newSize.y * 0.5, newSize.y * 0.5);
 			mArrowDownRight->setPosition(newSize.y * 0.5 + newSize.x - newSize.y, newSize.y * 0.5); // mRectsize.x - arrow size.y
@@ -374,9 +384,9 @@ namespace gui
 		}
 	}
 
-	void ScrollBar::update()
-	{
+	//void ScrollBar::update()
+	//{
 
-	}
+	//}
 
 } // namespace

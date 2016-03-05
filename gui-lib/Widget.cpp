@@ -247,25 +247,26 @@ namespace gui
 	{
 		sf::Vector2f oldPos = getGlobalPosition();
 		sf::Vector2f resultPos = oldPos + delta;
+		sf::Vector2f origin = mRect.getOrigin();
 		sf::FloatRect rect = mParent->getShape().getGlobalBounds();
 		sf::Vector2f size = mRect.getSize();
 
 		if (mParent->allowChildrenOut() == false)
 		{
-			if (resultPos.x < rect.left) // correct on left
+			if (resultPos.x - origin.x < rect.left) // correct on left
 			{
 				resultPos.x = rect.left;
 			}
-			else if (resultPos.x + size.x > rect.left + rect.width) // correct on right
+			else if (resultPos.x + size.x - origin.x > rect.left + rect.width) // correct on right
 			{
 				resultPos.x = rect.left + rect.width - size.x;
 			}
 
-			if (resultPos.y < rect.top) // correct on top
+			if (resultPos.y - origin.y < rect.top) // correct on top
 			{
 				resultPos.y = rect.top;
 			}
-			else if (resultPos.y + size.y > rect.top + rect.height) // correct on bottom
+			else if (resultPos.y + size.y - origin.y> rect.top + rect.height) // correct on bottom
 			{
 				resultPos.y = rect.top + rect.height - size.y;
 			}

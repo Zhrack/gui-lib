@@ -121,12 +121,6 @@ namespace gui
 
 		sf::Vector2i mOldMousePos;
 
-		// Clock used to limit mouse move flooding
-		sf::Clock mDragEventFloodClock;
-
-		// Time before new Drag* Event
-		sf::Time mTimeToNextDragEvent;
-
 		// GUI fonts
 		std::unordered_map<std::string, sf::Font> mFonts;
 		const std::string mDefaultFont;
