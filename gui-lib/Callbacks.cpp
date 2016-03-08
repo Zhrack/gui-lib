@@ -5,7 +5,7 @@
 
 #include "ScrollBar.h"
 
-#define USEDEBUG
+//#define USEDEBUG
 #ifdef USEDEBUG
 #define Debug(x) std::cout << x
 #else

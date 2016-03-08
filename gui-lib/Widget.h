@@ -102,6 +102,8 @@ namespace gui
 		// return a widget given its name
 		Widget::Ptr getChild(const std::string& name, bool recursive = false);
 
+		std::vector<Widget::Ptr>& getChildren() { return mChildWidgets; }
+
 		bool removeChild(const Widget::Ptr& widget, bool recursive = false);
 		
 

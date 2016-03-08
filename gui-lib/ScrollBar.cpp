@@ -79,11 +79,21 @@ namespace gui
 	}
 
 	// Binds a widget to the scrollbar, its children will be scrolled
-	void ScrollBar::bindScrollableWidget(const Widget::Ptr& widget, uint viewableArea, uint maximumArea)
+	void ScrollBar::bindScrollableWidget(const Widget::Ptr& widget, uint maximumArea)
 	{
 		mScrollableWidget = widget;
 
-		setViewableArea(viewableArea);
+		mScrollableWidget->setChildrenOut(true);
+
+		// Calculate viewable area and maximum area
+		if (mVertical)
+		{
+			setViewableArea(mScrollableWidget->getSize().y);
+		}
+		else // Horizontal
+		{
+			setViewableArea(mScrollableWidget->getSize().x);
+		}
 
 		setMaximumArea(maximumArea);
 
@@ -125,6 +135,9 @@ namespace gui
 			// Swap dimensions
 			sf::Vector2f size = getSize();
 			setSize(size.y, size.x);
+
+			if (mScrollableWidget)
+				bindScrollableWidget(mScrollableWidget, mMaximumArea);
 		}
 	}
 
@@ -227,6 +240,7 @@ namespace gui
 				value = mMaximumArea - mViewableArea;
 			}
 
+			int delta = mValue - value;
 			mValue = value;
 
 			int arrowSize = 0;
@@ -243,6 +257,25 @@ namespace gui
 			else // Horizontal
 			{
 				mThumb->setPosition(calculateThumbPos(arrowSize), 0);
+			}
+
+			// Move widgets
+			if (mScrollableWidget)
+			{
+				if (mVertical)
+				{
+					for (auto& child : mScrollableWidget->getChildren())
+					{
+						child->move(sf::Vector2f(0, delta));
+					}
+				}
+				else
+				{
+					for (auto& child : mScrollableWidget->getChildren())
+					{
+						child->move(sf::Vector2f(delta, 0));
+					}
+				}
 			}
 		}
 	}

@@ -49,7 +49,8 @@ int main()
 	//panel->setChildrenOut(false);
 
 	gui::Panel::Ptr childPanel = gui.createPanel(panel, "childPanel");
-	childPanel->setSize(sf::Vector2f(300, 100));
+	childPanel->setSize(sf::Vector2f(200, 400));
+	childPanel->setPosition(0, 0);
 	childPanel->setDraggable(true);
 	childPanel->getShape().setFillColor(sf::Color::Blue);
 	//childPanel->setChildrenOut(false);
@@ -86,9 +87,10 @@ int main()
 	//imageButton->setDraggable(true);
 
 	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
-	scrollBar->setSize(15, 200);
+	scrollBar->setSize(15, 400);
 	scrollBar->setDraggable(true);
-	scrollBar->setGlobalPosition(50, 300);
+	scrollBar->setGlobalPosition(50, 100);
+	scrollBar->bindScrollableWidget(panel, 400);
 	//scrollBar->setVertical(false);
 
 	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");

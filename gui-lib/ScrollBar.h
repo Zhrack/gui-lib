@@ -5,13 +5,6 @@
 #include "ImageButton.h"
 #include "Callbacks.h"
 
-#define USEDEBUG
-#ifdef USEDEBUG
-#define Debug(x) std::cout << x
-#else
-#define Debug(x) 
-#endif 
-
 namespace gui
 {
 	using uint = unsigned int;
@@ -30,7 +23,7 @@ namespace gui
 		~ScrollBar();
 
 		// Binds a widget to the scrollbar, its children will be scrolled
-		void bindScrollableWidget(const Widget::Ptr& widget, uint viewableArea, uint maximumArea);
+		void bindScrollableWidget(const Widget::Ptr& widget, uint maximumArea);
 
 		// Sets the scrollbar layout
 		void setVertical(bool vertical);
