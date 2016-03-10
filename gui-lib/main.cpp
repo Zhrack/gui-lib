@@ -58,6 +58,7 @@ int main()
 	gui::Panel::Ptr childPanel2 = gui.createPanel(childPanel, "childPanel2");
 	childPanel2->setSize(sf::Vector2f(150, 70));
 	childPanel2->setDraggable(true);
+	childPanel2->setPosition(0, 0);
 	
 	testStruct str;
 	str.panel = panel;

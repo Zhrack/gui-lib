@@ -68,6 +68,12 @@ namespace gui
 
 		void addTheme(const std::string& filename);
 
+		// glScissor management
+		sf::FloatRect& getScissor() { return mGLScissorCoords; }
+		void setScissor(const sf::FloatRect& scissor);
+
+		void resetScissor();
+
 		//////////////////////////////////////////////////
 		///					WIDGET CREATION
 		//////////////////////////////////////////////////
@@ -107,9 +113,14 @@ namespace gui
 		void update();
 
 		// Draw all widgets
-		void draw() const;
+		void draw();
 
 	private:
+		// glScissor coordinates
+		sf::FloatRect mGLScissorCoords;
+		// Used to reset the scissor
+		bool dirtyScissor;
+
 		// Currently focused widget, for keyboard events etc...
 		Widget::Ptr mFocusedWidget;
 

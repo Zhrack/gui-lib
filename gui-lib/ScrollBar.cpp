@@ -79,6 +79,7 @@ namespace gui
 	}
 
 	// Binds a widget to the scrollbar, its children will be scrolled
+	// The viewable area is calculated based on the scrollable widget height(or width)
 	void ScrollBar::bindScrollableWidget(const Widget::Ptr& widget, uint maximumArea)
 	{
 		mScrollableWidget = widget;

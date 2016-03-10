@@ -1,7 +1,6 @@
 #include "Gui.h"
+
 #include "GuiEvent.h"
-//#include "Widget.h"
-//#include "Panel.h"
 #include <assert.h>
 #include <iostream>
 #include <fstream>
@@ -12,11 +11,14 @@ namespace gui
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
 		mRoot(nullptr),
-		mDefaultFont("DejaVuSans")
+		mDefaultFont("DejaVuSans"),
+		dirtyScissor(true)
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
 		mRoot->setChildrenOut(false);
+
+		resetScissor();
 
 		sf::Font font;
 		if (!font.loadFromFile("fonts/DejaVuSans.ttf"))
@@ -30,11 +32,16 @@ namespace gui
 		mWindow(target),
 		mFocusedWidget(nullptr),
 		mOldMousePos(sf::Mouse::getPosition()),
-		mDefaultFont("DejaVuSans")
+		mDefaultFont("DejaVuSans"),
+		dirtyScissor(true)
 	{
 		GuiContainer::Ptr temp(new GuiContainer(nullptr, this, "root"));
 		mRoot = std::move(temp);
 		mRoot->getShape().setSize(sf::Vector2f(this->mWindow->getSize()));
+
+		mRoot->setChildrenOut(false);
+
+		resetScissor();
 
 		sf::Font font;
 		if (!font.loadFromFile("fonts/DejaVuSans.ttf"))
@@ -302,9 +309,62 @@ namespace gui
 		}
 	}
 
-	void Gui::draw() const
+	void Gui::setScissor(const sf::FloatRect& scissor) 
 	{
+		// Calculate intersection between the two rectangles
+		sf::FloatRect resultRect = scissor;
+		if (mGLScissorCoords.left > scissor.left)
+		{
+			resultRect.left = mGLScissorCoords.left;
+		}
+		if (mGLScissorCoords.top > scissor.top)
+		{
+			resultRect.top = mGLScissorCoords.top;
+		}
+		if (mGLScissorCoords.left + mGLScissorCoords.width < scissor.left + scissor.width)
+		{
+			resultRect.width = mGLScissorCoords.left + mGLScissorCoords.width - scissor.left;
+		}
+		if (mGLScissorCoords.top + mGLScissorCoords.height < scissor.top + scissor.height)
+		{
+			resultRect.height = mGLScissorCoords.top + mGLScissorCoords.height - scissor.top;
+		}
+
+		resultRect.width = resultRect.width > 0 ? resultRect.width : 0;
+		resultRect.height = resultRect.height > 0 ? resultRect.height : 0;
+
+		mGLScissorCoords = resultRect;
+		glScissor(
+			mGLScissorCoords.left,
+			mWindow->getSize().y - mGLScissorCoords.top - mGLScissorCoords.height,
+			mGLScissorCoords.width,
+			mGLScissorCoords.height);
+
+		dirtyScissor = true;
+	}
+
+	void Gui::resetScissor()
+	{
+		if (!dirtyScissor)
+			return;
+
+		sf::Vector2u size = mWindow->getSize();
+		mGLScissorCoords = sf::FloatRect(0, 0, size.x, size.y);
+
+		glScissor(mGLScissorCoords.left, mGLScissorCoords.top, mGLScissorCoords.width, mGLScissorCoords.height);
+
+		dirtyScissor = false;
+	}
+
+	void Gui::draw()
+	{
+		resetScissor();
+
+		glEnable(GL_SCISSOR_TEST);
+
 		mWindow->draw(*mRoot);
+
+		glDisable(GL_SCISSOR_TEST);
 	}
 
 	sf::Font* Gui::getFont(const std::string& name)

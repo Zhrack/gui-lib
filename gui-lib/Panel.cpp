@@ -12,5 +12,24 @@ namespace gui
 	Panel::~Panel()
 	{
 	}
+
+	void Panel::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		// draw the vertex array
+		if (isVisible())
+		{
+			target.draw(mRect, states);
+
+			mMainGui->setScissor(mRect.getGlobalBounds());
+
+			for (auto& widget : mChildWidgets)
+			{
+				target.draw(*widget, states);
+			}
+
+			mMainGui->resetScissor();
+		}
+	}
+
 }//namespace
 

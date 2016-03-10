@@ -1,6 +1,8 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <SFML/OpenGL.hpp>
+
 #include <vector>
 #include <string>
 #include <memory>

@@ -14,19 +14,7 @@ namespace gui
 		Panel(const Widget::Ptr& parent, Gui* const gui, const std::string& name);
 		~Panel();
 
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-		{
-			// draw the vertex array
-			if (isEnabled() && isVisible())
-			{
-				target.draw(mRect, states);
-
-				for (auto& widget : mChildWidgets)
-				{
-					target.draw(*widget, states);
-				}
-			}	
-		}
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	private:
 		
 	};
