@@ -16,7 +16,7 @@ namespace gui
 	void Panel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		// draw the vertex array
-		if (isVisible())
+		if (isEnabled() && isVisible())
 		{
 			target.draw(mRect, states);
 

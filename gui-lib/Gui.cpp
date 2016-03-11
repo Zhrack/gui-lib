@@ -311,24 +311,18 @@ namespace gui
 
 	void Gui::setScissor(const sf::FloatRect& scissor) 
 	{
+		#define MIN(x, y) x < y ? x : y
+		#define MAX(x, y) x > y ? x : y
+
 		// Calculate intersection between the two rectangles
-		sf::FloatRect resultRect = scissor;
-		if (mGLScissorCoords.left > scissor.left)
-		{
-			resultRect.left = mGLScissorCoords.left;
-		}
-		if (mGLScissorCoords.top > scissor.top)
-		{
-			resultRect.top = mGLScissorCoords.top;
-		}
-		if (mGLScissorCoords.left + mGLScissorCoords.width < scissor.left + scissor.width)
-		{
-			resultRect.width = mGLScissorCoords.left + mGLScissorCoords.width - scissor.left;
-		}
-		if (mGLScissorCoords.top + mGLScissorCoords.height < scissor.top + scissor.height)
-		{
-			resultRect.height = mGLScissorCoords.top + mGLScissorCoords.height - scissor.top;
-		}
+		sf::FloatRect resultRect;
+
+		resultRect.left = MAX(mGLScissorCoords.left, scissor.left);
+		resultRect.top = MAX(mGLScissorCoords.top, scissor.top);
+		resultRect.width = MIN(mGLScissorCoords.left + mGLScissorCoords.width, scissor.left + scissor.width);
+		resultRect.width -= resultRect.left;
+		resultRect.height = MIN(mGLScissorCoords.top + mGLScissorCoords.height, scissor.top + scissor.height);
+		resultRect.height -= resultRect.top;		
 
 		resultRect.width = resultRect.width > 0 ? resultRect.width : 0;
 		resultRect.height = resultRect.height > 0 ? resultRect.height : 0;

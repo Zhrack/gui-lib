@@ -1,5 +1,6 @@
 #include "ChildWindow.h"
 #include "Theme.h"
+#include "Gui.h"
 
 namespace gui
 {

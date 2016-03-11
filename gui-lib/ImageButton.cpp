@@ -1,6 +1,7 @@
 #include "ImageButton.h"
 
 #include "Theme.h"
+#include "Gui.h"
 
 namespace gui
 {
@@ -116,10 +117,14 @@ namespace gui
 			}
 			target.draw(*mImage, states);
 
+			mMainGui->setScissor(mImage->mRect.getGlobalBounds());
+
 			for (auto& widget : mChildWidgets)
 			{
 				target.draw(*widget, states);
 			}
+
+			mMainGui->resetScissor();
 		}
 	}
 } // namespace

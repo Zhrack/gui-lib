@@ -1,6 +1,8 @@
 #include "Image.h"
 #include "Theme.h"
 
+#include "Gui.h"
+
 namespace gui
 {
 	Image::Image(const Widget::Ptr& parent, Gui* const gui, const std::string& name, sf::Texture* tex, sf::IntRect& rect) :
@@ -33,10 +35,14 @@ namespace gui
 		{
 			target.draw(mRect, states);
 
+			mMainGui->setScissor(mRect.getGlobalBounds());
+
 			for (auto& widget : mChildWidgets)
 			{
 				target.draw(*widget, states);
 			}
+
+			mMainGui->resetScissor();
 		}
 	}
 } // namespace

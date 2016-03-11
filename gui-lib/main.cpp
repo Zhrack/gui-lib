@@ -74,11 +74,11 @@ int main()
 	//text->setDraggable(true);
 	//text->setGlobalPosition(sf::Vector2f(100, 200));
 
-	gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
-	button->setDraggable(true);
-	button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
-	button->setGlobalPosition(sf::Vector2f(400, 400));
-	function = removeChild;
+	//gui::TextButton::Ptr button = gui.createTextButton("button", "Remove Label");
+	//button->setDraggable(true);
+	//button->setTextWrapStyle(gui::Label::TextWrap::Horizontal, 200);
+	//button->setGlobalPosition(sf::Vector2f(400, 400));
+	//function = removeChild;
 	//button->bindCallback(gui::GuiEvent::MouseButtonPressed, function, &text, 0);
 
 	//sf::Texture* texture = new sf::Texture();
@@ -87,11 +87,11 @@ int main()
 	//imageButton->setSize(200, 200);
 	//imageButton->setDraggable(true);
 
-	gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
-	scrollBar->setSize(15, 400);
-	scrollBar->setDraggable(true);
-	scrollBar->setGlobalPosition(50, 100);
-	scrollBar->bindScrollableWidget(panel, 400);
+	//gui::ScrollBar::Ptr scrollBar = gui.createScrollBar("scrollBar");
+	//scrollBar->setSize(15, 400);
+	//scrollBar->setDraggable(true);
+	//scrollBar->setGlobalPosition(50, 100);
+	//scrollBar->bindScrollableWidget(panel, 400);
 	//scrollBar->setVertical(false);
 
 	//gui::ChildWindow::Ptr childWindow = gui.createChildWindow("childWindow", "My Window");

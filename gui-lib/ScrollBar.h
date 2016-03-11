@@ -58,8 +58,6 @@ namespace gui
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:
-		//virtual void update() override;
-
 		void resizeThumb(const sf::Vector2f& newSize);
 
 		// Small utility function to avoid code duplication

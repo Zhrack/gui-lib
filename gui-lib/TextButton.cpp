@@ -104,10 +104,14 @@ namespace gui
 			}
 			target.draw(*mText, states);
 
+			mMainGui->setScissor(mText->mText.getGlobalBounds());
+
 			for (auto& widget : mChildWidgets)
 			{
 				target.draw(*widget, states);
 			}
+
+			mMainGui->resetScissor();
 		}
 	}
 } // namespace

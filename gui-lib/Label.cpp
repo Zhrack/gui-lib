@@ -125,13 +125,16 @@ namespace gui
 		// draw the vertex array
 		if (isEnabled() && isVisible())
 		{
-			//target.draw(mRect, states); // debug
 			target.draw(mText, states);
+
+			mMainGui->setScissor(mText.getGlobalBounds());
 
 			for (auto& widget : mChildWidgets)
 			{
 				target.draw(*widget, states);
 			}
+
+			mMainGui->resetScissor();
 		}
 	}
 

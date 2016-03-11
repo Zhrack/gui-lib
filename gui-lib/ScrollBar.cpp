@@ -1,6 +1,7 @@
 #include "ScrollBar.h"
 
 #include "Theme.h"
+#include "Gui.h"
 
 #include <iostream>
 
@@ -406,21 +407,15 @@ namespace gui
 		{
 			target.draw(mRect, states);
 
-			target.draw(*mThumb, states);
-
-			target.draw(*mArrowUpLeft, states);
-			target.draw(*mArrowDownRight, states);
+			mMainGui->setScissor(mRect.getGlobalBounds());
 
 			for (auto& widget : mChildWidgets)
 			{
 				target.draw(*widget, states);
 			}
+
+			mMainGui->resetScissor();
 		}
 	}
-
-	//void ScrollBar::update()
-	//{
-
-	//}
 
 } // namespace
